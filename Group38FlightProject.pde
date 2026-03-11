@@ -17,6 +17,6 @@ void setup() {
 void draw() {
   for (TableRow row : data.rows()) {
     String name = row.getString("ORIGIN");
-    println("Name: " + name);
+    println("Airline: " + name);
   }
 }
