@@ -30,5 +30,15 @@ void setup() {
 }
 
 void draw() {
-  
+
+  frameCounter(); //Keep at bottom of draw so nothing gets drawn over it
+}
+
+void frameCounter() {
+  fill(255);
+  rect(15, 5, 30, 10);
+  float fps = frameRate;
+  int framesPerSecond = round(fps);
+  fill(0);
+  text(" " + framesPerSecond, 5, 10);
 }
