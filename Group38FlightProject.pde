@@ -30,4 +30,8 @@ void setup() {
 }
 
 void draw() {
+  for (TableRow row : data.rows()) {
+    String name = row.getString("ORIGIN");
+    println("Flying from: " + name);
+  }
 }
