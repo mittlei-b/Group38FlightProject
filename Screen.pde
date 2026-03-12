@@ -1,6 +1,6 @@
 public class Screen {
   color bgColor;
-  public Screen() {
-    
+  public Screen(color bgColor) {
+    this.bgColor = bgColor;
   }
 }
