@@ -71,8 +71,8 @@ void setup(){
     totalNumbOfFlights++; // Tallying up total number of flights for later comparison
   }
   // Sample application of this framework
-  // Let's say this user wants only flights from Texas
-  String depState = "TX"; // This is just hardcoded into the program here but it would be decided based on a scanner or sum
+  // Let's say this user wants only flights from Arizona
+  String depState = "AZ"; // This is just hardcoded into the program here but it would be decided based on a scanner or sum
   ArrayList<Flight> flightSubList = new ArrayList<Flight>();
   for (Flight f : flights){
     if ((f.origStateAbr).equals(depState)){
@@ -80,8 +80,74 @@ void setup(){
       numbOfSelectedFlights++; // Tallying up the number of flights from Texas
     }
   }
+  
+  
   println("Total number of flights: " + totalNumbOfFlights);
   println("Number of selected flights: "+numbOfSelectedFlights);
+  
+  
+  float percentDiverted = getPercentage("DIVERTED", flightSubList);
+  float pDivertedRounded = (float(round(percentDiverted*100)))/100;
+  
+  print("Percentage of selected flights that were diverted: " + pDivertedRounded + "%");
+}
+ 
+ 
+//void draw(){
+  
+  
+  
+//}
+  
+  
+//public float getMean(String column, ArrayList<Flight> subset){
+//  
+//  switch (column){
+//    case "date":
+//    
+//    break;
+///    case "distance":
+ //   
+ //   break;
+    
+ // }
+  
+//}
+
+public float getPercentage(String column, ArrayList<Flight> subset){
+  int totalFlightsThisType = 0;
+ 
+  switch (column){
+    case "CANCELLED":
+    int cancelledFlights = 0;
+    float totalFlights;
+    for (Flight f : subset){
+      totalFlightsThisType++;
+      if (f.cancelled) cancelledFlights++;
+    }
+    float cancelled = (float)cancelledFlights;
+    totalFlights = (float)totalFlightsThisType;
+    
+    float percentCancelled = cancelled/totalFlights * 100;
+    return percentCancelled;
+    
+    case "DIVERTED":
+    int divertedFlights = 0;
+    for (Flight f : subset){
+      totalFlightsThisType++;
+      if (f.diverted) divertedFlights++;
+    }
+    float diverted = (float)divertedFlights;
+    totalFlights = (float)totalFlightsThisType;
+    
+    float percentDiverted = diverted/totalFlights * 100;
+    return percentDiverted;
+    
+    default: 
+      println("something's gone wrong brother");
+      return 0;
+  }
+  
 }
  
 // Here I just use the framework to find the number of flights come from 
