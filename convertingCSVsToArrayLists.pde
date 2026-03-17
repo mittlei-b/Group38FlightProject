@@ -84,7 +84,6 @@ void setup(){
   println("Number of selected flights: "+numbOfSelectedFlights);
 }
  
- 
 // Here I just use the framework to find the number of flights come from 
 // Texas relative to the flights overall,
 // However I think that it could also be useful for filtering data for 
