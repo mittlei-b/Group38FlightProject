@@ -107,9 +107,13 @@ void setup(){
 //    
 //    break;
 ///    case "distance":
- //   
+//     totalFlightKms = 0;
+ //    for (Flight f : subset){
+ //      totalFlightsThisType++;
+//       totalFlightKms += f.distance;
+//    }
+//    float meanDistance = totalFlightKms/totalFlightsThisType;
  //   break;
-    
  // }
   
 //}
@@ -151,7 +155,8 @@ public float getPercentage(String column, ArrayList<Flight> subset){
 }
  
 // Here I just use the framework to find the number of flights come from 
-// Texas relative to the flights overall,
+// Texas relative to the flights overall, as well as the percentage of 
+// flights which were diverted or cancelled for a given subset of flights.
 // However I think that it could also be useful for filtering data for 
 // other purposes, like finding the mean departure time
 // of a subset of flights, or any number of other things. 
