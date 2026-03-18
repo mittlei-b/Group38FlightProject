@@ -4,6 +4,7 @@ import java.io.*;
 
 // Design variables
 PFont myFont;
+PImage welcomeBackground;
 int SCREEN_HEIGHT = 600;
 int SCREEN_WIDTH = 1500;
 
