@@ -30,9 +30,12 @@ Overlay textErase;
     DATA VARIABLES
   ***********/
 Data data;
+<<<<<<< HEAD
 ArrayList<Flight> flights;
 int totalNumbOfFlights; // Total number of flights, used for comparison
 int numbOfSelectedFlights; // Number of flights, now that data has been narrowed down based on a specific parameter
+=======
+>>>>>>> 101401748c73785cd3607c672a62e690e96f8824
 
 void settings() {
   size(SCREEN_WIDTH, SCREEN_HEIGHT);
