@@ -49,4 +49,79 @@ public class Data {
       }
     }
   }
+
+public float getAvgDistance(ArrayList<Flight> flightList) {
+  float totalFlightKms = 0;
+  float totalFlightsThisType = 0;
+  for (Flight f : flightList) {
+    totalFlightsThisType++;
+    totalFlightKms += f.distance;
+  }
+  float meanDistance = totalFlightKms/totalFlightsThisType;
+  return meanDistance;
+}
+
+public ArrayList<Flight> flightsWhichMatchThisCriterion(String type, String value, ArrayList<Flight> flightList) {
+  ArrayList<Flight> flightSubList = new ArrayList<Flight>();
+  switch (type) {
+    case ("late"):
+    for (Flight f : flightList) {
+      if (f.actualArr > f.plannedArr) {
+        flightSubList.add(f);
+      }
+    }
+    return flightSubList;
+    case ("diverted"):
+    for (Flight f : flightList) {
+      if (f.diverted) {
+        flightSubList.add(f);
+      }
+    }
+    return flightSubList;
+    case ("cancelled"):
+    for (Flight f : flightList) {
+      if (f.cancelled) {
+        flightSubList.add(f);
+      }
+    }
+    return flightSubList;
+    case ("carrier"):
+    for (Flight f : flightList) {
+      if ((f.carrier).equals(value)) {
+        flightSubList.add(f);
+      }
+    }
+    return flightSubList;
+    case ("orig"):
+    for (Flight f : flightList) {
+      if ((f.origStateAbr).equals(value)) {
+        flightSubList.add(f);
+      }
+    }
+    return flightSubList;
+    case ("dest"):
+    for (Flight f : flightList) {
+      if ((f.destStateAbr).equals(value)) {
+        flightSubList.add(f);
+      }
+    }
+    return flightSubList;
+
+  default:
+    return flightSubList;
+  }
+}
+
+public float percentWhichMatchThisCriterion(String type, String value, ArrayList<Flight> flightList) {
+  int totalFlights = flightList.size();
+  int numbThatMatchThisCriterion = flightsWhichMatchThisCriterion(type, value, flightList).size();
+  float percent = ((float(numbThatMatchThisCriterion)) / (float(totalFlights) ) ) *100;
+  float percentRounded = roundToTwoDecimals(percent);
+  return percentRounded;
+}
+
+public float roundToTwoDecimals(float numb) {
+  return (float(round(numb*100)))/100;
+}
+
 }
