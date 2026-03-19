@@ -17,6 +17,10 @@ public class Input {
     dropdown = isDropdown;
   }
   
+  public void loadDropdown() {
+    println("Load dropdown");
+  }
+  
   public void draw() {
     //fill(80,220,120);
     fill(255);
