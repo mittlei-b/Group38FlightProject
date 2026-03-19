@@ -124,4 +124,73 @@ public float roundToTwoDecimals(float numb) {
   return (float(round(numb*100)))/100;
 }
 
+
+public String mostPopValue(String type, ArrayList<Flight> flightList) {
+  String mostPop = "";
+  int amtOfMostPop = 0;
+  switch (type) {
+  case "dest":
+    for (String s : stateCodes()) {
+      int flightsToHere = flightsWhichMatchThisCriterion("dest", s, flightList).size();
+      if (flightsToHere > amtOfMostPop) {
+        amtOfMostPop = flightsToHere;
+        mostPop = s;
+      }
+    }
+    return mostPop;
+    
+  case "orig":
+    for (String s : stateCodes()) {
+      int flightsFromHere = flightsWhichMatchThisCriterion("orig", s, flightList).size();
+      if (flightsFromHere > amtOfMostPop) {
+        amtOfMostPop = flightsFromHere;
+        mostPop = s;
+      }
+    }
+    return mostPop;
+
+  case "carrier":
+    for (String s : carrierCodes()) {
+      int flightsToHere = flightsWhichMatchThisCriterion("dest", s, flightList).size();
+      if (flightsToHere > amtOfMostPop) {
+        amtOfMostPop = flightsToHere;
+        mostPop = s;
+      }
+    }
+    return mostPop;
+    
+  default:
+    return "";
+  }
+}
+
+public ArrayList<String> stateCodes() {
+  ArrayList<String> stateCodes = new ArrayList<String>();
+
+  for (Flight f : flights) { //Creates an ArrayList of all state abbreviations that exist
+    String stateCode = f.origStateAbr;
+    boolean recordedAlready = false;
+    for (String s : stateCodes) {
+      if (s.equals(stateCode)) recordedAlready = true;
+    }
+    if (!recordedAlready) stateCodes.add(stateCode);
+  }
+  return stateCodes;
+}
+
+public ArrayList<String> carrierCodes() {
+  ArrayList<String> carrierCodes = new ArrayList<String>();
+
+  for (Flight f : flights) { //Creates an ArrayList of all carrier abbreviations that exist
+    String carrierCode = f.carrier;
+    boolean recordedAlready = false;
+    for (String s : carrierCodes) {
+      if (s.equals(carrierCode)) recordedAlready = true;
+    }
+    if (!recordedAlready) carrierCodes.add(carrierCode);
+  }
+  return carrierCodes;
+}
+
+
 }
