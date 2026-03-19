@@ -2,34 +2,37 @@ import java.util.Scanner;
 import java.util.Arrays;
 import java.io.*;
 
-<<<<<<< HEAD
+
 /**********
     DESIGN VARIABLES
   ***********/
 String font = "ArialMT-18.vlw";
-=======
-// Design variables
 PFont myFont;
 PImage welcomeBackground;
->>>>>>> 8b3930f8d15f6f7931012c3a6be5959889ef6347
 int SCREEN_HEIGHT = 600;
 int SCREEN_WIDTH = 600;
+
 /**********
     SCREEN VARIABLES
   ***********/
-Screen welcome; // This is our welcome screen
-Screen home; // This is our home screen
-Screen results; // This is our results screen
+Screen welcome;
+Screen home;
+Screen results;
+
 /**********
     INPUT VARIABLES
   ***********/
 ArrayList<Input> inputs;
 ArrayList<InputText> inputTexts;
 Overlay textErase;
+
 /**********
     DATA VARIABLES
   ***********/
-Data data; // This is our class for storing flight data
+Data data;
+ArrayList<Flight> flights;
+int totalNumbOfFlights; // Total number of flights, used for comparison
+int numbOfSelectedFlights; // Number of flights, now that data has been narrowed down based on a specific parameter
 
 void settings() {
   size(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -44,6 +47,7 @@ void setup() {
   textFont(loadedFont);
   background(255);
   fill(0);
+  
   /********** INPUT BOXES
       All input boxes go on top!!!!!
       To add new input boxes, copy the format in the comment below
@@ -55,11 +59,48 @@ void setup() {
   addNewInput("Flight Number", 120, 120, 100, 25, "123456", false);
   // Next input box could go here.
   textErase = new Overlay(inputs, color(255));
+  
   /********** DATA TABLE
       Here is our data class. We're using the Processing class called Table:
       https://processing.org/reference/Table.html
   ***********/
   data = new Data("flights_full.csv");
+  flights = new ArrayList<Flight>();
+
+  Table flightsTable = loadTable("flights_full.csv", "header");
+  for (TableRow row : flightsTable.rows()){
+    flights.add(new Flight(row.getString("FL_DATE"), 
+    row.getString("MKT_CARRIER"), row.getInt("MKT_CARRIER_FL_NUM"),
+    row.getString("ORIGIN"), row.getString("ORIGIN_CITY_NAME"), 
+    row.getString("ORIGIN_STATE_ABR"), row.getInt("ORIGIN_WAC"),
+    row.getString("DEST"), row.getString("DEST_CITY_NAME"),
+    row.getString("DEST_STATE_ABR"), row.getInt("DEST_WAC"), 
+    row.getInt("CRS_DEP_TIME"), row.getInt("DEP_TIME"), 
+    row.getInt("CRS_ARR_TIME"), row.getInt("ARR_TIME"), 
+    row.getFloat("DISTANCE"), row.getInt("DIVERTED"), 
+    row.getInt("CANCELLED"))); // Creating another object of type flight and putting in the attributes taken directly from the csv file
+    
+    totalNumbOfFlights++; // Tallying up total number of flights for later comparison
+  }
+  // Sample application of this framework
+  // Let's say this user wants only flights from Arizona
+  String depState = "AZ"; // This is just hardcoded into the program here but it would be decided based on a scanner or sum
+  ArrayList<Flight> flightSubList = new ArrayList<Flight>();
+  for (Flight f : flights){
+    if ((f.origStateAbr).equals(depState)){
+      flightSubList.add(f);
+      numbOfSelectedFlights++; // Tallying up the number of flights from Texas
+    }
+  }
+  
+  println("Total number of flights: " + totalNumbOfFlights);
+  println("Number of selected flights: "+numbOfSelectedFlights);
+  
+  
+  float percentDiverted = getPercentage("DIVERTED", flightSubList);
+  float pDivertedRounded = (float(round(percentDiverted*100)))/100;
+  
+  print("Percentage of selected flights that were diverted: " + pDivertedRounded + "%");
   
   /**********
       Rest of code goes here
@@ -68,7 +109,7 @@ void setup() {
 
 void draw() {
   /********** Background Color
-              and Input Boxes
+              and Input Boxes at the top
   ***********/
   background(255);
   drawInputs();
