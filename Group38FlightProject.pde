@@ -2,10 +2,16 @@ import java.util.Scanner;
 import java.util.Arrays;
 import java.io.*;
 
+<<<<<<< HEAD
 /**********
     DESIGN VARIABLES
   ***********/
 String font = "ArialMT-18.vlw";
+=======
+// Design variables
+PFont myFont;
+PImage welcomeBackground;
+>>>>>>> 8b3930f8d15f6f7931012c3a6be5959889ef6347
 int SCREEN_HEIGHT = 600;
 int SCREEN_WIDTH = 600;
 /**********
