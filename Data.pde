@@ -6,101 +6,45 @@ public class Data {
   }
   
   public void printAllRows() {
+    fill(0);
     int height = 15;
     int width = 5;
-    int dateW = 140;
-    int carrierW = 50;
-    int carrierNumW = 60;
-    int originW = 50;
-    int depCityW = 180;
-    int depStateW = 70;
-    int depCodeW = 70;
-    int destW = 70;
-    int arrCityW = 180;
-    int arrStateW = 70;
-    int arrCodeW = 70;
-    int plaDepW = 80;
-    int actDepW = 80;
-    int plaArrW = 70;
-    int actArrW = 70;
-    int cancelledW = 65;
-    int divertedW = 55;
-    text("Date", width, height);
-    width += dateW;
-    text("Carrier", width, height);
-    width += carrierW;
-    text("Carrier #", width, height);
-    width += carrierNumW;
-    text("Origin", width, height);
-    width += originW;
-    text("Dep. City", width, height);
-    width += depCityW;
-    text("Dep. State", width, height);
-    width += depStateW;
-    text("Dep. Code", width, height);
-    width += depCodeW;
-    text("Destination", width, height);
-    width += destW;
-    text("Arr. City", width, height);
-    width += arrCityW;
-    text("Arr. State", width, height);
-    width += arrStateW;
-    text("Arr. Code", width, height);
-    width += arrCodeW;
-    text("Planned Dep.", width, height);
-    width += plaDepW;
-    text("Actual Dep.", width, height);
-    width += actDepW;
-    text("Planned Arr.", width, height);
-    width += plaArrW;
-    text("Actual Arr.", width, height);
-    width += actArrW;
-    text("Cancelled", width, height);
-    width += cancelledW;
-    text("Diverted", width, height);
-    width += divertedW;
-    text("Distance", width, height);
+    /********** CSV FILE VARIABLE ORDER
+      Date, Carrier, Carrier Number, Origin, Departure City/State, Departure State
+      Departure Code, Destination, Arrival City/State, Arrival State, Arrival Code
+      Planned Departure Time, Actual Departure Time, Planned Arrival Time, Actual
+      Arrival Time, Is/Isn't Cancelled, Is/Isn't Diverted
+    ***********/
+    int[] variableWidths = {140,50,60,50,180,70,70,70,180,70,70,80,80,70,70,50,50,50};
+    String[] columnNames = {"Date","Carrier","Carrier #","Origin","Dep. City",
+                            "Dep. State", "Dep. Code", "Destination", "Arr. City",
+                            "Arr. State", "Arr. Code", "Planned Dep.", "Actual Dep.",
+                            "Planned Arr.", "Actual Arr.", "Cancelled","Diverted",
+                            "Cancelled"};
+    String[] columnIDs = {"FL_DATE","MKT_CARRIER","MKT_CARRIER_FL_NUM","ORIGIN",
+                          "ORIGIN_CITY_NAME","ORIGIN_STATE_ABR","ORIGIN_WAC",
+                          "DEST","DEST_CITY_NAME","DEST_STATE_ABR","DEST_WAC",
+                          "CRS_DEP_TIME","DEP_TIME","CRS_ARR_TIME","ARR_TIME",
+                          "CANCELLED","DIVERTED","DISTANCE"};
+    String[] columnTypes = {"String","String","Int","String","String","String",
+                            "Int","String","String","String","Int","Int","Int",
+                            "Int","Int","Int","Int","Float"};
+    for (int index = 0; index < columnNames.length; index++) {
+      text(columnNames[index], width, height);
+      width += variableWidths[index];
+    }
     for (TableRow row : data.rows()) {
-      int chance = (int)random(0,1000);
-      if (chance == 4) {
-        width = 5;
-        if (height < SCREEN_HEIGHT - 20) {
-          height += 15;
-          text(row.getString("FL_DATE") + "\t", width, height);
-          width += dateW;
-          text(row.getString("MKT_CARRIER") + "\t", width, height);
-          width += carrierW;
-          text(row.getInt("MKT_CARRIER_FL_NUM") + "\t", width, height);
-          width += carrierNumW;
-          text(row.getString("ORIGIN") + "\t", width, height);
-          width += originW;
-          text(row.getString("ORIGIN_CITY_NAME") + "\t", width, height);
-          width += depCityW;
-          text(row.getString("ORIGIN_STATE_ABR") + "\t", width, height);
-          width += depStateW;
-          text(row.getInt("ORIGIN_WAC") + "\t", width, height);
-          width += depCodeW;
-          text(row.getString("DEST") + "\t", width, height);
-          width += destW;
-          text(row.getString("DEST_CITY_NAME") + "\t", width, height);
-          width += arrCityW;
-          text(row.getString("DEST_STATE_ABR") + "\t", width, height);
-          width += arrStateW;
-          text(row.getInt("DEST_WAC") + "\t", width, height);
-          width += arrCodeW;
-          text(row.getInt("CRS_DEP_TIME") + "\t", width, height);
-          width += plaDepW;
-          text(row.getInt("DEP_TIME") + "\t", width, height);
-          width += actDepW;
-          print(row.getInt("CRS_ARR_TIME") + "\t");
-          width += plaArrW;
-          text(row.getInt("ARR_TIME") + "\t", width, height);
-          width += actArrW;
-          text(row.getInt("CANCELLED") + "\t", width, height);
-          width += cancelledW;
-          text(row.getInt("DIVERTED") + "\t", width, height);
-          width += divertedW;
-          text(row.getFloat("DISTANCE") + "\t", width, height);
+      width = 5;
+      if (height < SCREEN_HEIGHT - 20) {
+        height += 15;
+        for (int index = 0; index < columnIDs.length; index++) {
+          if (columnTypes[index] == "String")
+            text(row.getString(columnIDs[index]), width, height);
+          else if (columnTypes[index] == "Int") {
+            text(row.getInt(columnIDs[index]), width, height);
+          } else if (columnTypes[index] == "Float")
+            text(row.getFloat(columnIDs[index]), width, height);
+          width += variableWidths[index];
         }
       }
     }
