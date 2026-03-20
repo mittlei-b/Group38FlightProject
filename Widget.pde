@@ -4,12 +4,9 @@ class Widget {
   color widgetColor, labelColor;
   PFont widgetFont;
   boolean button;
-<<<<<<< HEAD
+
   
   Widget(int x,int y, int width, int height, String label,                 //Constructor to make a button which returns an event
-=======
-  Widget(int x,int y, int width, int height, String label,
->>>>>>> b74d0f4095731807d5030be6d4d4442c2d470a98
   color widgetColor, PFont widgetFont, int event){
     this.x = x;
     this.y = y;
@@ -22,24 +19,16 @@ class Widget {
     labelColor = color(0);
     button = true;
   }
-<<<<<<< HEAD
   
   Widget(int x, int y, int width, int height, String text,                  //Constructor to display widget with no event returned when clicked
-=======
-  Widget(int x, int y, int width, int height, String text,
->>>>>>> b74d0f4095731807d5030be6d4d4442c2d470a98
   color widgetColor, PFont widgetFont){
     this.x=x; this.y=y; this.width=width; this.height=height;
     this.label=text; this.widgetColor=widgetColor; this.widgetFont=widgetFont;
     labelColor=color(0);
     button = false;
   }
-<<<<<<< HEAD
   
-  void draw(){                                 //if mouse is hovering widget, white outline (if it is pressable)    
-=======
-  void draw(){                                 //if mouse is hovering widget, white outline       
->>>>>>> b74d0f4095731807d5030be6d4d4442c2d470a98
+  void draw(){                                 //if mouse is hovering widget, white outline  
     if(mouseX>x && mouseX < x+width && mouseY >y && mouseY <y+height && button) stroke(255);
     else stroke(0);
     if(!button) noStroke();
