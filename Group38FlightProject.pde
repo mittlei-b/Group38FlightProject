@@ -8,6 +8,7 @@ import java.io.*;
   ***********/
 String font = "ArialMT-18.vlw";
 PFont loadedFont;
+PFont welcomeFont;
 PImage welcomeBackground;
 int SCREEN_HEIGHT = 600;
 int SCREEN_WIDTH = 600;
@@ -15,9 +16,10 @@ int SCREEN_WIDTH = 600;
 /**********
     SCREEN VARIABLES
   ***********/
-Screen welcome;
-Screen home;
-Screen results;
+Screen welcome = new Screen(); // initialising screens here because i get a null pointer exception later otherwise??
+Screen home = new Screen();
+Screen results = new Screen();
+int currentEvent;
 
 /**********
     INPUT VARIABLES
@@ -36,7 +38,7 @@ int totalNumbOfFlights; // Total number of flights, used for comparison
 int numbOfSelectedFlights; // Number of flights, now that data has been narrowed down based on a specific parameter
 
 
-Chart chart;
+
 
 
 void settings() {
@@ -48,10 +50,26 @@ void setup() {
       All variables to do with design go first (font, colors, styling, etc.)
       Anything DRAWN (that needs setup) goes AFTER input boxes and data table.
   ***********/
+  welcomeBackground = loadImage("skyBG.jpg");
+  welcomeBackground.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
   loadedFont = loadFont(font);
   textFont(loadedFont);
+  welcomeFont = createFont("Arial", 40);
   background(255);
   fill(0);
+  
+  
+  /********** WIDGETS
+      making all widgets on each screen here + setting welcome to active so 
+      it shows when program starts
+  **********/
+  welcome.active = true;
+  
+  welcome.addWidgetA(200, 200, 200, 50, "Welcome", color(180, 200, 255), welcomeFont);
+  welcome.addWidgetB(220, 300, 160, 30, "Start searching", color(180, 200, 255), loadedFont, 1);
+  home.addWidgetB(20, 540, 40, 40, "home", color(180), loadedFont, 1);
+  home.addWidgetA(60, 60, 100, 40, "Search...", color(150,150,250), loadedFont);
+  
   
   /********** INPUT BOXES
       All input boxes go on top!!!!!
@@ -136,8 +154,8 @@ void setup() {
   println("Mean distance of selected flights in km: " + meanDistRounded);
   println("Percentage of selected flights that were diverted: " + pDivertedRounded + "%");
 
-  chart = new Chart(100,100, 300,300,"Graph",color(0,0,200),loadedFont);
-  chart.load(stateCodes, numbFlightsTXtoX);
+
+
   /**********
       Rest of code goes here
   ***********/
@@ -147,19 +165,26 @@ void draw() {
   /********** Background Color
               and Input Boxes at the top
   ***********/
-  background(255);
-  drawInputs();
+  if(welcome.active) background(welcomeBackground);
+  else background(255);
+  
+  if(home.active) drawInputs();
+    
+  welcome.draw();
+  home.draw();
+  results.draw();
+  
+  
   
   /**********
       Rest of code goes here.
   ***********/
   fill(0);
-  text("Flights from Texas to Various States", 80, 80);
-  chart.draw();
   
   /********** Frame Counter
       Keep at bottom of draw so nothing gets drawn over it.
   ***********/
+  stroke(0);
   frameCounter();
 }
 
@@ -253,7 +278,24 @@ void mousePressed() {
   for (InputText text : inputTexts) {
     text.updateState();
   }
+  
+  
+  if(welcome.active) {
+    currentEvent = welcome.getEvent(mouseX, mouseY);
+    if(currentEvent == 1){
+      welcome.active = false;
+      home.active = true;
+    }
+  }
+  if(home.active) {
+    currentEvent = home.getEvent(mouseX, mouseY);
+    if(currentEvent == 1) {
+      home.active = false;
+      welcome.active = true;
+    }
+  }
 }
+
 
 void keyPressed() {
   // If input entered, print it in its input box
