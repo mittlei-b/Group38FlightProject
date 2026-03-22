@@ -28,11 +28,7 @@ class Widget {
     button = false;
   }
   
-<<<<<<< HEAD
   void draw(){                                 //if mouse is hovering widget, white outline (if it is pressable)
-=======
-  void draw(){                                 //if mouse is hovering widget, white outline  
->>>>>>> bdeecf82951a79d311af7d5c070582961d2a5f8b
     if(mouseX>x && mouseX < x+width && mouseY >y && mouseY <y+height && button) stroke(255);
     else stroke(0);
     if(!button) noStroke();
