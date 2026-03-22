@@ -8,7 +8,7 @@
 class Flight {
   String date, carrier, origin, origCity, origStateAbr, dest, destCity,
     destStateAbr;
-  int carrierNumb, originCode, destCode, plannedDep, ActualDep,
+  int carrierNumb, originCode, destCode, plannedDep, actualDep,
     plannedArr, actualArr;
   float distance;
   boolean diverted, cancelled;
@@ -33,7 +33,7 @@ class Flight {
     originCode = tOriginCode;
     destCode = tDestCode;
     plannedDep = tPlannedDep;
-    ActualDep = tActualDep;
+    actualDep = tActualDep;
     plannedArr = tPlannedArr;
     actualArr = tActualArr;
     distance = tDistance;
