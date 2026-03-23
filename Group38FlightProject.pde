@@ -25,8 +25,6 @@ int currentEvent;
     INPUT VARIABLES
   ***********/
 ArrayList<Input> inputs;
-ArrayList<InputText> inputTexts;
-Overlay textErase;
 
 /**********
     DATA VARIABLES
@@ -50,6 +48,7 @@ void setup() {
       All variables to do with design go first (font, colors, styling, etc.)
       Anything DRAWN (that needs setup) goes AFTER input boxes and data table.
   ***********/
+
   welcomeBackground = loadImage("skyBG.jpg");
   welcomeBackground.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
   loadedFont = loadFont(font);
@@ -57,6 +56,15 @@ void setup() {
   welcomeFont = createFont("Arial", 40);
   background(255);
   fill(0);
+  
+  /********** INPUT BOXES
+      To add new input boxes, copy the format in the comment below
+      and paste it at the end of the other addNewInput() lines.
+      ISDROPDOWN refers to whether the input is also a dropdown.
+      addNewInput(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY, ISDROPDOWN)
+  ***********/
+  inputs = new ArrayList<Input>();
+  newInput("Flight Number", 200, 380, 100, 25, "123456", false);
   
   
   /********** WIDGETS
@@ -71,18 +79,6 @@ void setup() {
   home.addWidgetA(60, 60, 100, 40, "Search...", color(150,150,250), loadedFont);
   
   
-  /********** INPUT BOXES
-      All input boxes go on top!!!!!
-      To add new input boxes, copy the format in the comment below
-      and paste it at the end of the other addNewInput() lines.
-      ISDROPDOWN refers to whether the input is also a dropdown.
-      addNewInput(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY, ISDROPDOWN)
-  ***********/
-  inputs = new ArrayList<Input>();
-  inputTexts = new ArrayList<InputText>();
-  addNewInput("Flight Number", 200, 380, 100, 25, "123456", false);
-  // Next input box could go here.
-  textErase = new Overlay(inputs, color(255));
   
   /********** DATA TABLE
       Here is our data class. We're using the Processing class called Table:
@@ -105,7 +101,7 @@ void setup() {
     totalNumbOfFlights++; // Tallying up total number of flights for later comparison
   }
   
-  
+  /*
   
   // Sample application of this framework
   // Let's say this user wants only flights from Arizona
@@ -154,7 +150,7 @@ void setup() {
   println("Mean distance of selected flights in km: " + meanDistRounded);
   println("Percentage of selected flights that were diverted: " + pDivertedRounded + "%");
 
-
+  **/
 
   /**********
       Rest of code goes here
@@ -165,8 +161,8 @@ void draw() {
   /********** Background Color
               and Input Boxes at the top
   ***********/
-  if(welcome.active) background(welcomeBackground);
-  else background(255);
+ // if(welcome.active) background(welcomeBackground);
+ // else background(255);
   
   if(home.active) drawInputs();
     
@@ -252,33 +248,23 @@ public float getPercentage(String column, ArrayList<Flight> subset) {
     Main functions needed to make input boxes work.
 ***********/
 
-void addNewInput(String label, int x_position, int y_position, int width, int height, String standIn, boolean isDropdown) {
-  Input box = new Input(label, x_position, y_position, width, height, isDropdown);
+void newInput(String label, int x_position, int y_position, int width, int height, String standIn, boolean isDropdown) {
+  Input box = new Input(label, x_position, y_position, width, height, standIn, isDropdown);
   inputs.add(box);
-  InputText boxText = new InputText(label, standIn, box);
-  inputTexts.add(boxText);
 }
 
 void drawInputs() {
   for (Input box : inputs) {
     box.draw();
   }
-  for (InputText text : inputTexts) {
-    text.draw();
-  }
-  textErase.draw();
 }
 
 void mousePressed() {
-  // Check if an input was selected
+  // Check if an input was selected and update if so
   for (Input box : inputs) {
     box.checkIfClicked();
+    box.updateState();
   }
-  // Check (and update) if any inputs need it
-  for (InputText text : inputTexts) {
-    text.updateState();
-  }
-  
   
   if(welcome.active) {
     currentEvent = welcome.getEvent(mouseX, mouseY);
@@ -299,8 +285,8 @@ void mousePressed() {
 
 void keyPressed() {
   // If input entered, print it in its input box
-  for (InputText text : inputTexts) {
-    text.updateInput(key);
+  for (Input box : inputs) {
+    box.updateInput(key);
   }
 }
 
