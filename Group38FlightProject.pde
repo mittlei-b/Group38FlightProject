@@ -10,6 +10,7 @@ String font = "ArialMT-18.vlw";
 PFont loadedFont;
 PFont welcomeFont;
 PImage welcomeBackground;
+PImage homeIcon;
 int SCREEN_HEIGHT = 600;
 int SCREEN_WIDTH = 600;
 
@@ -50,6 +51,7 @@ void setup() {
   ***********/
 
   welcomeBackground = loadImage("skyBG.jpg");
+  homeIcon = loadImage("Home_Icon.PNG");
   welcomeBackground.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
   loadedFont = loadFont(font);
   textFont(loadedFont);
@@ -64,7 +66,8 @@ void setup() {
       addNewInput(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY, ISDROPDOWN)
   ***********/
   inputs = new ArrayList<Input>();
-  newInput("Flight Number", 200, 380, 100, 25, "123456", false);
+  newInput("Flight Number", 50, 120, 100, 25, "Flight No.", false);
+  newInput("Departure State", 170, 120, 100, 25, "Dept. State", false);
   
   
   /********** WIDGETS
@@ -75,7 +78,7 @@ void setup() {
   
   welcome.addWidgetA(200, 200, 200, 50, "Welcome", color(180, 200, 255), welcomeFont);
   welcome.addWidgetB(220, 300, 160, 30, "Start searching", color(180, 200, 255), loadedFont, 1);
-  home.addWidgetB(20, 540, 40, 40, "home", color(180), loadedFont, 1);
+  home.addWidgetC(20, 540, 40, 40, homeIcon, 1);
   home.addWidgetA(60, 60, 100, 40, "Search...", color(150,150,250), loadedFont);
   
   
@@ -161,20 +164,20 @@ void draw() {
   /********** Background Color
               and Input Boxes at the top
   ***********/
- // if(welcome.active) background(welcomeBackground);
- // else background(255);
+  if(welcome.active) background(welcomeBackground);
+  else background(255);
   
   if(home.active) drawInputs();
-    
-  welcome.draw();
-  home.draw();
-  results.draw();
-  
   
   
   /**********
       Rest of code goes here.
   ***********/
+  
+  welcome.draw();
+  home.draw();
+  results.draw();
+  
   fill(0);
   
   /********** Frame Counter
