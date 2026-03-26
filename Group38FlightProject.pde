@@ -78,6 +78,7 @@ void setup() {
   
   welcome.addWidgetA(200, 200, 200, 50, "Welcome", color(180, 200, 255), welcomeFont);
   welcome.addWidgetB(220, 300, 160, 30, "Start searching", color(180, 200, 255), loadedFont, 1);
+  welcome.addWidgetA(200, 380, 120, 30, "By Emily Eulitz, Shane Jones, Autumn Kaiser, Brynne Mittleider, Lauren McGaughey and Ethan Ó Mórdha", color(100,100,100), loadedFont);
   home.addWidgetC(20, 540, 40, 40, homeIcon, 1);
   home.addWidgetB(60, 60, 100, 40, "Search...", color(150,150,250), loadedFont, 2);
   
