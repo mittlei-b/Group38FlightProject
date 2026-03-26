@@ -23,6 +23,8 @@ Screen welcome = new Screen();
 // initialising screens here because i get a null pointer exception later otherwise??
 Screen home = new Screen();
 Screen results = new Screen();
+Screen flightInfo = new Screen();
+
 int currentEvent;
 
 /**********
@@ -83,6 +85,8 @@ void setup() {
   home.addWidgetC(20, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
   home.addWidgetA(60, 60, 100, 40, "Enter queries...", color(150,150,250), loadedFont);
   home.addWidgetB(780, 560, 150, 50, "Search", color(100,180,255), loadedFont, 2);
+
+  flightInfo.addWidgetB(100, 780, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   
   /********** DATA TABLE
       Here is our data class. We're using the Processing class called Table:
@@ -195,6 +199,11 @@ void draw() {
   welcome.draw();
   home.draw();
   results.draw();
+  flightInfo.draw();
+
+  if(flightInfo.active) {
+
+  }
   
 
   fill(0);
