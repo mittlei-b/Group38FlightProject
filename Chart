@@ -1,0 +1,34 @@
+class Chart extends Widget {
+  ArrayList<String> labels;
+  ArrayList<Integer> values;
+  
+  Chart(int x,int y, int width, int height, String label, color widgetColor, PFont widgetFont) {
+    super(x,y,width,height,label,widgetColor,widgetFont);
+  }
+  
+  void load(ArrayList<String> words, ArrayList<Integer> numbers) {
+    labels = words;
+    values = numbers;
+  }
+  
+  void draw() {
+    int movingY = y;
+    int maxValue = 0;
+    for (int value : values) {
+      if (value > maxValue) maxValue = value;
+    }
+    for (int count = 0; count < values.size(); count++) {
+      int value = values.get(count);
+      if (value > 0 && count < 10) {
+        fill(widgetColor);
+        float rectWidth = (1.0 * value / maxValue) * width;
+        rect(x, movingY, rectWidth, 15);
+        String label = labels.get(count);
+        fill(0);
+        text(label, x - label.length() - 25, movingY + 15);
+        text(value, x + 5 + rectWidth, movingY + 15);
+        movingY += 30;
+      }
+    }
+  } 
+}
