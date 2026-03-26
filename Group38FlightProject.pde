@@ -241,17 +241,34 @@ void loadChart() {
   ArrayList<String> airlineChoice = airline.getSelection();
   println("On: " + airlineChoice.toString());
   ArrayList<Flight> flightsByOrigin = new ArrayList<Flight>();
-  for (String choice : departureChoice) {
-    flightsByOrigin.addAll(data.flightsWhichMatchThisCriterion("orig",choice,flights));
+  if (departureChoice.size() != 0) {
+    for (String choice : departureChoice) {
+      flightsByOrigin.addAll(data.flightsWhichMatchThisCriterion("orig", choice, flights));
+    }
   }
+  else {
+    flightsByOrigin.addAll(flights);
+  }
+
   ArrayList<Flight> flightsByOriginCarrier = new ArrayList<Flight>();
-  for (String choice : airlineChoice) {
-    choice = data.carrierNameToCode(choice);
-    flightsByOriginCarrier.addAll(data.flightsWhichMatchThisCriterion("carrier",choice,flightsByOrigin));
+  if (airlineChoice.size() != 0) {
+    for (String choice : airlineChoice) {
+      choice = data.carrierNameToCode(choice);
+      flightsByOriginCarrier.addAll(data.flightsWhichMatchThisCriterion("carrier", choice, flightsByOrigin));
+    }
   }
+  else {
+    flightsByOriginCarrier.addAll(flightsByOrigin);
+  }
+
   ArrayList<Flight> flightsByOriginCarrierDest = new ArrayList<Flight>();
-  for (String choice : arrivalChoice) {
-    flightsByOriginCarrierDest.addAll(data.flightsWhichMatchThisCriterion("dest",choice,flightsByOriginCarrier));
+  if (arrivalChoice.size() != 0) {
+    for (String choice : arrivalChoice) {
+      flightsByOriginCarrierDest.addAll(data.flightsWhichMatchThisCriterion("dest", choice, flightsByOriginCarrier));
+    }
+  }
+  else{
+    flightsByOriginCarrierDest.addAll(flightsByOriginCarrierDest);
   }
   // Now have an ArrayList of flights of CARRIER, DEST, ORIGIN
   resultTable.load(flightsByOriginCarrierDest);
