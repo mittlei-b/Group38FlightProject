@@ -123,8 +123,8 @@ void setup() {
   ***********/
   inputs = new ArrayList<Input>();
   dropdowns = new ArrayList<Dropdown>();
-  arrival = newDropdown("Departure", 50, 120, 150, 25, "Arrival", locations);
-  departure = newDropdown("Departure", 220, 120, 150, 25, "Departure", locations);
+  departure = newDropdown("Departure", 50, 120, 150, 25, "Departure", locations);
+  arrival = newDropdown("Arrival", 220, 120, 150, 25, "Arrival", locations);
   airline = newDropdown("Airline", 390, 120, 150, 25, "Airline", carrierNames);
   
   
@@ -232,8 +232,11 @@ void drawInputsAndDropdowns() {
 void loadChart() {
  // Chart graph = new Chart(100,100, 300,300,"Departed Flights on Specific Airlines",color(0,0,200),loadedFont);
   ArrayList<String> departureChoice = departure.getSelection();
+  println("Departing from: " + departureChoice.toString());
   ArrayList<String> arrivalChoice = arrival.getSelection();
+  println("Arriving from: " + arrivalChoice.toString());
   ArrayList<String> airlineChoice = airline.getSelection();
+  println("On: " + airlineChoice.toString());
   ArrayList<Flight> flightsByOrigin = new ArrayList<Flight>();
   for (String choice : departureChoice) {
     flightsByOrigin.addAll(data.flightsWhichMatchThisCriterion("orig",choice,flights));

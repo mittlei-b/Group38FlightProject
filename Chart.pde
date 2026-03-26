@@ -47,19 +47,19 @@ class Sheet extends Widget {
   Sheet(int x,int y, int width, int height, String label, color widgetColor, PFont widgetFont) {
     super(x,y,width,height,label,widgetColor,widgetFont);
     box = createGraphics(width, height);
-    cells = new ArrayList<Flight>();
   }
   
   void load(ArrayList<Flight> selected) {
+    cells = new ArrayList<Flight>();
     cells.addAll(selected);
   }
   
   void draw() {
-    println("draw");
     textFont(tableFont);
     fill(200);
     rect(x,y,width,height);
     fill(0);
+    noStroke();
     int movingX = x + 5;
     int movingY = y + 15;
     /*int[] variableWidths = {140,50,60,50,180,70,70,70,180,70,70,80,80,70,70,50,50,50};
@@ -74,30 +74,37 @@ class Sheet extends Widget {
     plannedArr, actualArr;
   float distance;
   boolean diverted, cancelled;**/
-    int[] columnWidths = {60,45,110,45,110,60,60};
-    String[] columnNames = {"Airline","Airport","City","Airport","City","Left At","Arrived At"};
-    for (int index = 0; index < columnNames.length; index++) {
-      text(columnNames[index], movingX, movingY);
-      movingX += columnWidths[index];
+  int[] columnWidths = {60,45,110,45,110,60,60};
+  String[] columnNames = {"Airline","Airport","City","Airport","City","Left At","Arrived At"};
+  for (int index = 0; index < columnNames.length; index++) {
+    text(columnNames[index], movingX, movingY);
+    movingX += columnWidths[index];
+  }
+  int colorChange = -10;
+  for (Flight cell : cells) {
+    movingX = x + 5;
+    if (movingY < y + height - 5) {
+      fill(230 + (colorChange *= -1));
+      rect(movingX - 5,movingY + 2,width,15);
+      fill(0);
+      movingY += 15;
+      text(data.carrierCodeToName(cell.carrier), movingX, movingY);
+      movingX += columnWidths[0];
+      text(cell.origin, movingX, movingY);
+      movingX += columnWidths[1];
+      text(cell.origCity, movingX, movingY);
+      movingX += columnWidths[2];
+      text(cell.dest, movingX, movingY);
+      movingX += columnWidths[3];
+      text(cell.destCity, movingX, movingY);
+      movingX += columnWidths[4];
+      text(cell.actualDep, movingX, movingY);
+      movingX += columnWidths[5];
+      text(cell.actualArr, movingX, movingY);
     }
-    for (Flight cell : cells) {
-      movingX = x + 5;
-      if (movingY < y + height - 5) {
-        movingY += 15;
-        text(data.carrierCodeToName(cell.carrier), movingX, movingY);
-        movingX += columnWidths[0];
-        text(cell.origin, movingX, movingY);
-        movingX += columnWidths[1];
-        text(cell.origCity, movingX, movingY);
-        movingX += columnWidths[2];
-        text(cell.dest, movingX, movingY);
-        movingX += columnWidths[3];
-        text(cell.destCity, movingX, movingY);
-        movingX += columnWidths[4];
-        text(cell.actualDep, movingX, movingY);
-        movingX += columnWidths[5];
-        text(cell.actualArr, movingX, movingY);
-      }
-    }
-  } 
+  }
+  fill(0,0,0,0);
+  stroke(0);
+  rect(x,y,width,height);
+} 
 }
