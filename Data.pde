@@ -313,17 +313,17 @@ public String mostPopValue(String type, ArrayList<Flight> flightList) {
 }
 
 public ArrayList<String> stateCodes(ArrayList<Flight> flights) {
-  ArrayList<String> stateCodes = new ArrayList<String>();
+  ArrayList<String> codes = new ArrayList<String>();
 
   for (Flight f : flights) { //Creates an ArrayList of all state abbreviations that exist
     String stateCode = f.origStateAbr;
     boolean recordedAlready = false;
-    for (String s : stateCodes) {
+    for (String s : codes) {
       if (s.equals(stateCode)) recordedAlready = true;
     }
-    if (!recordedAlready) stateCodes.add(stateCode);
+    if (!recordedAlready) codes.add(stateCode);
   }
-  return stateCodes;
+  return codes;
 }
 
 public ArrayList<String> carrierCodes(ArrayList<Flight> flights) {

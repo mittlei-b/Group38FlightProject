@@ -136,7 +136,7 @@ public class Dropdown extends Input {
       border = color(255,100,100);
       fontColor = color(0);
       addInput();
-    } else if (x <= mouseX && mouseX <= x + width
+    } else if (selected && x <= mouseX && mouseX <= x + width
                && y + height <= mouseY && y + height + listHeight >= mouseY) {
       int newMouseY = mouseY - y - height + offsetY;
       int index = newMouseY / height;

@@ -61,17 +61,6 @@ void setup() {
   background(255);
   fill(0);
   
-  /********** INPUT BOXES
-      To add new input boxes, copy the format in the comment below
-      and paste it at the end of the other addNewInput() lines.
-      ISDROPDOWN refers to whether the input is also a dropdown.
-      addNewInput(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY, ISDROPDOWN)
-  ***********/
-  inputs = new ArrayList<Input>();
-  newInput("Flight Number", 50, 120, 100, 25, "Flight No.", false);
-  newInput("Departure State", 170, 120, 100, 25, "Dept. State", false);
-  
-  
   /********** WIDGETS
       making all widgets on each screen here + setting welcome to active so 
       it shows when program starts
@@ -81,7 +70,7 @@ void setup() {
   welcome.addWidgetA(200, 200, 200, 50, "Welcome", color(180, 200, 255), welcomeFont);
   welcome.addWidgetB(220, 300, 160, 30, "Start searching", color(180, 200, 255), loadedFont, 1);
   home.addWidgetC(20, 540, 40, 40, homeIcon, 1);
-  home.addWidgetA(60, 60, 100, 40, "Search...", color(150,150,250), loadedFont);
+  home.addWidgetB(60, 60, 100, 40, "Search...", color(150,150,250), loadedFont, 2);
   
   
   /********** DATA TABLE
@@ -105,44 +94,31 @@ void setup() {
     totalNumbOfFlights++; // Tallying up total number of flights for later comparison
   }
   
-  /********** 
-      SCREENS
-  ***********/
-
-  welcomeBackground = loadImage("skyBG.jpg");
-  welcomeBackground.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
-  loadedFont = loadFont(font);
-  textFont(loadedFont);
-  welcomeFont = createFont("Arial", 40);
-  background(255);
-  fill(0);
-  
-  /********** INPUT / DROPDOWN BOXES
-      To add new input / dropdown boxes, copy the correct format from below
-      newInput(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY)
-      newDropdown(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY, OPTION LIST)
-  ***********/
-  inputs = new ArrayList<Input>();
-  dropdowns = new ArrayList<Dropdown>();
-  //newInput("Flight Number", 200, 100, 100, 25, "123456");
+  // ArrayList of all carrier names
   ArrayList<String> carrierNames = new ArrayList<String>();
   for (String code : data.carrierCodes(flights)) {
     String name = data.carrierCodeToName(code);
     carrierNames.add(name);
   }
-  newDropdown("Airline", 200, 100, 300, 25, "Airline", carrierNames);
+  
+  // ArrayList of all departure locations
+  ArrayList<String> departures = new ArrayList<String>();
+  for (String locale : data.stateCodes(flights)) {
+    departures.add(locale);
+  }
   
   
-  /********** WIDGETS
-      making all widgets on each screen here + setting welcome to active so 
-      it shows when program starts
-  **********/
-  welcome.active = true;
+  /********** INPUT BOXES
+      To add new input boxes, copy the format in the comment below
+      newInput(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY)
+      newDropdown(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY, OPTION LIST)
+  ***********/
+  inputs = new ArrayList<Input>();
+  dropdowns = new ArrayList<Dropdown>();
+  newInput("Flight Number", 50, 120, 100, 25, "Flight No.");
+  newDropdown("Departure", 170, 120, 150, 25, "Departure", departures);
+  newDropdown("Airline", 340, 120, 150, 25, "Airline", carrierNames);
   
-  welcome.addWidgetA(200, 200, 200, 50, "Welcome", color(180, 200, 255), welcomeFont);
-  welcome.addWidgetB(220, 300, 160, 30, "Start searching", color(180, 200, 255), loadedFont, 1);
-  home.addWidgetB(20, 540, 40, 40, "home", color(180), loadedFont, 1);
-  home.addWidgetA(60, 60, 100, 40, "Search...", color(150,150,250), loadedFont);
   
   
   
@@ -208,10 +184,10 @@ void draw() {
   /********** Background Color
               and Input Boxes at the top
   ***********/
-  if(welcome.active) background(welcomeBackground);
+  if(welcome.active) image(welcomeBackground,0,0);
   else background(255);
   
-  if(home.active) drawInputs();
+  if(home.active) drawInputsAndDropdowns();
   
   
   /**********
@@ -276,6 +252,12 @@ void mousePressed() {
     if(currentEvent == 1) {
       home.active = false;
       welcome.active = true;
+    }
+  }
+  if(home.active) {
+    currentEvent = home.getEvent(mouseX, mouseY);
+    if(currentEvent == 2) {
+      println("Search.");
     }
   }
 }
