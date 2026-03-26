@@ -165,4 +165,8 @@ public class Dropdown extends Input {
         offsetY += 10 * direction;
     }
   }
+  
+  public ArrayList<String> getSelection() {
+    return chosenWordsList;
+  }
 }

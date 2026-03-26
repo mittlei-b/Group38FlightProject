@@ -351,4 +351,16 @@ public String carrierCodeToName(String code) {
   }
   return "Unknown";
 }
+
+public String carrierNameToCode(String name) {
+  String[][] codes = {{"AA","American"},{"AS","Alaska"},
+                      {"B6","JetBlue"},{"DL","Delta"},
+                      {"F9","Frontier"},{"G4","Allegiant"},
+                      {"NK","Spirit"},{"HA","Hawaiian"},
+                      {"UA","United"},{"WN","Southwest"}};
+  for (String[] pair : codes) {
+    if (pair[1].equals(name)) return pair[0];
+  }
+  return "Unknown";
+}
 }

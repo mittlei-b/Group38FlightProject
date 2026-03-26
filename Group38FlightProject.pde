@@ -7,6 +7,8 @@ import java.io.*;
     DESIGN VARIABLES
   ***********/
 String font = "ArialMT-18.vlw";
+String smallFont = "ArialMT-12.vlw";
+PFont tableFont;
 PFont loadedFont;
 PFont welcomeFont;
 PImage welcomeBackground;
@@ -28,6 +30,11 @@ int currentEvent;
   ***********/
 ArrayList<Input> inputs;
 ArrayList<Dropdown> dropdowns;
+Dropdown departure;
+Dropdown arrival;
+Dropdown airline;
+boolean showTable;
+Sheet resultTable;
 
 /**********
     DATA VARIABLES
@@ -41,12 +48,14 @@ int numbOfSelectedFlights; // Number of flights, now that data has been narrowed
 
 
 
-
 void settings() {
   size(SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 void setup() {
+  tableFont = loadFont(smallFont);
+  showTable = false;
+  resultTable = new Sheet(50,160,490,360,"Results",color(100,100,255),loadedFont);
   /********** DESIGN
       All variables to do with design go first (font, colors, styling, etc.)
       Anything DRAWN (that needs setup) goes AFTER input boxes and data table.
@@ -71,7 +80,6 @@ void setup() {
   welcome.addWidgetB(220, 300, 160, 30, "Start searching", color(180, 200, 255), loadedFont, 1);
   home.addWidgetC(20, 540, 40, 40, homeIcon, 1);
   home.addWidgetB(60, 60, 100, 40, "Search...", color(150,150,250), loadedFont, 2);
-  
   
   /********** DATA TABLE
       Here is our data class. We're using the Processing class called Table:
@@ -102,9 +110,9 @@ void setup() {
   }
   
   // ArrayList of all departure locations
-  ArrayList<String> departures = new ArrayList<String>();
+  ArrayList<String> locations = new ArrayList<String>();
   for (String locale : data.stateCodes(flights)) {
-    departures.add(locale);
+    locations.add(locale);
   }
   
   
@@ -115,12 +123,9 @@ void setup() {
   ***********/
   inputs = new ArrayList<Input>();
   dropdowns = new ArrayList<Dropdown>();
-  newInput("Flight Number", 50, 120, 100, 25, "Flight No.");
-  newDropdown("Departure", 170, 120, 150, 25, "Departure", departures);
-  newDropdown("Airline", 340, 120, 150, 25, "Airline", carrierNames);
-  
-  
-  
+  arrival = newDropdown("Departure", 50, 120, 150, 25, "Arrival", locations);
+  departure = newDropdown("Departure", 220, 120, 150, 25, "Departure", locations);
+  airline = newDropdown("Airline", 390, 120, 150, 25, "Airline", carrierNames);
   
   
   
@@ -169,16 +174,6 @@ void setup() {
 }
 
 void draw() {
-  /*if(welcome.active) background(welcomeBackground);
-  else background(255);**/
-  // Testing inputs
-  image(welcomeBackground,0,0);
-  
-  if(home.active) drawInputsAndDropdowns();
-    
-  welcome.draw();
-  home.draw();
-  results.draw();
   
   
   /********** Background Color
@@ -187,18 +182,20 @@ void draw() {
   if(welcome.active) image(welcomeBackground,0,0);
   else background(255);
   
-  if(home.active) drawInputsAndDropdowns();
+  if(home.active) {
+    if (showTable) resultTable.draw();
+    textFont(loadedFont);
+    drawInputsAndDropdowns();
+  }
   
-  
-  /**********
-      Rest of code goes here.
-  ***********/
   
   welcome.draw();
   home.draw();
   results.draw();
+  
 
   fill(0);
+  textFont(loadedFont);
   
   /********** Frame Counter
       Keep at bottom of draw so nothing gets drawn over it.
@@ -211,14 +208,16 @@ void draw() {
     Main functions needed to make input boxes work.
 ***********/
 
-void newInput(String label, int x_position, int y_position, int width, int height, String standIn) {
+Input newInput(String label, int x_position, int y_position, int width, int height, String standIn) {
   Input box = new Input(label, x_position, y_position, width, height, standIn);
   inputs.add(box);
+  return box;
 }
 
-void newDropdown(String label, int x_position, int y_position, int width, int height, String standIn, ArrayList<String> list) {
+Dropdown newDropdown(String label, int x_position, int y_position, int width, int height, String standIn, ArrayList<String> list) {
   Dropdown box = new Dropdown(label, x_position, y_position, width, height, standIn, list);
   dropdowns.add(box);
+  return box;
 }
 
 void drawInputsAndDropdowns() {
@@ -228,6 +227,32 @@ void drawInputsAndDropdowns() {
   for (Dropdown box : dropdowns) {
     box.draw();
   }
+}
+
+void loadChart() {
+ // Chart graph = new Chart(100,100, 300,300,"Departed Flights on Specific Airlines",color(0,0,200),loadedFont);
+  ArrayList<String> departureChoice = departure.getSelection();
+  ArrayList<String> arrivalChoice = arrival.getSelection();
+  ArrayList<String> airlineChoice = airline.getSelection();
+  ArrayList<Flight> flightsByOrigin = new ArrayList<Flight>();
+  for (String choice : departureChoice) {
+    flightsByOrigin.addAll(data.flightsWhichMatchThisCriterion("orig",choice,flights));
+  }
+  ArrayList<Flight> flightsByOriginCarrier = new ArrayList<Flight>();
+  for (String choice : airlineChoice) {
+    choice = data.carrierNameToCode(choice);
+    flightsByOriginCarrier.addAll(data.flightsWhichMatchThisCriterion("carrier",choice,flightsByOrigin));
+  }
+  ArrayList<Flight> flightsByOriginCarrierDest = new ArrayList<Flight>();
+  for (String choice : arrivalChoice) {
+    flightsByOriginCarrierDest.addAll(data.flightsWhichMatchThisCriterion("dest",choice,flightsByOriginCarrier));
+  }
+  // Now have an ArrayList of flights of CARRIER, DEST, ORIGIN
+  resultTable.load(flightsByOriginCarrierDest);
+  showTable = true;
+  //  Flights departed from 
+  //graph.load(numberChoice, departureChoice, airlineChoice);
+  //chart.load(stateCodes, numbFlightsTXtoX);
 }
 
 void mousePressed() {
@@ -258,6 +283,7 @@ void mousePressed() {
     currentEvent = home.getEvent(mouseX, mouseY);
     if(currentEvent == 2) {
       println("Search.");
+      loadChart();
     }
   }
 }
