@@ -268,7 +268,7 @@ void loadChart() {
     }
   }
   else{
-    flightsByOriginCarrierDest.addAll(flightsByOriginCarrierDest);
+    flightsByOriginCarrierDest.addAll(flightsByOriginCarrier);
   }
   // Now have an ArrayList of flights of CARRIER, DEST, ORIGIN
   resultTable.load(flightsByOriginCarrierDest);
