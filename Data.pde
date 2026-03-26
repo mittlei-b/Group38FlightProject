@@ -50,6 +50,65 @@ public class Data {
     }
   }
 
+public int numbFlightsFromHereToThere(String dest, ArrayList<Flight> sublist){
+  int flightsWithThisDest = 0;
+  for (Flight f : sublist){
+    if (f.destStateAbr.equals(dest)) flightsWithThisDest++;
+  }
+  return flightsWithThisDest;
+}
+
+public double getMean(String column, ArrayList<Flight> subset) {
+  switch (column) {
+  case "DISTANCE":
+    double totalFlightKms = 0;
+    double totalFlightsThisType = 0;
+    for (Flight f : subset) {
+      totalFlightsThisType++;
+      totalFlightKms += f.distance;
+    }
+    double meanDistance = totalFlightKms/totalFlightsThisType;
+    return meanDistance;
+  default :
+    println("Something's gone wrong brother");
+    return 0;
+  }
+}
+
+public float getPercentage(String column, ArrayList<Flight> subset) {
+  int totalFlightsThisType = 0;
+
+  switch (column) {
+  case "CANCELLED":
+    int cancelledFlights = 0;
+    float totalFlights;
+    for (Flight f : subset) {
+      totalFlightsThisType++;
+      if (f.cancelled) cancelledFlights++;
+    }
+    float cancelled = (float)cancelledFlights;
+    totalFlights = (float)totalFlightsThisType;
+
+    float percentCancelled = cancelled/totalFlights * 100;
+    return percentCancelled;
+
+  case "DIVERTED":
+    int divertedFlights = 0;
+    for (Flight f : subset) {
+      totalFlightsThisType++;
+      if (f.diverted) divertedFlights++;
+    }
+    float diverted = (float)divertedFlights;
+    totalFlights = (float)totalFlightsThisType;
+
+    float percentDiverted = diverted/totalFlights * 100;
+    return percentDiverted;
+
+  default:
+    println("something's gone wrong brother");
+    return 0;
+  }
+}
 
 public float getAvgDistance(ArrayList<Flight> flightList) {
   float totalFlightKms = 0;
@@ -268,16 +327,28 @@ public ArrayList<String> stateCodes(ArrayList<Flight> flights) {
 }
 
 public ArrayList<String> carrierCodes(ArrayList<Flight> flights) {
-  ArrayList<String> carrierCodes = new ArrayList<String>();
+  ArrayList<String> codes = new ArrayList<String>();
 
   for (Flight f : flights) { //Creates an ArrayList of all carrier abbreviations that exist
     String carrierCode = f.carrier;
     boolean recordedAlready = false;
-    for (String s : carrierCodes) {
+    for (String s : codes) {
       if (s.equals(carrierCode)) recordedAlready = true;
     }
-    if (!recordedAlready) carrierCodes.add(carrierCode);
+    if (!recordedAlready) codes.add(carrierCode);
   }
-  return carrierCodes;
+  return codes;
+}
+
+public String carrierCodeToName(String code) {
+  String[][] codes = {{"AA","American"},{"AS","Alaska"},
+                      {"B6","JetBlue"},{"DL","Delta"},
+                      {"F9","Frontier"},{"G4","Allegiant"},
+                      {"NK","Spirit"},{"HA","Hawaiian"},
+                      {"UA","United"},{"WN","Southwest"}};
+  for (String[] pair : codes) {
+    if (pair[0].equals(code)) return pair[1];
+  }
+  return "Unknown";
 }
 }

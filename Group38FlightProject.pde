@@ -16,7 +16,8 @@ int SCREEN_WIDTH = 600;
 /**********
     SCREEN VARIABLES
   ***********/
-Screen welcome = new Screen(); // initialising screens here because i get a null pointer exception later otherwise??
+Screen welcome = new Screen();
+// initialising screens here because i get a null pointer exception later otherwise??
 Screen home = new Screen();
 Screen results = new Screen();
 int currentEvent;
@@ -25,6 +26,7 @@ int currentEvent;
     INPUT VARIABLES
   ***********/
 ArrayList<Input> inputs;
+ArrayList<Dropdown> dropdowns;
 
 /**********
     DATA VARIABLES
@@ -44,41 +46,6 @@ void settings() {
 }
 
 void setup() {
-  /********** DESIGN
-      All variables to do with design go first (font, colors, styling, etc.)
-      Anything DRAWN (that needs setup) goes AFTER input boxes and data table.
-  ***********/
-
-  welcomeBackground = loadImage("skyBG.jpg");
-  welcomeBackground.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
-  loadedFont = loadFont(font);
-  textFont(loadedFont);
-  welcomeFont = createFont("Arial", 40);
-  background(255);
-  fill(0);
-  
-  /********** INPUT BOXES
-      To add new input boxes, copy the format in the comment below
-      and paste it at the end of the other addNewInput() lines.
-      ISDROPDOWN refers to whether the input is also a dropdown.
-      addNewInput(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY, ISDROPDOWN)
-  ***********/
-  inputs = new ArrayList<Input>();
-  newInput("Flight Number", 200, 380, 100, 25, "123456", false);
-  
-  
-  /********** WIDGETS
-      making all widgets on each screen here + setting welcome to active so 
-      it shows when program starts
-  **********/
-  welcome.active = true;
-  
-  welcome.addWidgetA(200, 200, 200, 50, "Welcome", color(180, 200, 255), welcomeFont);
-  welcome.addWidgetB(220, 300, 160, 30, "Start searching", color(180, 200, 255), loadedFont, 1);
-  home.addWidgetB(20, 540, 40, 40, "home", color(180), loadedFont, 1);
-  home.addWidgetA(60, 60, 100, 40, "Search...", color(150,150,250), loadedFont);
-  
-  
   
   /********** DATA TABLE
       Here is our data class. We're using the Processing class called Table:
@@ -101,6 +68,49 @@ void setup() {
     totalNumbOfFlights++; // Tallying up total number of flights for later comparison
   }
   
+  /********** 
+      SCREENS
+  ***********/
+
+  welcomeBackground = loadImage("skyBG.jpg");
+  welcomeBackground.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  loadedFont = loadFont(font);
+  textFont(loadedFont);
+  welcomeFont = createFont("Arial", 40);
+  background(255);
+  fill(0);
+  
+  /********** INPUT / DROPDOWN BOXES
+      To add new input / dropdown boxes, copy the correct format from below
+      newInput(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY)
+      newDropdown(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY, OPTION LIST)
+  ***********/
+  inputs = new ArrayList<Input>();
+  dropdowns = new ArrayList<Dropdown>();
+  //newInput("Flight Number", 200, 100, 100, 25, "123456");
+  ArrayList<String> carrierNames = new ArrayList<String>();
+  for (String code : data.carrierCodes(flights)) {
+    String name = data.carrierCodeToName(code);
+    carrierNames.add(name);
+  }
+  newDropdown("Airline", 200, 100, 300, 25, "Airline", carrierNames);
+  
+  
+  /********** WIDGETS
+      making all widgets on each screen here + setting welcome to active so 
+      it shows when program starts
+  **********/
+  welcome.active = true;
+  
+  welcome.addWidgetA(200, 200, 200, 50, "Welcome", color(180, 200, 255), welcomeFont);
+  welcome.addWidgetB(220, 300, 160, 30, "Start searching", color(180, 200, 255), loadedFont, 1);
+  home.addWidgetB(20, 540, 40, 40, "home", color(180), loadedFont, 1);
+  home.addWidgetA(60, 60, 100, 40, "Search...", color(150,150,250), loadedFont);
+  
+  
+  
+  
+  
   /*
   
   // Sample application of this framework
@@ -111,14 +121,6 @@ void setup() {
   ArrayList<String> stateCodes = new ArrayList<String>();
   ArrayList<Integer> numbFlightsTXtoX = new ArrayList<Integer>(); // BRYNNE TEMPORARY ADDITION
   
-  for (Flight f : flights){ //Creates an ArrayList of all state abbreviations that exist
-    String stateCode = f.origStateAbr;
-    boolean recordedAlready = false;
-    for (String s : stateCodes){
-      if (s.equals(stateCode)) recordedAlready = true;
-    }
-    if (!recordedAlready) stateCodes.add(stateCode);
-  }
   
   ArrayList<Flight> flightSubList = new ArrayList<Flight>();
   for (Flight f : flights) {
@@ -151,20 +153,15 @@ void setup() {
   println("Percentage of selected flights that were diverted: " + pDivertedRounded + "%");
 
   **/
-
-  /**********
-      Rest of code goes here
-  ***********/
 }
 
 void draw() {
-  /********** Background Color
-              and Input Boxes at the top
-  ***********/
- // if(welcome.active) background(welcomeBackground);
- // else background(255);
+  /*if(welcome.active) background(welcomeBackground);
+  else background(255);**/
+  // Testing inputs
+  image(welcomeBackground,0,0);
   
-  if(home.active) drawInputs();
+  if(home.active) drawInputsAndDropdowns();
     
   welcome.draw();
   home.draw();
@@ -172,9 +169,6 @@ void draw() {
   
   
   
-  /**********
-      Rest of code goes here.
-  ***********/
   fill(0);
   
   /********** Frame Counter
@@ -184,77 +178,25 @@ void draw() {
   frameCounter();
 }
 
-public int numbFlightsFromHereToThere(String dest, ArrayList<Flight> sublist){
-  int flightsWithThisDest = 0;
-  for (Flight f : sublist){
-    if (f.destStateAbr.equals(dest)) flightsWithThisDest++;
-  }
-  return flightsWithThisDest;
-}
-
-public double getMean(String column, ArrayList<Flight> subset) {
-  switch (column) {
-  case "DISTANCE":
-    double totalFlightKms = 0;
-    double totalFlightsThisType = 0;
-    for (Flight f : subset) {
-      totalFlightsThisType++;
-      totalFlightKms += f.distance;
-    }
-    double meanDistance = totalFlightKms/totalFlightsThisType;
-    return meanDistance;
-  default :
-    println("Something's gone wrong brother");
-    return 0;
-  }
-}
-
-public float getPercentage(String column, ArrayList<Flight> subset) {
-  int totalFlightsThisType = 0;
-
-  switch (column) {
-  case "CANCELLED":
-    int cancelledFlights = 0;
-    float totalFlights;
-    for (Flight f : subset) {
-      totalFlightsThisType++;
-      if (f.cancelled) cancelledFlights++;
-    }
-    float cancelled = (float)cancelledFlights;
-    totalFlights = (float)totalFlightsThisType;
-
-    float percentCancelled = cancelled/totalFlights * 100;
-    return percentCancelled;
-
-  case "DIVERTED":
-    int divertedFlights = 0;
-    for (Flight f : subset) {
-      totalFlightsThisType++;
-      if (f.diverted) divertedFlights++;
-    }
-    float diverted = (float)divertedFlights;
-    totalFlights = (float)totalFlightsThisType;
-
-    float percentDiverted = diverted/totalFlights * 100;
-    return percentDiverted;
-
-  default:
-    println("something's gone wrong brother");
-    return 0;
-  }
-}
-
-/********** INPUT FUNCTIONS
+/********** INPUT / DROPDOWN FUNCTIONS
     Main functions needed to make input boxes work.
 ***********/
 
-void newInput(String label, int x_position, int y_position, int width, int height, String standIn, boolean isDropdown) {
-  Input box = new Input(label, x_position, y_position, width, height, standIn, isDropdown);
+void newInput(String label, int x_position, int y_position, int width, int height, String standIn) {
+  Input box = new Input(label, x_position, y_position, width, height, standIn);
   inputs.add(box);
 }
 
-void drawInputs() {
+void newDropdown(String label, int x_position, int y_position, int width, int height, String standIn, ArrayList<String> list) {
+  Dropdown box = new Dropdown(label, x_position, y_position, width, height, standIn, list);
+  dropdowns.add(box);
+}
+
+void drawInputsAndDropdowns() {
   for (Input box : inputs) {
+    box.draw();
+  }
+  for (Dropdown box : dropdowns) {
     box.draw();
   }
 }
@@ -264,6 +206,9 @@ void mousePressed() {
   for (Input box : inputs) {
     box.checkIfClicked();
     box.updateState();
+  }
+  for (Dropdown box : dropdowns) {
+    box.checkIfClicked();
   }
   
   if(welcome.active) {
@@ -282,10 +227,20 @@ void mousePressed() {
   }
 }
 
+void mouseWheel(MouseEvent event) {
+  int direction = (int)event.getCount();
+  for (Dropdown box : dropdowns) {
+    box.checkIfScrolled(direction);
+  }
+}
+
 
 void keyPressed() {
   // If input entered, print it in its input box
   for (Input box : inputs) {
+    box.updateInput(key);
+  }
+  for (Dropdown box : dropdowns) {
     box.updateInput(key);
   }
 }
