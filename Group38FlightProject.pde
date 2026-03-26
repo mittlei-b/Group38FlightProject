@@ -23,6 +23,7 @@ Screen welcome = new Screen();
 // initialising screens here because i get a null pointer exception later otherwise??
 Screen home = new Screen();
 Screen results = new Screen();
+Plane plane;
 int currentEvent;
 
 /**********
@@ -69,6 +70,7 @@ void setup() {
   welcomeFont = createFont("Arial", 40);
   background(255);
   fill(0);
+  plane = new Plane(SCREEN_WIDTH, 60);
   
   /********** WIDGETS
       making all widgets on each screen here + setting welcome to active so 
@@ -180,7 +182,11 @@ void draw() {
   /********** Background Color
               and Input Boxes at the top
   ***********/
-  if(welcome.active) image(welcomeBackground,0,0);
+  if(welcome.active) {
+    image(welcomeBackground,0,0);
+    plane.move();
+    plane.drawPlane();
+  }
   else background(255);
   
   if(home.active) {
