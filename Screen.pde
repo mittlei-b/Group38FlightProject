@@ -22,6 +22,10 @@ class Screen {
   void addWidgetB(int x, int y, int w, int h, String label, color wColor, PFont wFont, int wEvent) {
     widgetList.add(new Widget(x, y, w, h, label, wColor, wFont, wEvent));    
   }
+  
+  void addWidgetC(int x, int y, int w, int h, PImage icon, int wEvent) {
+    widgetList.add(new Widget(x, y, w, h, icon, wEvent));
+  }
                                                   //when mouse is pressed, find which widget is pressed based on mouse position
   int getEvent(int mX, int mY) {
     for(Widget w : widgetList) {

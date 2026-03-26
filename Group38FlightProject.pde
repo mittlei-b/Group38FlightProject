@@ -10,6 +10,7 @@ String font = "ArialMT-18.vlw";
 PFont loadedFont;
 PFont welcomeFont;
 PImage welcomeBackground;
+PImage homeIcon;
 int SCREEN_HEIGHT = 600;
 int SCREEN_WIDTH = 600;
 
@@ -46,6 +47,46 @@ void settings() {
 }
 
 void setup() {
+<<<<<<< HEAD
+=======
+  /********** DESIGN
+      All variables to do with design go first (font, colors, styling, etc.)
+      Anything DRAWN (that needs setup) goes AFTER input boxes and data table.
+  ***********/
+
+  welcomeBackground = loadImage("skyBG.jpg");
+  homeIcon = loadImage("Home_Icon.PNG");
+  welcomeBackground.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  loadedFont = loadFont(font);
+  textFont(loadedFont);
+  welcomeFont = createFont("Arial", 40);
+  background(255);
+  fill(0);
+  
+  /********** INPUT BOXES
+      To add new input boxes, copy the format in the comment below
+      and paste it at the end of the other addNewInput() lines.
+      ISDROPDOWN refers to whether the input is also a dropdown.
+      addNewInput(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY, ISDROPDOWN)
+  ***********/
+  inputs = new ArrayList<Input>();
+  newInput("Flight Number", 50, 120, 100, 25, "Flight No.", false);
+  newInput("Departure State", 170, 120, 100, 25, "Dept. State", false);
+  
+  
+  /********** WIDGETS
+      making all widgets on each screen here + setting welcome to active so 
+      it shows when program starts
+  **********/
+  welcome.active = true;
+  
+  welcome.addWidgetA(200, 200, 200, 50, "Welcome", color(180, 200, 255), welcomeFont);
+  welcome.addWidgetB(220, 300, 160, 30, "Start searching", color(180, 200, 255), loadedFont, 1);
+  home.addWidgetC(20, 540, 40, 40, homeIcon, 1);
+  home.addWidgetA(60, 60, 100, 40, "Search...", color(150,150,250), loadedFont);
+  
+  
+>>>>>>> 167edd838d39e39d21c0df500568f86a222eb347
   
   /********** DATA TABLE
       Here is our data class. We're using the Processing class called Table:
@@ -156,6 +197,7 @@ void setup() {
 }
 
 void draw() {
+<<<<<<< HEAD
   /*if(welcome.active) background(welcomeBackground);
   else background(255);**/
   // Testing inputs
@@ -169,6 +211,25 @@ void draw() {
   
   
   
+=======
+  /********** Background Color
+              and Input Boxes at the top
+  ***********/
+  if(welcome.active) background(welcomeBackground);
+  else background(255);
+  
+  if(home.active) drawInputs();
+  
+  
+  /**********
+      Rest of code goes here.
+  ***********/
+  
+  welcome.draw();
+  home.draw();
+  results.draw();
+  
+>>>>>>> 167edd838d39e39d21c0df500568f86a222eb347
   fill(0);
   
   /********** Frame Counter
