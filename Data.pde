@@ -363,4 +363,20 @@ public String carrierNameToCode(String name) {
   }
   return "Unknown";
 }
+
+String[][] codes = {
+                    {"AL","Alabama"},{"AK","Alaska"},{"AZ","JetB"},{"AR","Delta"},
+                    {"CA","JetBlue"},{"CO","Delta"},{"CT","JetBlue"},{"DE","Delta"},
+                    {"FL","Frontier"},{"GA","Allegiant"},{"HI","JetBlue"},{"ID","Delta"},
+                    {"IL","Spirit"},{"IN","Hawaiian"},{"IA","JetBlue"},{"KS","Delta"},
+                    {"KY","United"},{"LA","Southwest"},{"ME","JetBlue"},{"DL","Delta"}
+                   };
+              
+public String stateCodeConversion(String code) {
+  
+  for (String[] pair : codes) {
+    if (pair[0].equals(code)) return pair[1];
+  }
+  return "Unknown";
+}
 }

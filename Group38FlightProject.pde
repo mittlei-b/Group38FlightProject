@@ -13,8 +13,8 @@ PFont loadedFont;
 PFont welcomeFont;
 PImage welcomeBackground;
 PImage homeIcon;
-int SCREEN_HEIGHT = 600;
-int SCREEN_WIDTH = 600;
+int SCREEN_HEIGHT = 640;
+int SCREEN_WIDTH = 960;
 
 /**********
     SCREEN VARIABLES
@@ -116,8 +116,8 @@ void setup() {
   }
   
   
-  /********** INPUT BOXES
-      To add new input boxes, copy the format in the comment below
+  /********** INPUT BOXES AND DROPDOWNS
+      To add new input boxes or dropdowns, copy the format in the comment below
       newInput(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY)
       newDropdown(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY, OPTION LIST)
   ***********/
