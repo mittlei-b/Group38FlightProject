@@ -1,8 +1,7 @@
 class filter {
   String type, status;
   int xpos, ypos;
-  int SCREEN_WIDTH;
-  int xMargin;
+  int xMargin, SCREEN_WIDTH, SCREEN_HEIGHT;
   int rectWidth, rectHeight;
   int size, calendarWidth, calendarHeight;
   int number;
@@ -129,7 +128,7 @@ class filter {
   void dateY() {
     int mousePos = mouseY;
     int distance = mousePos - (ypos + (int)(calendarHeight / 3.5));
-    int step = (calendarHeight - (ypos + (int)(calendarHeight / 3.5))) / 4;
+    int step = (int)((calendarHeight - (ypos + (calendarHeight / 3.5))) / 3.5);
     numX = round(distance / step);
   }
     
