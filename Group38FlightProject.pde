@@ -47,8 +47,6 @@ void settings() {
 }
 
 void setup() {
-<<<<<<< HEAD
-=======
   /********** DESIGN
       All variables to do with design go first (font, colors, styling, etc.)
       Anything DRAWN (that needs setup) goes AFTER input boxes and data table.
@@ -85,8 +83,6 @@ void setup() {
   home.addWidgetC(20, 540, 40, 40, homeIcon, 1);
   home.addWidgetA(60, 60, 100, 40, "Search...", color(150,150,250), loadedFont);
   
-  
->>>>>>> 167edd838d39e39d21c0df500568f86a222eb347
   
   /********** DATA TABLE
       Here is our data class. We're using the Processing class called Table:
@@ -197,7 +193,6 @@ void setup() {
 }
 
 void draw() {
-<<<<<<< HEAD
   /*if(welcome.active) background(welcomeBackground);
   else background(255);**/
   // Testing inputs
@@ -210,8 +205,6 @@ void draw() {
   results.draw();
   
   
-  
-=======
   /********** Background Color
               and Input Boxes at the top
   ***********/
@@ -228,8 +221,7 @@ void draw() {
   welcome.draw();
   home.draw();
   results.draw();
-  
->>>>>>> 167edd838d39e39d21c0df500568f86a222eb347
+
   fill(0);
   
   /********** Frame Counter
