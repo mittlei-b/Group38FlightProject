@@ -63,7 +63,7 @@ void setup() {
       Anything DRAWN (that needs setup) goes AFTER input boxes and data table.
   ***********/
 
-  welcomeBackground = loadImage("BackgroundImage.jpg");
+  welcomeBackground = loadImage("backgroundImage.jpg");
   homeIcon = loadImage("Home_Icon.PNG");
   welcomeBackground.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
   loadedFont = loadFont(font);
@@ -189,7 +189,7 @@ void draw() {
   if(welcome.active) image(welcomeBackground,0,0);
   else background(255);
   
-  if(home.active) {
+  if(search.active) {
     if (showTable) resultTable.draw();
     textFont(loadedFont);
     drawInputsAndDropdowns();
@@ -197,7 +197,7 @@ void draw() {
   
   
   welcome.draw();
-  home.draw();
+  search.draw();
   results.draw();
   flightInfo.draw();
 
@@ -306,7 +306,7 @@ void mousePressed() {
   }
   
   if(search.active) {
-    currentEvent = home.getEvent(mouseX, mouseY);
+    currentEvent = search.getEvent(mouseX, mouseY);
     if(currentEvent == 1) {
       search.active = false;
       welcome.active = true;
