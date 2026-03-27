@@ -13,8 +13,8 @@ PFont loadedFont;
 PFont welcomeFont;
 PImage welcomeBackground;
 PImage homeIcon;
-int SCREEN_HEIGHT = 600;
-int SCREEN_WIDTH = 600;
+int SCREEN_HEIGHT = 640;
+int SCREEN_WIDTH = 960;
 
 /**********
     SCREEN VARIABLES
