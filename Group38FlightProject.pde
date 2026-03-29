@@ -21,7 +21,7 @@ int SCREEN_WIDTH = 960;
   ***********/
 Screen welcome = new Screen();
 // initialising screens here because i get a null pointer exception later otherwise??
-Screen home = new Screen();
+Screen search = new Screen();
 Screen results = new Screen();
 Screen flightInfo = new Screen();
 
@@ -63,7 +63,7 @@ void setup() {
       Anything DRAWN (that needs setup) goes AFTER input boxes and data table.
   ***********/
 
-  welcomeBackground = loadImage("skyBG.jpg");
+  welcomeBackground = loadImage("backgroundImage.jpg");
   homeIcon = loadImage("Home_Icon.PNG");
   welcomeBackground.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
   loadedFont = loadFont(font);
@@ -82,9 +82,9 @@ void setup() {
   welcome.addWidgetB(220, 300, 160, 30, "Start searching", color(180, 200, 255), loadedFont, 1);
   welcome.addWidgetA(200, 380, 120, 30, "By Emily Eulitz, Shane Jones, Autumn Kaiser, Brynne Mittleider, Lauren McGaughey and Ethan Ó Mórdha", color(100,100,100), loadedFont);
 
-  home.addWidgetC(20, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
-  home.addWidgetA(60, 60, 100, 40, "Enter queries...", color(150,150,250), loadedFont);
-  home.addWidgetB(780, 560, 150, 50, "Search", color(100,180,255), loadedFont, 2);
+  search.addWidgetC(20, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
+  search.addWidgetA(60, 60, 100, 40, "Enter queries...", color(150,150,250), loadedFont);
+  search.addWidgetB(780, 560, 150, 50, "Search", color(100,180,255), loadedFont, 2);
 
   flightInfo.addWidgetB(100, 780, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   
@@ -189,7 +189,7 @@ void draw() {
   if(welcome.active) image(welcomeBackground,0,0);
   else background(255);
   
-  if(home.active) {
+  if(search.active) {
     if (showTable) resultTable.draw();
     textFont(loadedFont);
     drawInputsAndDropdowns();
@@ -197,7 +197,7 @@ void draw() {
   
   
   welcome.draw();
-  home.draw();
+  search.draw();
   results.draw();
   flightInfo.draw();
 
@@ -301,25 +301,18 @@ void mousePressed() {
     currentEvent = welcome.getEvent(mouseX, mouseY);
     if(currentEvent == 1){
       welcome.active = false;
-      home.active = true;
-    }
-  }
-   if(welcome.active) {
-    currentEvent = welcome.getEvent(mouseX, mouseY);
-    if(currentEvent == 1){
-      welcome.active = false;
-      home.active = true;
+      search.active = true;
     }
   }
   
-  if(home.active) {
-    currentEvent = home.getEvent(mouseX, mouseY);
+  if(search.active) {
+    currentEvent = search.getEvent(mouseX, mouseY);
     if(currentEvent == 1) {
-      home.active = false;
+      search.active = false;
       welcome.active = true;
     }
     else if(currentEvent == 2) {
-      home.active = false;
+      search.active = false;
       results.active = true;
       
       
