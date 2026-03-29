@@ -23,6 +23,8 @@ Screen welcome = new Screen();
 // initialising screens here because i get a null pointer exception later otherwise??
 Screen home = new Screen();
 Screen results = new Screen();
+Screen flightInfo = new Screen();
+
 int currentEvent;
 
 /**********
@@ -78,8 +80,13 @@ void setup() {
   
   welcome.addWidgetA(200, 200, 200, 50, "Welcome", color(180, 200, 255), welcomeFont);
   welcome.addWidgetB(220, 300, 160, 30, "Start searching", color(180, 200, 255), loadedFont, 1);
-  home.addWidgetC(20, 540, 40, 40, homeIcon, 1);
-  home.addWidgetB(60, 60, 100, 40, "Search...", color(150,150,250), loadedFont, 2);
+  welcome.addWidgetA(200, 380, 120, 30, "By Emily Eulitz, Shane Jones, Autumn Kaiser, Brynne Mittleider, Lauren McGaughey and Ethan Ó Mórdha", color(100,100,100), loadedFont);
+
+  home.addWidgetC(20, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
+  home.addWidgetA(60, 60, 100, 40, "Enter queries...", color(150,150,250), loadedFont);
+  home.addWidgetB(780, 560, 150, 50, "Search", color(100,180,255), loadedFont, 2);
+
+  flightInfo.addWidgetB(100, 780, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   
   /********** DATA TABLE
       Here is our data class. We're using the Processing class called Table:
@@ -192,6 +199,11 @@ void draw() {
   welcome.draw();
   home.draw();
   results.draw();
+  flightInfo.draw();
+
+  if(flightInfo.active) {
+
+  }
   
 
   fill(0);
@@ -238,17 +250,34 @@ void loadChart() {
   ArrayList<String> airlineChoice = airline.getSelection();
   println("On: " + airlineChoice.toString());
   ArrayList<Flight> flightsByOrigin = new ArrayList<Flight>();
-  for (String choice : departureChoice) {
-    flightsByOrigin.addAll(data.flightsWhichMatchThisCriterion("orig",choice,flights));
+  if (departureChoice.size() != 0) {
+    for (String choice : departureChoice) {
+      flightsByOrigin.addAll(data.flightsWhichMatchThisCriterion("orig", choice, flights));
+    }
   }
+  else {
+    flightsByOrigin.addAll(flights);
+  }
+
   ArrayList<Flight> flightsByOriginCarrier = new ArrayList<Flight>();
-  for (String choice : airlineChoice) {
-    choice = data.carrierNameToCode(choice);
-    flightsByOriginCarrier.addAll(data.flightsWhichMatchThisCriterion("carrier",choice,flightsByOrigin));
+  if (airlineChoice.size() != 0) {
+    for (String choice : airlineChoice) {
+      choice = data.carrierNameToCode(choice);
+      flightsByOriginCarrier.addAll(data.flightsWhichMatchThisCriterion("carrier", choice, flightsByOrigin));
+    }
   }
+  else {
+    flightsByOriginCarrier.addAll(flightsByOrigin);
+  }
+
   ArrayList<Flight> flightsByOriginCarrierDest = new ArrayList<Flight>();
-  for (String choice : arrivalChoice) {
-    flightsByOriginCarrierDest.addAll(data.flightsWhichMatchThisCriterion("dest",choice,flightsByOriginCarrier));
+  if (arrivalChoice.size() != 0) {
+    for (String choice : arrivalChoice) {
+      flightsByOriginCarrierDest.addAll(data.flightsWhichMatchThisCriterion("dest", choice, flightsByOriginCarrier));
+    }
+  }
+  else{
+    flightsByOriginCarrierDest.addAll(flightsByOriginCarrier);
   }
   // Now have an ArrayList of flights of CARRIER, DEST, ORIGIN
   resultTable.load(flightsByOriginCarrierDest);
@@ -275,18 +304,28 @@ void mousePressed() {
       home.active = true;
     }
   }
+   if(welcome.active) {
+    currentEvent = welcome.getEvent(mouseX, mouseY);
+    if(currentEvent == 1){
+      welcome.active = false;
+      home.active = true;
+    }
+  }
+  
   if(home.active) {
     currentEvent = home.getEvent(mouseX, mouseY);
     if(currentEvent == 1) {
       home.active = false;
       welcome.active = true;
     }
-  }
-  if(home.active) {
-    currentEvent = home.getEvent(mouseX, mouseY);
-    if(currentEvent == 2) {
-      println("Search.");
-      loadChart();
+    else if(currentEvent == 2) {
+      home.active = false;
+      results.active = true;
+      
+      
+      // code to update what data appears goes here?
+      
+      
     }
   }
 }
