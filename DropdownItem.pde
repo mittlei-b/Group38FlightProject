@@ -5,12 +5,12 @@ public class DropdownItem {
   boolean selected;
   color border, fontColor;
   boolean dropdown;
-  int x,y,offsetY,width,height;
+  int x,y,offsetY,theWidth,theHeight;
   
-  public DropdownItem(String content, int x_position, int y_position, int width, int height) {
-    box = createGraphics(width, height);
-    this.width = width;
-    this.height = height;
+  public DropdownItem(String content, int x_position, int y_position, int theWidth, int theHeight) {
+    box = createGraphics(theWidth, theHeight);
+    this.theWidth = theWidth;
+    this.theHeight = theHeight;
     this.content = content;
     x = x_position;
     y = y_position;
@@ -33,7 +33,7 @@ public class DropdownItem {
     box.fill(0,0,0,0);
     box.stroke(border);
     box.strokeWeight(1);
-    box.rect(0,0,width,height - 1);
+    box.rect(0,0,theWidth,theHeight - 1);
     box.endDraw();
     return box;
   }
