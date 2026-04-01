@@ -1,4 +1,3 @@
-
 class Sheet extends Widget {
   ArrayList<Flight> cells;
   PGraphics box;
@@ -21,6 +20,7 @@ class Sheet extends Widget {
     noStroke();
     int movingX = x + 5;
     int movingY = y + 15;
+    textAlign(LEFT, BASELINE);
     /*int[] variableWidths = {140,50,60,50,180,70,70,70,180,70,70,80,80,70,70,50,50,50};
     String[] columnNames = {"Date","Carrier","Carrier #","Origin","Dep. City",
                             "Dep. State", "Dep. Code", "Destination", "Arr. City",
