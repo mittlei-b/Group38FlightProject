@@ -486,6 +486,262 @@ void keyPressed() {
   }
 }
 
+void getPositions() {
+  //Alabama
+  if (State == "AL") {
+    stateXPos = 665;
+    stateYPos = 415;
+  }
+  //Alaska
+  else if (State == "AK") {
+    stateXPos = 115;
+    stateYPos = 500;
+  }
+  //Arizona
+  else if (State == "AZ") {
+    stateXPos = 205;
+    stateYPos = 370;
+  }
+  //Arkansas
+  else if (State == "AR") {
+    stateXPos = 555;
+    stateYPos = 375;
+  }
+  //California
+  else if (State == "CA") {
+    stateXPos = 70;
+    stateYPos = 285;
+  }
+  //Colorado
+  else if (State == "CO") {
+    stateXPos = 320;
+    stateYPos = 275;
+  }
+  //Connecticut
+  else if (State == "CT") {
+    stateXPos = 875;
+    stateYPos = 175;
+  }
+  //Delaware
+  else if (State == "DE") {
+    stateXPos = 850;
+    stateYPos = 250;
+  }
+  //Florida
+  else if (State == "FL") {
+    stateXPos = 780;
+    stateYPos = 510;
+  }
+  //Georgia
+  else if (State == "GA") {
+    stateXPos = 730;
+    stateYPos = 410;
+  }
+  //Hawaii
+  else if (State == "HI") {
+    stateXPos = 335;
+    stateYPos = 575;
+  }
+  //Idaho
+  else if (State == "ID") {
+    stateXPos = 190;
+    stateYPos = 155;
+  }
+  //Illinois
+  else if (State == "IL") {
+    stateXPos = 610;
+    stateYPos = 255;
+  }
+  //Indiana
+  else if (State == "IN") {
+    stateXPos = 655;
+    stateYPos = 255;
+  }
+  //Iowa
+  else if (State == "IA") {
+    stateXPos = 530;
+    stateYPos = 220;
+  }
+  //Kansas
+  else if (State == "KS") {
+    stateXPos = 450;
+    stateYPos = 295;
+  }
+  //Kentucky
+  else if (State == "KY") {
+    stateXPos = 685;
+    stateYPos = 305;
+  }
+  //Louisiana
+  else if (State == "LA") {
+    stateXPos = 565;
+    stateYPos = 465;
+  }
+  //Maine
+  else if (State == "ME") {
+    stateXPos = 905;
+    stateYPos = 75;
+  }
+  //Maryland
+  else if (State == "MD") {
+    stateXPos = 825;
+    stateYPos = 245;
+  }
+  //Massachusetts
+  else if (State == "MA") {
+    stateXPos = 885;
+    stateYPos = 155;
+  }
+  //Michigan
+  else if (State == "MI") {
+    stateXPos = 670;
+    stateYPos = 175;
+  }
+  //Minnesota
+  else if (State == "MN") {
+    stateXPos = 510;
+    stateYPos = 120;
+  }
+  //Mississippi
+  else if (State == "MS") {
+    stateXPos = 610;
+    stateYPos = 420;
+  }
+  //Missouri
+  else if (State == "MO") {
+    stateXPos = 555;
+    stateYPos = 300;
+  }
+  //Montana
+  else if (State == "MT") {
+    stateXPos = 275;
+    stateYPos = 90;
+  }
+  //Nebraska
+  else if (State == "NE") {
+    stateXPos = 425;
+    stateYPos = 230;
+  }
+  //Nevada
+  else if (State == "NV") {
+    stateXPos = 135;
+    stateYPos = 235;
+  }
+  //New Hampshire
+  else if (State == "NH") {
+    stateXPos = 880;
+    stateYPos = 130;
+  }
+  //New Jersey
+  else if (State == "NJ") {
+    stateXPos = 855;
+    stateYPos = 215;
+  }
+  //New Mexico
+  else if (State == "NM") {
+    stateXPos = 310;
+    stateYPos = 375;
+  }
+  //New York
+  else if (State == "NY") {
+    stateXPos = 835;
+    stateYPos = 155;
+  }
+  //North Carolina
+  else if (State == "NC") {
+    stateXPos = 800;
+    stateYPos = 335;
+  }
+  //North Dakota
+  else if (State == "ND") {
+    stateXPos = 420;
+    stateYPos = 90;
+  }
+  //Ohio
+  else if (State == "OH") {
+    stateXPos = 715;
+    stateYPos = 240;
+  }
+  //Oklahoma
+  else if (State == "OK") {
+    stateXPos = 470;
+    stateYPos = 365;
+  }
+  //Oregon
+  else if (State == "OR") {
+    stateXPos = 90;
+    stateYPos = 125;
+  }
+  //Pennsylvania
+  else if (State == "PA") {
+    stateXPos = 800;
+    stateYPos = 210;
+  }
+  //Rhode Island
+  else if (State == "RI") {
+    stateXPos = 895;
+    stateYPos = 170;
+  }
+  //South Carolina
+  else if (State == "SC") {
+    stateXPos = 775;
+    stateYPos = 375;
+  }
+  //South Dakota
+  else if (State == "SD") {
+    stateXPos = 420;
+    stateYPos = 160;
+  }
+  //Tennessee
+  else if (State == "TN") {
+    stateXPos = 665;
+    stateYPos = 350;
+  }
+  //Texas
+  else if (State == "TX") {
+    stateXPos = 435;
+    stateYPos = 465;
+  }
+  //Utah
+  else if (State == "UT") {
+    stateXPos = 220;
+    stateYPos = 260;
+  }
+  //Vermont
+  else if (State == "VT") {
+    stateXPos = 860;
+    stateYPos = 120;
+  }
+  //Virginia
+  else if (State == "VA") {
+    stateXPos = 800;
+    stateYPos = 285;
+  }
+  //Washington
+  else if (State == "WA") {
+    stateXPos = 115;
+    stateYPos = 55;
+  }
+  //West Virginia
+  else if (State == "WV") {
+    stateXPos = 755;
+    stateYPos = 275;
+  }
+  //Wisconsin
+  else if (State == "WI") {
+    stateXPos = 590;
+    stateYPos = 155;
+  }
+  //Wyoming
+  else if (State == "WY") {
+    stateXPos = 300;
+    stateYPos = 185;
+  } else {
+    stateXPos = 0;
+    stateYPos = 0;
+  }
+}
+
 /********** 
     FRAME COUNTER
 ***********/
