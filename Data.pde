@@ -7,8 +7,8 @@ public class Data {
   
   public void printAllRows() {
     fill(0);
-    int height = 15;
-    int width = 5;
+    int theHeight = 15;
+    int theWidth = 5;
     /********** CSV FILE VARIABLE ORDER
       Date, Carrier, Carrier Number, Origin, Departure City/State, Departure State
       Departure Code, Destination, Arrival City/State, Arrival State, Arrival Code
@@ -30,21 +30,21 @@ public class Data {
                             "Int","String","String","String","Int","Int","Int",
                             "Int","Int","Int","Int","Float"};
     for (int index = 0; index < columnNames.length; index++) {
-      text(columnNames[index], width, height);
-      width += variableWidths[index];
+      text(columnNames[index], theWidth, theHeight);
+      theWidth += variableWidths[index];
     }
     for (TableRow row : data.rows()) {
-      width = 5;
-      if (height < SCREEN_HEIGHT - 20) {
-        height += 15;
+      theWidth = 5;
+      if (theHeight < SCREEN_HEIGHT - 20) {
+        theHeight += 15;
         for (int index = 0; index < columnIDs.length; index++) {
           if (columnTypes[index] == "String")
-            text(row.getString(columnIDs[index]), width, height);
+            text(row.getString(columnIDs[index]),theWidth, theHeight);
           else if (columnTypes[index] == "Int") {
-            text(row.getInt(columnIDs[index]), width, height);
+            text(row.getInt(columnIDs[index]), theWidth, theHeight);
           } else if (columnTypes[index] == "Float")
-            text(row.getFloat(columnIDs[index]), width, height);
-          width += variableWidths[index];
+            text(row.getFloat(columnIDs[index]), theWidth, theHeight);
+          theWidth += variableWidths[index];
         }
       }
     }
