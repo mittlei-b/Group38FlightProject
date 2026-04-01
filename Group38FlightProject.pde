@@ -57,7 +57,7 @@ Dropdown departure;
 Dropdown arrival;
 Dropdown airline;
 filter startSlider1, endSlider1; 
-filter startSlider2, endslider2;
+filter startSlider2, endSlider2;
 filter calendar;
 filter tickbox1, tickbox2;
 PImage tickedImg, untickedImg, calendarImg;
