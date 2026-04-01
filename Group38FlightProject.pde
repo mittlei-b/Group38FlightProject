@@ -32,9 +32,16 @@ int currentEvent;
   ***********/
 ArrayList<Input> inputs;
 ArrayList<Dropdown> dropdowns;
+Dropdown flightCode;
 Dropdown departure;
 Dropdown arrival;
 Dropdown airline;
+filter startSlider1, endSlider1; 
+filter startSlider2, endslider2;
+filter calendar;
+filter tickbox1, tickbox2;
+PImage tickedImg, untickedImg, calendarImg;
+boolean dragStart = false, dragEnd = false;
 boolean showTable;
 Sheet resultTable;
 
@@ -65,6 +72,10 @@ void setup() {
 
   welcomeBackground = loadImage("backgroundImage.jpg");
   homeIcon = loadImage("Home_Icon.PNG");
+  untickedImg = loadImage("unticked.jpg");
+  tickedImg = loadImage("ticked.jpg");
+  calendarImg = loadImage("januaryCalendar.jpg");
+  calendarImg.resize(200, 200);
   welcomeBackground.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
   loadedFont = loadFont(font);
   textFont(loadedFont);
@@ -130,11 +141,18 @@ void setup() {
   ***********/
   inputs = new ArrayList<Input>();
   dropdowns = new ArrayList<Dropdown>();
-  departure = newDropdown("Departure", 50, 120, 150, 25, "Departure", locations);
-  arrival = newDropdown("Arrival", 220, 120, 150, 25, "Arrival", locations);
-  airline = newDropdown("Airline", 390, 120, 150, 25, "Airline", carrierNames);
-  
-  
+  flightCode = newDropdown("Flight Code", 20, 140, 85, 25, "Flight Code", locations);
+  airline = newDropdown("Airline", 115, 140, 85, 25, "Airline", carrierNames);
+  departure = newDropdown("Departure", 210, 140, 85, 25, "Departure", locations);
+  arrival = newDropdown("Arrival", 305, 140, 85, 25, "Arrival", locations);
+ 
+  calendar = new filter("calendar", 400, 140, calendarImg.width - 20, calendarImg.height - 20, calendarImg);
+  startSlider1 = new filter("slider", "start", 100, 600, 160, 10, 0, 200, 0, 150, 5);
+  endSlider1 = new filter("slider", "end", 100, 750, 160, 10, 0, 200, 24, 150, 5);
+  startSlider2 = new filter("slider", "start", 100, 780, 160, 10, 0, 200, 0, 150, 5);
+  endSlider2 = new filter("slider", "end", 100, 930, 160, 10, 0, 200, 24, 150, 5);
+  tickbox1 = new filter("tickbox", 685, 270, 25, untickedImg, tickedImg);
+  tickbox2 = new filter("tickbox", 810, 270, 25, untickedImg, tickedImg);
   
   /*
   
@@ -194,7 +212,82 @@ void draw() {
     textFont(loadedFont);
     drawInputsAndDropdowns();
   }
+
+  if(home.active) {
+    drawInputsAndDropdowns();
+    
+    startSlider1.drawRect();
+    startSlider2.drawRect();
+    
+    calendar.draw();
+    startSlider1.draw();
+    endSlider1.draw();
+    startSlider2.draw();
+    endSlider2.draw();
+    tickbox1.draw();
+    tickbox2.draw();
   
+    if (startSlider1.dragged())
+    {
+      startSlider1.move(mouseX, endSlider1.getNumber(), endSlider1.xpos);
+    }
+    else if (endSlider1.dragged())
+    {
+      endSlider1.move(mouseX, startSlider1.getNumber(), startSlider1.xpos);
+    }
+    else if (startSlider2.dragged())
+    {
+      startSlider2.move(mouseX, endSlider2.getNumber(), endSlider2.xpos);
+    }
+    else if (endSlider2.dragged())
+    {
+      endSlider2.move(mouseX, startSlider2.getNumber(), startSlider2.xpos);
+    }
+    
+    stroke(0);
+    text("Flight code", 22, 135);
+    text("Airline", 117, 135);
+    text("Departure city", 212, 135);
+    text("Arrival city", 307, 135);
+    
+    int chosenDate = calendar.getDate();
+    if (chosenDate < 1)
+    {
+      text("Date of flight: ", 402, 135);
+    }
+    else
+    {
+      if (chosenDate == 1)
+      {
+        text("Date of flight: " + chosenDate + "st Jan", 402, 135);
+      }
+      else if (chosenDate == 2)
+      {
+        text("Date of flight: " + chosenDate + "nd Jan", 402, 135);
+      }
+      else if (chosenDate == 3)
+      {
+        text("Date of flight: " + chosenDate + "rd Jan", 402, 135);
+      }
+      else
+      {
+        text("Date of flight: " + chosenDate + "th Jan", 402, 135);
+      }
+    }
+    
+    int chosenDepTime1 = startSlider1.getNumber();
+    int chosenDepTime2 = endSlider1.getNumber();
+
+    text("Departure Time: " + chosenDepTime1 + ":00-" + chosenDepTime2 + ":00", 602, 150);
+    
+    int chosenArrTime1 = startSlider2.getNumber();
+    int chosenArrTime2 = endSlider2.getNumber();
+    
+    text("Arrival Time: " + chosenArrTime1 + ":00-" + chosenArrTime2 + ":00", 782, 150);
+    
+    text("Late", 686, 265);
+    text("Cancelled", 797, 265);
+  }
   
   welcome.draw();
   search.draw();
@@ -287,7 +380,36 @@ void loadChart() {
   //chart.load(stateCodes, numbFlightsTXtoX);
 }
 
+void mouseReleased() {
+  startSlider1.release();
+  endSlider1.release();
+  startSlider2.release();
+  endSlider2.release();
+}
+
 void mousePressed() {
+  calendar.click();
+  tickbox1.click();
+  tickbox2.click();
+  
+  if (Math.abs(mouseX - startSlider1.xpos) < 20 && Math.abs(mouseY - startSlider1.ypos) < 20)
+  {
+    startSlider1.click();
+  }
+  else if (Math.abs(mouseX - endSlider1.xpos) < 20 && Math.abs(mouseY - endSlider1.ypos) < 20)
+  {
+    endSlider1.click();
+  }
+  
+  if (Math.abs(mouseX - startSlider2.xpos) < 20 && Math.abs(mouseY - startSlider2.ypos) < 20)
+  {
+    startSlider2.click();
+  }
+  else if (Math.abs(mouseX - endSlider2.xpos) < 20 && Math.abs(mouseY - endSlider2.ypos) < 20)
+  {
+    endSlider2.click();
+  }
+
   // Check if an input was selected and update if so
   for (Input box : inputs) {
     box.checkIfClicked();
