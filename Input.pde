@@ -1,16 +1,16 @@
 public class Input {
   PGraphics box;
   PFont boxFont;
-  int x, offsetX, y, width, height;
+  int x, offsetX, y, theWidth, theHeight;
   String label, defaultText, userInput, content;
   boolean selected, entered;
   color border, fontColor;
   
   
-  public Input(String label, int x_position, int y_position, int width, int height, String standIn) {
-    box = createGraphics(width, height);
-    this.width = width;
-    this.height = height;
+  public Input(String label, int x_position, int y_position, int theWidth, int theHeight, String standIn) {
+    box = createGraphics(theWidth, theHeight);
+    this.theWidth = theWidth;
+    this.theHeight = theHeight;
     this.label = label;
     defaultText = standIn;
     userInput = "";
@@ -33,15 +33,15 @@ public class Input {
     box.fill(0,0,0,0);
     box.stroke(border);
     box.strokeWeight(2);
-    box.rect(0,0,width,height - 1);
+    box.rect(0,0,theWidth,theHeight - 1);
     box.endDraw();
     
     image(box,x,y);
   }
   
   public void checkIfClicked() {
-    if (x <= mouseX && mouseX <= x + width
-        && y <= mouseY && y + height >= mouseY) {
+    if (x <= mouseX && mouseX <= x + theWidth
+        && y <= mouseY && y + theHeight >= mouseY) {
       selected = true;
       border = color(255,100,100);
     } else deselect();
@@ -105,8 +105,8 @@ public class Input {
 
   public void offset() {
     int textWidth = (int)box.textWidth(content) + 10;
-    if (textWidth > width) {
-      offsetX = width - textWidth;
+    if (textWidth > theWidth) {
+      offsetX = theWidth - textWidth;
     } else offsetX = 0;
   }
   
