@@ -3,8 +3,8 @@ class Chart extends Widget {
   ArrayList<Integer> values;
   int number;
   
-  Chart(int x,int y, int width, int height, String label, color widgetColor, PFont widgetFont) {
-    super(x,y,width,height,label,widgetColor,widgetFont);
+  Chart(int x,int y, int theWidth, int theHeight, String label, color widgetColor, PFont widgetFont) {
+    super(x,y,theWidth,theHeight,label,widgetColor,widgetFont);
   }
   
   void load(String number, ArrayList<String> labels, ArrayList<String> strValues) {
@@ -28,7 +28,7 @@ class Chart extends Widget {
       int value = values.get(count);
       if (value > 0 && count < 10) {
         fill(widgetColor);
-        float rectWidth = (1.0 * value / maxValue) * width;
+        float rectWidth = (1.0 * value / maxValue) * theWidth;
         rect(x, movingY, rectWidth, 15);
         String valueLabel = labels.get(count);
         fill(0);
