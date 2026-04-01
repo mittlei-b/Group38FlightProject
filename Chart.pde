@@ -18,6 +18,7 @@ class Chart extends Widget {
   }
   
   void draw() {
+    textAlign(LEFT, TOP);
     text(label, x, y - 15);
     int movingY = y;
     int maxValue = 0;
