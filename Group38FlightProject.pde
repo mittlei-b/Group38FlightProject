@@ -89,9 +89,11 @@ void setup() {
   **********/
   welcome.active = true;
   
-  welcome.addWidgetA(200, 200, 200, 50, "Welcome", color(180, 200, 255), welcomeFont);
-  welcome.addWidgetB(220, 300, 160, 30, "Start searching", color(180, 200, 255), loadedFont, 1);
-  welcome.addWidgetA(200, 380, 120, 30, "By Emily Eulitz, Shane Jones, Autumn Kaiser, Brynne Mittleider, Lauren McGaughey and Ethan Ó Mórdha", color(100,100,100), loadedFont);
+  welcome.addWidgetA((SCREEN_WIDTH/2 - 100), 200, 200, 50, "Welcome", color(180, 200, 255), welcomeFont);
+  welcome.addWidgetB(SCREEN_WIDTH/2 - 80, 300, 160, 30, "Start searching", color(180, 200, 255), loadedFont, 1);
+  welcome.addWidgetA(SCREEN_WIDTH/2 - 185, 380, 370, 30, "By Emily Eulitz, Shane Jones, Autumn Kaiser,", color(2, 176, 207), loadedFont);
+  welcome.addWidgetA(SCREEN_WIDTH/2 - 160, 410, 320, 30, "Brynne Mittleider, Lauren McGaughey", color(2, 176, 207), loadedFont);
+  welcome.addWidgetA(SCREEN_WIDTH/2 - 90, 440, 180, 30, "and Ethan Ó Mórdha", color(2, 176, 207), loadedFont);
 
   search.addWidgetC(20, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
   search.addWidgetA(60, 60, 100, 40, "Enter queries...", color(150,150,250), loadedFont);
