@@ -52,7 +52,6 @@ PImage mapImg;
   ***********/
 ArrayList<Input> inputs;
 ArrayList<Dropdown> dropdowns;
-Dropdown flightCode;
 Dropdown departure;
 Dropdown arrival;
 Dropdown airline;
@@ -116,7 +115,7 @@ void setup() {
   welcome.addWidgetA(SCREEN_WIDTH/2 - 90, 440, 180, 30, "and Ethan Ó Mórdha", color(2, 176, 207), loadedFont);
 
   search.addWidgetC(20, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
-  search.addWidgetA(60, 60, 100, 40, "Enter queries...", color(150,150,250), loadedFont);
+  search.addWidgetA(60, 60, 150, 40, "Enter queries...", color(150,150,250), loadedFont);
   search.addWidgetB(780, 560, 150, 50, "Search", color(100,180,255), loadedFont, 2);
 
   results.addWidgetC(20, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
@@ -166,10 +165,9 @@ void setup() {
   ***********/
   inputs = new ArrayList<Input>();
   dropdowns = new ArrayList<Dropdown>();
-  flightCode = newDropdown("Flight Code", 20, 140, 85, 25, "Flight Code", locations);
-  airline = newDropdown("Airline", 115, 140, 85, 25, "Airline", carrierNames);
-  departure = newDropdown("Departure", 210, 140, 85, 25, "Departure", locations);
-  arrival = newDropdown("Arrival", 305, 140, 85, 25, "Arrival", locations);
+  airline = newDropdown("Airline", 8, 140, 120, 25, "Airline", carrierNames);
+  departure = newDropdown("Departure", 136, 140, 120, 25, "Departure", locations);
+  arrival = newDropdown("Arrival", 264, 140, 120, 25, "Arrival", locations);
  
   calendar = new filter("calendar", 400, 140, calendarImg.width - 20, calendarImg.height - 20, calendarImg);
   startSlider1 = new filter("slider", "start", 100, 600, 160, 10, 0, 200, 0, 150, 5);
@@ -270,33 +268,33 @@ void draw() {
     }
     
     stroke(0);
-    text("Flight code", 22, 135);
-    text("Airline", 117, 135);
-    text("Departure city", 212, 135);
-    text("Arrival city", 307, 135);
+    textAlign(CENTER, CENTER);
+    text("Airline", 68, 130);
+    text("Departure State", 196, 130);
+    text("Arrival State", 324, 130);
     
     int chosenDate = calendar.getDate();
     if (chosenDate < 1)
     {
-      text("Date of flight: ", 402, 135);
+      text("Date of flight: ", 480, 130);
     }
     else
     {
       if (chosenDate == 1)
       {
-        text("Date of flight: " + chosenDate + "st Jan", 402, 135);
+        text("Date of flight: " + chosenDate + "st Jan", 480, 130);
       }
       else if (chosenDate == 2)
       {
-        text("Date of flight: " + chosenDate + "nd Jan", 402, 135);
+        text("Date of flight: " + chosenDate + "nd Jan", 480, 130);
       }
       else if (chosenDate == 3)
       {
-        text("Date of flight: " + chosenDate + "rd Jan", 402, 135);
+        text("Date of flight: " + chosenDate + "rd Jan", 480, 130);
       }
       else
       {
-        text("Date of flight: " + chosenDate + "th Jan", 402, 135);
+        text("Date of flight: " + chosenDate + "th Jan", 480, 130);
       }
     }
     
