@@ -1,8 +1,8 @@
 class filter {
   String type, status;
   int xpos, ypos;
-  int xMargin, SCREEN_WIDTH, SCREEN_HEIGHT;
-  int rectWidth, rectHeight;
+  int xMargin;
+  int rectWidth, rectHeight, rectX;
   int size, calendarWidth, calendarHeight;
   int number;
   int numX, numY;
@@ -18,17 +18,18 @@ class filter {
                        {23, 24, 25, 26, 27, 28, 29},
                        {30, 31, 0, 0, 0, 0, 0}};
   
-  filter(String type, String status, int xMargin, int xpos, int ypos, int size, color circleColour, color rectColour, int number, int rectHeight) {
+  filter(String type, String status, int xMargin, int xpos, int ypos, int size, color circleColour, color rectColour, int number, int rectWidth, int rectHeight) {
     this.type = type;
     this.status = status;
     this.xMargin = xMargin;
     this.xpos = xpos;
     this.ypos = ypos;
+    rectX = xpos;
     this.size = size;
     this.circleColour = circleColour;
     this.rectColour = rectColour;
     this.number = number;
-    this.rectWidth = SCREEN_WIDTH - (2 * xMargin);
+    this.rectWidth = rectWidth;
     this.rectHeight = rectHeight;
   }
   
@@ -95,14 +96,28 @@ class filter {
   }
   
   int getNumber() {
+    int num = -1;
     if (type.equals("slider"))
     {
-      int distance = xpos - xMargin;
-      int step = rectWidth / 24;
-      int num = round(distance / step);
-      
-      if (num > 24) {
-        num = 24;
+      if (status.equals("start"))
+      {
+        int distance = xpos - rectX;
+        int step = rectWidth / 24;
+        num = round(distance / step);
+        
+        if (num > 24) {
+          num = 24;
+        }
+      }
+      else
+      {
+        int distance = xpos - (rectX - rectWidth);
+        int step = rectWidth / 24;
+        num = round(distance / step);
+        
+        if (num > 24) {
+          num = 24;
+        }
       }
       
       return num;
@@ -122,17 +137,18 @@ class filter {
     if (type.equals("calendar"))
     {
        date = dateArray[numX][numY];
+       println(date);
     }
   }
   
-  void dateY() {
+  void dateX() {
     int mousePos = mouseY;
-    int distance = mousePos - (ypos + (int)(calendarHeight / 3.5));
-    int step = (int)((calendarHeight - (ypos + (calendarHeight / 3.5))) / 3.5);
+    int distance = mousePos - (ypos + (int)(calendarHeight / 3.25));
+    int step = (int)((calendarHeight - ((calendarHeight / 3.25))) / 6);
     numX = round(distance / step);
   }
     
-  void dateX() {
+  void dateY() {
     int mousePos = mouseX;
     int distance = mousePos - xpos;
     int step = calendarWidth / 7;
@@ -147,17 +163,17 @@ class filter {
       
       xpos = xMargin + (distance * number);
       
-      if (xpos > SCREEN_WIDTH - xMargin)
-      {
-        xpos = SCREEN_WIDTH - xMargin;
-      }
-      else if (xpos < xMargin)
-      {
-        xpos = xMargin;
-      }
-      
       if (status.equals("start"))
       {
+        if (xpos > rectX + rectWidth)
+        {
+          xpos = rectX + rectWidth;
+        }
+        else if (xpos < rectX)
+        {
+          xpos = rectX;
+        }
+        
         if (number > otherNumber)
         {
           number = otherNumber;
@@ -170,6 +186,15 @@ class filter {
       }
       else 
       {
+        if (xpos > rectX)
+        {
+          xpos = rectX;
+        }
+        else if (xpos < rectX - rectWidth)
+        {
+          xpos = rectX - rectWidth;
+        }
+        
         if (number < otherNumber)
         {
           number = otherNumber;
@@ -186,7 +211,7 @@ class filter {
   void drawRect() {
     int rectYpos = ypos - (size / 4);
     fill(rectColour);
-    rect(xMargin, rectYpos, rectWidth, rectHeight);
+    rect(rectX, rectYpos, rectWidth, rectHeight);
   }
   
   void draw() {
