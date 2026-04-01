@@ -41,7 +41,8 @@ class Widget {
       rect(x,y,theWidth,theHeight);
       fill(labelColor);
       textFont(widgetFont);
-      text(label, x+10, y+theHeight-10 );
+      textAlign(CENTER, CENTER);
+      text(label, x + theWidth/2, y + theHeight/2);
     }
   }
     
