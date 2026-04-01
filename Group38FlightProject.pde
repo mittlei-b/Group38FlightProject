@@ -28,6 +28,26 @@ Screen flightInfo = new Screen();
 int currentEvent;
 
 /**********
+FlightInfo Variables
+***********/
+int destinationXPos = 0;
+int destinationYPos = 0;
+int departureXPos = 0;
+int departureYPos = 0;
+
+String destinationState;
+String departureState;
+
+String State;
+int stateXPos;
+int stateYPos;
+
+int getDestination = 0;
+int getDeparture = 0;
+
+PImage mapImg; 
+
+/**********
     INPUT VARIABLES
   ***********/
 ArrayList<Input> inputs;
@@ -100,6 +120,7 @@ void setup() {
   search.addWidgetB(780, 560, 150, 50, "Search", color(100,180,255), loadedFont, 2);
 
   flightInfo.addWidgetB(100, 780, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
+  mapImg = loadImage("USA.png");
   
   /********** DATA TABLE
       Here is our data class. We're using the Processing class called Table:
@@ -297,7 +318,7 @@ void draw() {
   flightInfo.draw();
 
   if(flightInfo.active) {
-
+       image(mapImg,0,0);
   }
   
 
