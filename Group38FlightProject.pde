@@ -319,6 +319,32 @@ void draw() {
 
   if(flightInfo.active) {
        image(mapImg,0,0);
+
+  // if (getDeparture < 1) {
+  // State = departureState;
+  // getPositions();
+  // departureXPos = stateXPos;
+  // departureYPos = stateYPos;
+  // getDeparture = 1;
+  // }
+
+ // if (getDestination < 1) {
+ //  State = destinationState;
+ //  getPositions();
+ //  destinationXPos = stateXPos;
+ //  destinationYPos = stateYPos;
+ //  getDestination = 1;
+ // }
+
+ //detDestination and getDeparture need to be reset to 0 when user exits the flightInfo screen
+
+  fill(0, 255, 0);
+  strokeWeight(4);
+  line(departureXPos, departureYPos, destinationXPos, destinationYPos);
+  strokeWeight(2);
+  circle(destinationXPos, destinationYPos, 10);
+  circle(departureXPos, departureYPos, 10);
+
   }
   
 
