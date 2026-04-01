@@ -29,7 +29,7 @@ class Screen {
                                                   //when mouse is pressed, find which widget is pressed based on mouse position
   int getEvent(int mX, int mY) {
     for(Widget w : widgetList) {
-      if(mX>w.x && mX < w.x+w.width && mY >w.y && mY <w.y+w.height) {
+      if(mX>w.x && mX < w.x+w.theWidth && mY >w.y && mY <w.y+w.theHeight) {
         return w.event;
       }
     }
