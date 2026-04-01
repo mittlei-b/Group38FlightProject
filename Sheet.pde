@@ -3,9 +3,9 @@ class Sheet extends Widget {
   ArrayList<Flight> cells;
   PGraphics box;
   
-  Sheet(int x,int y, int width, int height, String label, color widgetColor, PFont widgetFont) {
-    super(x,y,width,height,label,widgetColor,widgetFont);
-    box = createGraphics(width, height);
+  Sheet(int x,int y, int theWidth, int theHeight, String label, color widgetColor, PFont widgetFont) {
+    super(x,y,theWidth,theHeight,label,widgetColor,widgetFont);
+    box = createGraphics(theWidth, theHeight);
   }
   
   void load(ArrayList<Flight> selected) {
@@ -16,7 +16,7 @@ class Sheet extends Widget {
   void draw() {
     textFont(tableFont);
     fill(200);
-    rect(x,y,width,height);
+    rect(x,y,theWidth,theHeight);
     fill(0);
     noStroke();
     int movingX = x + 5;
@@ -42,9 +42,9 @@ class Sheet extends Widget {
   int colorChange = -10;
   for (Flight cell : cells) {
     movingX = x + 5;
-    if (movingY < y + height - 5) {
+    if (movingY < y + theHeight - 5) {
       fill(230 + (colorChange *= -1));
-      rect(movingX - 5,movingY + 2,width,15);
+      rect(movingX - 5,movingY + 2,theWidth,15);
       fill(0);
       movingY += 15;
       text(data.carrierCodeToName(cell.carrier), movingX, movingY);
@@ -64,6 +64,6 @@ class Sheet extends Widget {
   }
   fill(0,0,0,0);
   stroke(0);
-  rect(x,y,width,height);
+  rect(x,y,theWidth,theHeight);
 } 
 }
