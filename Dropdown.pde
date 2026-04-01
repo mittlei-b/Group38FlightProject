@@ -7,17 +7,17 @@ public class Dropdown extends Input {
   int listHeight = 120;
   int offsetY = 0;
   
-  public Dropdown(String label, int x_position, int y_position, int width, int height, String standIn, ArrayList<String> list) {
-    super(label, x_position, y_position, width, height, standIn);
+  public Dropdown(String label, int x_position, int y_position, int theWidth, int theHeight, String standIn, ArrayList<String> list) {
+    super(label, x_position, y_position, theWidth, theHeight, standIn);
     itemList = new ArrayList<DropdownItem>();
     wordList = list;
     chosenWordsList = new ArrayList<String>();
     int movingY = 0;
-    container = createGraphics(width, listHeight);
+    container = createGraphics(theWidth, listHeight);
     for (String item : wordList) {
-      DropdownItem itemBox = new DropdownItem(item, 0, movingY, width, height);
+      DropdownItem itemBox = new DropdownItem(item, 0, movingY, theWidth, theHeight);
       itemList.add(itemBox);
-      movingY += height;
+      movingY += theHeight;
     }
     showDropdown = false;
   }
@@ -32,7 +32,7 @@ public class Dropdown extends Input {
     box.fill(0,0,0,0);
     box.stroke(border);
     box.strokeWeight(2);
-    box.rect(0,0,width,height - 1);
+    box.rect(0,0,theWidth,theHeight - 1);
     box.endDraw();
     image(box,x,y);
    
@@ -44,9 +44,9 @@ public class Dropdown extends Input {
       container.fill(0,0,0,0);
       container.stroke(150);
       container.strokeWeight(2);
-      container.rect(0,0,width - 1,listHeight - 1);
+      container.rect(0,0,theWidth - 1,listHeight - 1);
       container.endDraw();
-      image(container,x,y + height);
+      image(container,x,y + theHeight);
     }
   }
   
@@ -130,16 +130,16 @@ public class Dropdown extends Input {
   }
   
   public void checkIfClicked() {
-    if (x <= mouseX && mouseX <= x + width
-        && y <= mouseY && y + height >= mouseY) {
+    if (x <= mouseX && mouseX <= x + theWidth
+        && y <= mouseY && y + theHeight >= mouseY) {
       selected = true;
       border = color(255,100,100);
       fontColor = color(0);
       addInput();
-    } else if (selected && x <= mouseX && mouseX <= x + width
-               && y + height <= mouseY && y + height + listHeight >= mouseY) {
-      int newMouseY = mouseY - y - height + offsetY;
-      int index = newMouseY / height;
+    } else if (selected && x <= mouseX && mouseX <= x + theWidth
+               && y + theHeight <= mouseY && y + theHeight + listHeight >= mouseY) {
+      int newMouseY = mouseY - y - theHeight + offsetY;
+      int index = newMouseY / theHeight;
       DropdownItem option = itemList.get(index);
       boolean itemSelected = option.updateState();
       if (itemSelected) {
@@ -158,9 +158,9 @@ public class Dropdown extends Input {
   }
   
   public void checkIfScrolled(int direction) {
-    if (x <= mouseX && mouseX <= x + width
-        && y + height <= mouseY && y + height + listHeight >= mouseY) {
-      int maxOffset = itemList.size() * height - listHeight;
+    if (x <= mouseX && mouseX <= x + theWidth
+        && y + theHeight <= mouseY && y + theHeight + listHeight >= mouseY) {
+      int maxOffset = itemList.size() * theHeight - listHeight;
       if ((direction > 0 && offsetY < maxOffset) || (direction < 0 && offsetY > 0))
         offsetY += 10 * direction;
     }
