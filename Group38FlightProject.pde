@@ -119,6 +119,8 @@ void setup() {
   search.addWidgetA(60, 60, 100, 40, "Enter queries...", color(150,150,250), loadedFont);
   search.addWidgetB(780, 560, 150, 50, "Search", color(100,180,255), loadedFont, 2);
 
+  results.addWidgetC(20, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
+  
   flightInfo.addWidgetB(100, 780, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   mapImg = loadImage("USA.png");
   
@@ -236,7 +238,7 @@ void draw() {
     drawInputsAndDropdowns();
   }
 
-  if(home.active) {
+  if(search.active) {
     drawInputsAndDropdowns();
     
     startSlider1.drawRect();
@@ -491,6 +493,15 @@ void mousePressed() {
       
       
     }
+  }
+  
+  if (results.active) {
+    currentEvent = results.getEvent(mouseX, mouseY);
+    if (currentEvent == 1){
+      results.active = false;
+      welcome.active = true;
+    }
+    
   }
 }
 
