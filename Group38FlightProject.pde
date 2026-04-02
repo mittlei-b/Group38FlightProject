@@ -322,7 +322,6 @@ void draw() {
   if (results.active) {
     text(filteredData().size() + " flights match your criteria", width/2, 150);
     if (showTable) resultTable.draw();
-    t();
   }
 
   welcome.draw();
