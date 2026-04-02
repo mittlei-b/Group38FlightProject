@@ -68,10 +68,10 @@ ArrayList<Dropdown> dropdowns;
 Dropdown departure;
 Dropdown arrival;
 Dropdown airline;
-filter startSlider1, endSlider1;
-filter startSlider2, endSlider2;
+filter depStartSlider, depEndSlider;
+filter arrStartSlider, arrEndSlider;
 filter calendar;
-filter tickbox1, tickbox2;
+filter lateTickbox, cancelledTickbox;
 PImage tickedImg, untickedImg, calendarImg;
 boolean dragStart = false, dragEnd = false;
 boolean showTable;
@@ -276,8 +276,8 @@ void draw() {
   if (search.active) {
     drawInputsAndDropdowns();
 
-    startSlider1.drawRect();
-    startSlider2.drawRect();
+    depStartSlider.drawRect();
+    arrStartSlider.drawRect();
 
     calendar.draw();
     depStartSlider.draw();
@@ -462,11 +462,11 @@ ArrayList<Flight> filteredData() {
     flightsByOriginCarrierDest.addAll(flightsByOriginCarrier);
   }
 
-  int chosenDepTime1 = startSlider1.getNumber();
-  int chosenDepTime2 = endSlider1.getNumber();
+  int chosenDepTime1 = depStartSlider.getNumber();
+  int chosenDepTime2 = depSndSlider.getNumber();
 
-  int chosenArrTime1 = startSlider2.getNumber();
-  int chosenArrTime2 = endSlider2.getNumber();
+  int chosenArrTime1 = arrStartSlider.getNumber();
+  int chosenArrTime2 = arrEndSlider.getNumber();
 
   ArrayList<Flight> flightsByDepTime = new ArrayList<Flight>();
   flightsByDepTime.addAll(data.inThisTimeRange("depTimes", String.valueOf(chosenDepTime1), String.valueOf(chosenDepTime2), flightsByOriginCarrierDest));
@@ -475,14 +475,14 @@ ArrayList<Flight> filteredData() {
   flightsByArrTime.addAll(data.inThisTimeRange("arrTimes", String.valueOf(chosenArrTime1), String.valueOf(chosenArrTime2), flightsByDepTime));
    
   ArrayList<Flight> flightsByCancelled = new ArrayList<Flight>();
-  if (tickbox2.ticked) {
+  if (cancelledTickbox.ticked) {
     flightsByCancelled.addAll(data.flightsWhichMatchThisCriterion("cancelled", "", flightsByArrTime));
   } else {
     flightsByCancelled.addAll(flightsByArrTime);
   }
   
   ArrayList<Flight> flightsByLate = new ArrayList<Flight>();
-  if (tickbox1.ticked) {
+  if (lateTickbox.ticked) {
     flightsByLate.addAll(data.flightsWhichMatchThisCriterion("late", "", flightsByCancelled));
   } else {
     flightsByLate.addAll(flightsByCancelled);
