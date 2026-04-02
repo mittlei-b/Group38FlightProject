@@ -566,7 +566,7 @@ void mousePressed() {
     currentEvent = pieCharts1.getEvent(mouseX, mouseY);
     if(currentEvent == 1) {
       pieCharts1.active = false;
-      pirCharts2.active = true;
+      pieCharts2.active = true;
     }
     else if(currentEvent == 2) {
       pieCharts1.active = false;
