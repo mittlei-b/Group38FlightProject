@@ -552,6 +552,7 @@ void mousePressed() {
     box.checkIfClicked();
   }
 
+if(mouseX > musicButton.x && mouseX < musicButton.x + 40 && mouseY > musicButton.y && mouseY < musicButton.y + height);
   musicEvent = musicButton.getEvent(mouseX, mouseY);
   if(musicEvent == 5) {
     if(musicButton.icon == musicIcon) {
