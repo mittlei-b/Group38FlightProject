@@ -84,7 +84,7 @@ void settings() {
 void setup() {
   tableFont = loadFont(smallFont);
   showTable = false;
-  resultTable = new Sheet(SCREEN_WIDTH/2 - 245, SCREEN_HEIGHT/2-100, 490, 360, "Results", color(100, 100, 255), loadedFont);
+  resultTable = new Sheet(50, 120, SCREEN_WIDTH - 100, 440, "Results", color(100, 100, 255), loadedFont);
   /********** DESIGN
    All variables to do with design go first (font, colors, styling, etc.)
    Anything DRAWN (that needs setup) goes AFTER input boxes and data table.
@@ -242,8 +242,7 @@ void draw() {
   /********** Background Color
    and Input Boxes at the top
    ***********/
-  if (welcome.active) image(welcomeBackground, 0, 0);
-  else background(255);
+  image(welcomeBackground, 0, 0);
 
   if (search.active) {
     textFont(loadedFont);
@@ -320,9 +319,8 @@ void draw() {
   }
 
   if (results.active) {
-    text(filteredData().size() + " flights match your criteria", width/2, 150);
+    text(filteredData().size() + " flights match your criteria", 700, 80);
     if (showTable) resultTable.draw();
-    t();
   }
 
   welcome.draw();
@@ -540,6 +538,7 @@ void mousePressed() {
       welcome.active = true;
     } else if (currentEvent == 2) {
       search.active = false;
+      loadChart();
       results.active = true;
 
 
@@ -567,7 +566,7 @@ void mousePressed() {
     currentEvent = pieCharts1.getEvent(mouseX, mouseY);
     if(currentEvent == 1) {
       pieCharts1.active = false;
-      pirCharts2.active = true;
+      pieCharts2.active = true;
     }
     else if(currentEvent == 2) {
       pieCharts1.active = false;
@@ -610,6 +609,7 @@ void mouseWheel(MouseEvent event) {
   for (Dropdown box : dropdowns) {
     box.checkIfScrolled(direction);
   }
+  resultTable.checkIfScrolled(direction);
 }
 
 
