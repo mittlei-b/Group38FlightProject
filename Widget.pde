@@ -45,5 +45,8 @@ class Widget {
       text(label, x + theWidth/2, y + theHeight/2);
     }
   }
-    
+
+   void changeIcon(PImage newIcon) {
+    icon = newIcon;
+  }
 }
