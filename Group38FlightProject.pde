@@ -13,6 +13,13 @@ PFont loadedFont;
 PFont welcomeFont;
 PImage welcomeBackground;
 PImage homeIcon;
+PImage musicIcon;
+PImage musicMuteIcon;
+PImage pieChartIcon;
+PImage barChartIcon;
+PImage mapIcon;
+Widget musicButton;
+SoundFile music;
 int SCREEN_HEIGHT = 640;
 int SCREEN_WIDTH = 960;
 
@@ -93,6 +100,11 @@ void setup() {
 
   welcomeBackground = loadImage("backgroundImage.jpg");
   homeIcon = loadImage("Home_Icon.PNG");
+  musicIcon = loadImage("MusicIcon.PNG");
+  musicMuteIcon = loadImage("MusicMutedIcon.PNG");
+  pieChartIcon = loadImage("PieChartIcon.PNG");
+  barChartIcon = loadImage("BarChartIcon.PNG");
+  mapIcon = loadImage("MapIcon.PNG");
   untickedImg = loadImage("unticked.jpg");
   tickedImg = loadImage("ticked.jpg");
   calendarImg = loadImage("januaryCalendar.jpg");
@@ -103,6 +115,12 @@ void setup() {
   welcomeFont = createFont("Arial", 40);
   background(255);
   fill(0);
+
+  music = new SoundFile(this, "data/lofiSong.mp3");
+  // Music track: gingersweet by massobeats
+  //Source: https://freetouse.com/music
+  //Free Vlog Music Without Copyright
+  music.loop();
 
   /********** WIDGETS
    making all widgets on each screen here + setting welcome to active so
