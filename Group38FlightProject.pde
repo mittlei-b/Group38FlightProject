@@ -13,6 +13,13 @@ PFont loadedFont;
 PFont welcomeFont;
 PImage welcomeBackground;
 PImage homeIcon;
+PImage musicIcon;
+PImage musicMuteIcon;
+PImage pieChartIcon;
+PImage barChartIcon;
+PImage mapIcon;
+Widget musicButton;
+SoundFile music;
 int SCREEN_HEIGHT = 640;
 int SCREEN_WIDTH = 960;
 
@@ -30,6 +37,7 @@ Screen barCharts1 = new Screen();
 Screen barCharts2 = new Screen();
 
 int currentEvent; 
+int musicEvent;
 
 /**********
  FlightInfo Variables
@@ -50,6 +58,7 @@ int getDestination = 0;
 int getDeparture = 0;
 
 PImage mapImg;
+PImage starsAndStripes;
 
 /**********
  INPUT VARIABLES
@@ -92,6 +101,11 @@ void setup() {
 
   welcomeBackground = loadImage("backgroundImage.jpg");
   homeIcon = loadImage("Home_Icon.PNG");
+  musicIcon = loadImage("MusicIcon.PNG");
+  musicMuteIcon = loadImage("MusicMutedIcon.PNG");
+  pieChartIcon = loadImage("PieChartIcon.PNG");
+  barChartIcon = loadImage("BarChartIcon.PNG");
+  mapIcon = loadImage("MapIcon.PNG");
   untickedImg = loadImage("unticked.jpg");
   tickedImg = loadImage("ticked.jpg");
   calendarImg = loadImage("januaryCalendar.jpg");
@@ -102,6 +116,12 @@ void setup() {
   welcomeFont = createFont("Arial", 40);
   background(255);
   fill(0);
+
+  music = new SoundFile(this, "data/lofiSong.mp3");
+  // Music track: gingersweet by massobeats
+  //Source: https://freetouse.com/music
+  //Free Vlog Music Without Copyright
+  music.loop();
 
   /********** WIDGETS
    making all widgets on each screen here + setting welcome to active so
@@ -115,27 +135,30 @@ void setup() {
   welcome.addWidgetA(SCREEN_WIDTH/2 - 160, 410, 320, 30, "Brynne Mittleider, Lauren McGaughey", color(2, 176, 207), loadedFont);
   welcome.addWidgetA(SCREEN_WIDTH/2 - 90, 440, 180, 30, "and Ethan Ó Mórdha", color(2, 176, 207), loadedFont);
 
-  search.addWidgetC(20, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
+  search.addWidgetC(80, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
   search.addWidgetA(60, 60, 150, 40, "Enter queries...", color(140, 240, 250), loadedFont);
   search.addWidgetB(780, 560, 150, 50, "Search", color(140, 240, 255), loadedFont, 2);
 
   results.addWidgetA(SCREEN_WIDTH/2-75, 60, 150, 40, "Matching Results", color(150, 150, 250), loadedFont);
-  results.addWidgetC(20, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
-  results.addWidgetC(80, SCREEN_HEIGHT-60, 40, 40, homeIcon, 2);
-  results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, homeIcon, 3);
+  results.addWidgetC(80, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
+  results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, homeIcon, 2);
+  results.addWidgetC(200, SCREEN_HEIGHT-60, 40, 40, homeIcon, 3);
+  results.addWidgetC(260,  SCREEN_HEIGHT-60, 40, 40, mapIcon, 4);
 
   flightInfo.addWidgetB(100, 780, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   mapImg = loadImage("USA.png");
+  starsAndStripes = loadImage("Stars_And_Stripes.png");
+  //starsAndStripes.resize(960, 640);
 
-  pieCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "next", color(200, 200, 200), loadedFont, 1);
-  pieCharts1.addWidgetB(20, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 2);
+  pieCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "Next", color(200, 200, 200), loadedFont, 1);
+  pieCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 2);
 
-  pieCharts2.addWidgetB(20, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 1);
+  pieCharts2.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 1);
 
-  barCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "next", color(200, 200, 200), loadedFont, 1);
-  barCharts1.addWidgetB(20, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 2);
+  barCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "Next", color(200, 200, 200), loadedFont, 1);
+  barCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 2);
 
-  barCharts1.addWidgetB(20, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 1);
+  barCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 1);
 
 
   /********** DATA TABLE
@@ -180,17 +203,17 @@ void setup() {
    ***********/
   inputs = new ArrayList<Input>();
   dropdowns = new ArrayList<Dropdown>();
-  airline = newDropdown("Airline", 8, 140, 120, 25, "Airline", carrierNames);
-  departure = newDropdown("Departure", 136, 140, 120, 25, "Departure", locations);
-  arrival = newDropdown("Arrival", 264, 140, 120, 25, "Arrival", locations);
+  airline = newDropdown("Airline", 50, 140, 130, 25, "Airline", carrierNames);
+  departure = newDropdown("Departure", 200, 140, 130, 25, "Departure", locations);
+  arrival = newDropdown("Arrival", 350, 140, 130, 25, "Arrival", locations);
 
-  calendar = new filter("calendar", 400, 140, calendarImg.width - 20, calendarImg.height - 20, calendarImg);
-  startSlider1 = new filter("slider", "start", 100, 600, 160, 10, 0, 200, 0, 150, 5);
-  endSlider1 = new filter("slider", "end", 100, 750, 160, 10, 0, 200, 24, 150, 5);
-  startSlider2 = new filter("slider", "start", 100, 780, 160, 10, 0, 200, 0, 150, 5);
-  endSlider2 = new filter("slider", "end", 100, 930, 160, 10, 0, 200, 24, 150, 5);
-  tickbox1 = new filter("tickbox", 685, 270, 25, untickedImg, tickedImg);
-  tickbox2 = new filter("tickbox", 810, 270, 25, untickedImg, tickedImg);
+  calendar = new filter("calendar", 50, 330, calendarImg.width - 20, calendarImg.height - 20, calendarImg);
+  depStartSlider = new filter("slider", "start", 520, 150, 10, 0, 200, 0, 175, 5);
+  depEndSlider = new filter("slider", "end", 695, 150, 10, 0, 200, 24, 175, 5);
+  arrStartSlider = new filter("slider", "start", 745, 150, 10, 0, 200, 0, 175, 5);
+  arrEndSlider = new filter("slider", "end", 920, 150, 10, 0, 200, 24, 175, 5);
+  lateTickbox = new filter("tickbox", 340, 330, 25, untickedImg, tickedImg);
+  cancelledTickbox = new filter("tickbox", 490, 330, 25, untickedImg, tickedImg);
 
   /*
   
@@ -256,66 +279,70 @@ void draw() {
     startSlider2.drawRect();
 
     calendar.draw();
-    startSlider1.draw();
-    endSlider1.draw();
-    startSlider2.draw();
-    endSlider2.draw();
-    tickbox1.draw();
-    tickbox2.draw();
+    depStartSlider.draw();
+    depEndSlider.draw();
+    arrStartSlider.draw();
+    arrEndSlider.draw();
+    lateTickbox.draw();
+    cancelledTickbox.draw();
 
-    if (startSlider1.dragged())
+    if (depStartSlider.dragged())
     {
-      startSlider1.move(mouseX, endSlider1.getNumber(), endSlider1.xpos);
-    } else if (endSlider1.dragged())
+      depStartSlider.move(mouseX, depEndSlider.getNumber(), depEndSlider.xpos);
+    } else if (depEndSlider.dragged())
     {
-      endSlider1.move(mouseX, startSlider1.getNumber(), startSlider1.xpos);
-    } else if (startSlider2.dragged())
+      depEndSlider.move(mouseX, depStartSlider.getNumber(), depStartSlider.xpos);
+    } else if (arrStartSlider.dragged())
     {
-      startSlider2.move(mouseX, endSlider2.getNumber(), endSlider2.xpos);
-    } else if (endSlider2.dragged())
+      arrStartSlider.move(mouseX, arrEndSlider.getNumber(), arrEndSlider.xpos);
+    } else if (arrEndSlider.dragged())
     {
-      endSlider2.move(mouseX, startSlider2.getNumber(), startSlider2.xpos);
+      arrEndSlider.move(mouseX, arrStartSlider.getNumber(), arrStartSlider.xpos);
     }
 
     stroke(0);
     textAlign(CENTER, CENTER);
-    text("Airline", 68, 130);
-    text("Departure State", 196, 130);
-    text("Arrival State", 324, 130);
+    text("Airline:", 80, 130);
+    text("Departure State:", 266, 130);
+    text("Arrival State:", 401, 130);
+    
+    textAlign(LEFT);
 
     int chosenDate = calendar.getDate();
     if (chosenDate < 1)
     {
-      text("Date of flight: ", 480, 130);
+      text("Date of flight: ", 52, 317);
     } else
     {
       if (chosenDate == 1)
       {
-        text("Date of flight: " + chosenDate + "st Jan", 480, 130);
+        text("Date of flight: " + chosenDate + "st Jan", 52, 317);
       } else if (chosenDate == 2)
       {
-        text("Date of flight: " + chosenDate + "nd Jan", 480, 130);
+        text("Date of flight: " + chosenDate + "nd Jan", 52, 317);
       } else if (chosenDate == 3)
       {
-        text("Date of flight: " + chosenDate + "rd Jan", 480, 130);
+        text("Date of flight: " + chosenDate + "rd Jan", 52, 317);
       } else
       {
-        text("Date of flight: " + chosenDate + "th Jan", 480, 130);
+        text("Date of flight: " + chosenDate + "th Jan", 52, 317);
       }
     }
 
-    int chosenDepTime1 = startSlider1.getNumber();
-    int chosenDepTime2 = endSlider1.getNumber();
+   textAlign(CENTER, CENTER);
 
-    text("Departure Time: " + chosenDepTime1 + ":00-" + chosenDepTime2 + ":00", 602, 150);
+    int chosenDepTime1 = depStartSlider.getNumber();
+    int chosenDepTime2 = depEndSlider.getNumber();
 
-    int chosenArrTime1 = startSlider2.getNumber();
-    int chosenArrTime2 = endSlider2.getNumber();
+    text("Departure Time: " + chosenDepTime1 + ":00-" + chosenDepTime2 + ":00", 602, 130);
 
-    text("Arrival Time: " + chosenArrTime1 + ":00-" + chosenArrTime2 + ":00", 782, 150);
+    int chosenArrTime1 = arrStartSlider.getNumber();
+    int chosenArrTime2 = arrEndSlider.getNumber();
 
-    text("Late", 686, 265);
-    text("Cancelled", 797, 265);
+    text("Arrival Time: " + chosenArrTime1 + ":00-" + chosenArrTime2 + ":00", 823, 130);
+
+    text("Late", 354, 317);
+    text("Cancelled", 502, 317);
   }
 
   if (results.active) {
@@ -327,8 +354,13 @@ void draw() {
   search.draw();
   results.draw();
   flightInfo.draw();
-
+  pieCharts1.draw();
+  pieCharts2.draw();
+  barCharts1.draw();
+  barCharts2.draw();
+  
   if (flightInfo.active) {
+    image(starsAndStripes, 0, 0);
     image(mapImg, 0, 0);
 
     // if (getDeparture < 1) {
@@ -428,38 +460,34 @@ ArrayList<Flight> filteredData() {
   } else {
     flightsByOriginCarrierDest.addAll(flightsByOriginCarrier);
   }
-  
-  return flightsByOriginCarrierDest;
 
-//int chosenDepTime1 = startSlider1.getNumber();
-  //println(chosenDepTime1);
-  //int chosenDepTime2 = endSlider1.getNumber();
-  //println(chosenDepTime2);
+  int chosenDepTime1 = startSlider1.getNumber();
+  int chosenDepTime2 = endSlider1.getNumber();
 
-  //int chosenArrTime1 = startSlider2.getNumber();
-  //int chosenArrTime2 = endSlider2.getNumber();
+  int chosenArrTime1 = startSlider2.getNumber();
+  int chosenArrTime2 = endSlider2.getNumber();
 
-  //ArrayList<Flight> flightsByDepTime = new ArrayList<Flight>();
-  //flightsByDepTime.addAll(data.inThisTimeRange("depTimes", String.valueOf(chosenDepTime1), String.valueOf(chosenDepTime2), flightsByOriginCarrierDest));
+  ArrayList<Flight> flightsByDepTime = new ArrayList<Flight>();
+  flightsByDepTime.addAll(data.inThisTimeRange("depTimes", String.valueOf(chosenDepTime1), String.valueOf(chosenDepTime2), flightsByOriginCarrierDest));
 
-  //ArrayList<Flight> flightsByArrTime = new ArrayList<Flight>();
-  //flightsByArrTime.addAll(data.inThisTimeRange("arrTimes", String.valueOf(chosenArrTime1), String.valueOf(chosenArrTime2), flightsByDepTime));
+  ArrayList<Flight> flightsByArrTime = new ArrayList<Flight>();
+  flightsByArrTime.addAll(data.inThisTimeRange("arrTimes", String.valueOf(chosenArrTime1), String.valueOf(chosenArrTime2), flightsByDepTime));
    
-  // return flightsByArrTime;
-  //ArrayList<Flight> flightsByCancelled = new ArrayList<Flight>();
-  //if (tickbox2.ticked) {
-  //  flightsByCancelled.addAll(data.flightsWhichMatchThisCriterion("cancelled", "", flightsByOriginCarrierDest));
-  //} else {
-  //  flightsByCancelled.addAll(flightsByOriginCarrierDest);
-  //}
+  ArrayList<Flight> flightsByCancelled = new ArrayList<Flight>();
+  if (tickbox2.ticked) {
+    flightsByCancelled.addAll(data.flightsWhichMatchThisCriterion("cancelled", "", flightsByArrTime));
+  } else {
+    flightsByCancelled.addAll(flightsByArrTime);
+  }
+  
+  ArrayList<Flight> flightsByLate = new ArrayList<Flight>();
+  if (tickbox1.ticked) {
+    flightsByLate.addAll(data.flightsWhichMatchThisCriterion("late", "", flightsByCancelled));
+  } else {
+    flightsByLate.addAll(flightsByCancelled);
+  }
+  return flightsByLate;
 
-  //ArrayList<Flight> flightsByLate = new ArrayList<Flight>();
-  //if (tickbox2.ticked) {
-  //  flightsByLate.addAll(data.flightsWhichMatchThisCriterion("late", "", flightsByCancelled));
-  //} else {
-  //  flightsByLate.addAll(flightsByCancelled);
-  //}
-  //return flightsByLate;
   //Flights Filtered By Date
   //ArrayList<Flight> finalFilteredList = new ArrayList<Flight>();
   //int date = calendar.getDate();
@@ -487,31 +515,31 @@ void loadChart(){
 }
 
 void mouseReleased() {
-  startSlider1.release();
-  endSlider1.release();
-  startSlider2.release();
-  endSlider2.release();
+  depStartSlider.release();
+  depEndSlider.release();
+  arrStartSlider.release();
+  arrEndSlider.release();
 }
 
 void mousePressed() {
   calendar.click();
-  tickbox1.click();
-  tickbox2.click();
+  lateTickbox.click();
+  cancelledTickbox.click();
 
-  if (Math.abs(mouseX - startSlider1.xpos) < 20 && Math.abs(mouseY - startSlider1.ypos) < 20)
+  if (Math.abs(mouseX - depStartSlider.xpos) < 20 && Math.abs(mouseY - depStartSlider.ypos) < 20)
   {
-    startSlider1.click();
-  } else if (Math.abs(mouseX - endSlider1.xpos) < 20 && Math.abs(mouseY - endSlider1.ypos) < 20)
+    depStartSlider.click();
+  } else if (Math.abs(mouseX - depEndSlider.xpos) < 20 && Math.abs(mouseY - depEndSlider.ypos) < 20)
   {
-    endSlider1.click();
+    depEndSlider.click();
   }
 
-  if (Math.abs(mouseX - startSlider2.xpos) < 20 && Math.abs(mouseY - startSlider2.ypos) < 20)
+  if (Math.abs(mouseX - arrStartSlider.xpos) < 20 && Math.abs(mouseY - arrStartSlider.ypos) < 20)
   {
-    startSlider2.click();
-  } else if (Math.abs(mouseX - endSlider2.xpos) < 20 && Math.abs(mouseY - endSlider2.ypos) < 20)
+    arrStartSlider.click();
+  } else if (Math.abs(mouseX - arrEndSlider.xpos) < 20 && Math.abs(mouseY - arrEndSlider.ypos) < 20)
   {
-    endSlider2.click();
+    arrEndSlider.click();
   }
 
   // Check if an input was selected and update if so
@@ -521,6 +549,18 @@ void mousePressed() {
   }
   for (Dropdown box : dropdowns) {
     box.checkIfClicked();
+  }
+
+  musicEvent = musicButton.getEvent(mouseX, mouseY);
+  if(musicEvent == 5) {
+    if(musicButton.icon == musicIcon) {
+      music.pause();
+      musicButton.changeIcon(musicMuteIcon);
+    }
+    else {
+      music.loop();
+      musicButton.changeIcon(musicIcon);
+    }
   }
 
   if (welcome.active) {
@@ -873,7 +913,18 @@ void getPositions() {
   else if (State == "WY") {
     stateXPos = 300;
     stateYPos = 185;
-  } else {
+  } 
+  //Puerto Rico
+  else if (State == "PR") {
+    stateXPos = 950;
+    stateYPos = 630;
+  } 
+  //US Virgin Islands
+  else if (State == "VI") {
+    stateXPos = 0;
+    stateYPos = 320;
+  } 
+else {
     stateXPos = 0;
     stateYPos = 0;
   }
@@ -882,12 +933,11 @@ void getPositions() {
 /**********
  FRAME COUNTER
  ***********/
-
 void frameCounter() {
   fill(255);
-  rect(15, 5, 30, 10);
+  rect(0, 0, 30, 20);
   float fps = frameRate;
   int framesPerSecond = round(fps);
   fill(0);
-  text(" " + framesPerSecond, 5, 10);
+  text(" " + framesPerSecond, 15, 10);
 }

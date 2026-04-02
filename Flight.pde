@@ -32,10 +32,10 @@ class Flight {
     carrierNumb = tCarrierNumb;
     originCode = tOriginCode;
     destCode = tDestCode;
-    plannedDep = tPlannedDep;
-    actualDep = tActualDep;
-    plannedArr = tPlannedArr;
-    actualArr = tActualArr;
+    plannedDep = tPlannedDep/100;
+    actualDep = tActualDep/100;
+    plannedArr = tPlannedArr/100;
+    actualArr = tActualArr/100;
     distance = tDistance;
     if (tDiverted == 1) {
       diverted = true;

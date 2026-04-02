@@ -18,10 +18,10 @@ class filter {
                        {23, 24, 25, 26, 27, 28, 29},
                        {30, 31, 0, 0, 0, 0, 0}};
   
-  filter(String type, String status, int xMargin, int xpos, int ypos, int size, color circleColour, color rectColour, int number, int rectWidth, int rectHeight) {
+  filter(String type, String status, int xpos, int ypos, int size, color circleColour, color rectColour, int number, int rectWidth, int rectHeight) {
     this.type = type;
     this.status = status;
-    this.xMargin = xMargin;
+    this.xMargin = xpos;
     this.xpos = xpos;
     this.ypos = ypos;
     rectX = xpos;
@@ -102,7 +102,7 @@ class filter {
       if (status.equals("start"))
       {
         int distance = xpos - rectX;
-        int step = rectWidth / 24;
+        int step = round(rectWidth / 24);
         num = round(distance / step);
         
         if (num > 24) {
@@ -112,7 +112,7 @@ class filter {
       else
       {
         int distance = xpos - (rectX - rectWidth);
-        int step = rectWidth / 24;
+        int step = round(rectWidth / 24);
         num = round(distance / step);
         
         if (num > 24) {
@@ -136,8 +136,7 @@ class filter {
   void actualDate() {
     if (type.equals("calendar"))
     {
-       if (numX < 6 && numY < 6) date = dateArray[numX][numY];
-       println(date);
+       if (numX <= 6 && numY <= 6) date = dateArray[numX][numY];
     }
   }
   
