@@ -451,24 +451,20 @@ ArrayList<Flight> filteredData() {
   } else {
     flightsByOriginCarrierDest.addAll(flightsByOriginCarrier);
   }
-  
-  return flightsByOriginCarrierDest;
 
-//int chosenDepTime1 = startSlider1.getNumber();
-  //println(chosenDepTime1);
-  //int chosenDepTime2 = endSlider1.getNumber();
-  //println(chosenDepTime2);
+  int chosenDepTime1 = startSlider1.getNumber();
+  int chosenDepTime2 = endSlider1.getNumber();
 
-  //int chosenArrTime1 = startSlider2.getNumber();
-  //int chosenArrTime2 = endSlider2.getNumber();
+  int chosenArrTime1 = startSlider2.getNumber();
+  int chosenArrTime2 = endSlider2.getNumber();
 
-  //ArrayList<Flight> flightsByDepTime = new ArrayList<Flight>();
-  //flightsByDepTime.addAll(data.inThisTimeRange("depTimes", String.valueOf(chosenDepTime1), String.valueOf(chosenDepTime2), flightsByOriginCarrierDest));
+  ArrayList<Flight> flightsByDepTime = new ArrayList<Flight>();
+  flightsByDepTime.addAll(data.inThisTimeRange("depTimes", String.valueOf(chosenDepTime1), String.valueOf(chosenDepTime2), flightsByOriginCarrierDest));
 
-  //ArrayList<Flight> flightsByArrTime = new ArrayList<Flight>();
-  //flightsByArrTime.addAll(data.inThisTimeRange("arrTimes", String.valueOf(chosenArrTime1), String.valueOf(chosenArrTime2), flightsByDepTime));
+  ArrayList<Flight> flightsByArrTime = new ArrayList<Flight>();
+  flightsByArrTime.addAll(data.inThisTimeRange("arrTimes", String.valueOf(chosenArrTime1), String.valueOf(chosenArrTime2), flightsByDepTime));
    
-  // return flightsByArrTime;
+  return flightsByArrTime;
   //ArrayList<Flight> flightsByCancelled = new ArrayList<Flight>();
   //if (tickbox2.ticked) {
   //  flightsByCancelled.addAll(data.flightsWhichMatchThisCriterion("cancelled", "", flightsByOriginCarrierDest));
