@@ -876,7 +876,18 @@ void getPositions() {
   else if (State == "WY") {
     stateXPos = 300;
     stateYPos = 185;
-  } else {
+  } 
+  //Puerto Rico
+  else if (State == "PR") {
+    stateXPos = 950;
+    stateYPos = 630;
+  } 
+  //US Virgin Islands
+  else if (State == "VI") {
+    stateXPos = 0;
+    stateYPos = 320;
+  } 
+else {
     stateXPos = 0;
     stateYPos = 0;
   }
