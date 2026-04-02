@@ -24,8 +24,12 @@ Screen welcome = new Screen();
 Screen search = new Screen();
 Screen results = new Screen();
 Screen flightInfo = new Screen();
+Screen pieCharts1 = new Screen();
+Screen pieCharts2 = new Screen();
+Screen barCharts1 = new Screen();
+Screen barCharts2 = new Screen();
 
-int currentEvent;
+int currentEvent; 
 
 /**********
  FlightInfo Variables
@@ -112,14 +116,27 @@ void setup() {
   welcome.addWidgetA(SCREEN_WIDTH/2 - 90, 440, 180, 30, "and Ethan Ó Mórdha", color(2, 176, 207), loadedFont);
 
   search.addWidgetC(20, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
-  search.addWidgetA(60, 60, 150, 40, "Enter queries...", color(150, 150, 250), loadedFont);
-  search.addWidgetB(780, 560, 150, 50, "Search", color(100, 180, 255), loadedFont, 2);
+  search.addWidgetA(60, 60, 150, 40, "Enter queries...", color(140, 240, 250), loadedFont);
+  search.addWidgetB(780, 560, 150, 50, "Search", color(140, 240, 255), loadedFont, 2);
 
   results.addWidgetA(SCREEN_WIDTH/2-75, 60, 150, 40, "Matching Results", color(150, 150, 250), loadedFont);
   results.addWidgetC(20, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
+  results.addWidgetC(80, SCREEN_HEIGHT-60, 40, 40, homeIcon, 2);
+  results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, homeIcon, 3);
 
   flightInfo.addWidgetB(100, 780, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   mapImg = loadImage("USA.png");
+
+  pieCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "next", color(200, 200, 200), loadedFont, 1);
+  pieCharts1.addWidgetB(20, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 2);
+
+  pieCharts2.addWidgetB(20, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 1);
+
+  barCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "next", color(200, 200, 200), loadedFont, 1);
+  barCharts1.addWidgetB(20, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 2);
+
+  barCharts1.addWidgetB(20, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 1);
+
 
   /********** DATA TABLE
    Here is our data class. We're using the Processing class called Table:
@@ -530,13 +547,62 @@ void mousePressed() {
     }
   }
 
-  if (results.active) {
+  if(results.active) {
     currentEvent = results.getEvent(mouseX, mouseY);
-    if (currentEvent == 1) {
+    if(currentEvent == 1) {
       results.active = false;
       welcome.active = true;
     }
+    else if(currentEvent == 2) {
+      results.active = false;
+      pieCharts1.active = true;
+    }
+    else if(currentEvent == 3) {
+      results.active = false;
+      barCharts1.active = true;
+    }
   }
+
+  if(pieCharts1.active) {
+    currentEvent = pieCharts1.getEvent(mouseX, mouseY);
+    if(currentEvent == 1) {
+      pieCharts1.active = false;
+      pirCharts2.active = true;
+    }
+    else if(currentEvent == 2) {
+      pieCharts1.active = false;
+      results.active = true;
+    }
+  }
+
+  if(pieCharts2.active) {
+    currentEvent = pieCharts2.getEvent(mouseX, mouseY);
+    if(currentEvent == 1) {
+      pieCharts2.active = false;
+      pieCharts1.active = true;
+    }
+  }
+
+  if(barCharts1.active) {
+    currentEvent = barCharts1.getEvent(mouseX, mouseY);
+    if(currentEvent == 1) {
+      barCharts1.active = false;
+      barCharts2.active = true;
+    }
+    else if(currentEvent == 2) {
+      barCharts1.active = false;
+      results.active = true;
+    }
+  }
+
+  if(barCharts2.active) {
+    currentEvent = barCharts2.getEvent(mouseX, mouseY);
+    if(currentEvent == 1) {
+      barCharts2.active = false;
+      barCharts1.active = true;
+    }
+  }
+
 }
 
 void mouseWheel(MouseEvent event) {
