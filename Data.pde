@@ -168,7 +168,7 @@ public ArrayList<Flight> flightsWhichMatchThisCriterion(String type, String valu
     return flightSubList;
     case ("accDepTimeMinimum"):
     for (Flight f : flightList) {
-      if ((f.actualDep) > Integer.parseInt(value)) {
+      if ((f.actualDep) >= Integer.parseInt(value)) {
         flightSubList.add(f);
       }
     }
@@ -176,7 +176,7 @@ public ArrayList<Flight> flightsWhichMatchThisCriterion(String type, String valu
 
     case ("accDepTimeMaximum"):
     for (Flight f : flightList) {
-      if ((f.actualDep) < Integer.parseInt(value)) {
+      if ((f.actualDep) <= Integer.parseInt(value)) {
         flightSubList.add(f);
       }
     }
@@ -184,7 +184,7 @@ public ArrayList<Flight> flightsWhichMatchThisCriterion(String type, String valu
 
     case ("accArrTimeMinimum"):
     for (Flight f : flightList) {
-      if ((f.actualArr) > Integer.parseInt(value)) {
+      if ((f.actualArr) >= Integer.parseInt(value)) {
         flightSubList.add(f);
       }
     }
@@ -192,7 +192,7 @@ public ArrayList<Flight> flightsWhichMatchThisCriterion(String type, String valu
 
     case ("accArrTimeMaximum"):
     for (Flight f : flightList) {
-      if ((f.actualArr) < Integer.parseInt(value)) {
+      if ((f.actualArr) <= Integer.parseInt(value)) {
         flightSubList.add(f);
       }
     }
@@ -206,7 +206,7 @@ public ArrayList<Flight> flightsWhichMatchThisCriterion(String type, String valu
       String dateDay = date.next();
       date.close();
       int dateDayInt = Integer.parseInt(dateDay);
-      if ((dateDayInt) > Integer.parseInt(value)) {
+      if ((dateDayInt) >= Integer.parseInt(value)) {
         flightSubList.add(f);
       }
     }
@@ -220,7 +220,7 @@ public ArrayList<Flight> flightsWhichMatchThisCriterion(String type, String valu
       String dateDay = date.next();
       date.close();
       int dateDayInt = Integer.parseInt(dateDay);
-      if ((dateDayInt) < Integer.parseInt(value)) {
+      if ((dateDayInt) <= Integer.parseInt(value)) {
         flightSubList.add(f);
       }
     }
@@ -244,6 +244,10 @@ public ArrayList<Flight> inThisTimeRange(String type, String min, String max, Ar
     flightSubList = flightsWhichMatchThisCriterion("accArrTimeMaximum", max, flightFilteredByMinArr);
     return flightSubList;
   case "dates":
+  println(min);
+    if (min.equals("0")){
+      return flightList;
+    }
     ArrayList<Flight> flightFilteredByMinDate = flightsWhichMatchThisCriterion("dateMinimum", min, flightList);
     flightSubList = flightsWhichMatchThisCriterion("dateMaximum", max, flightFilteredByMinDate);
     return flightSubList;
@@ -251,7 +255,6 @@ public ArrayList<Flight> inThisTimeRange(String type, String min, String max, Ar
     return flightSubList;
   }
 }
-
 public float percentWhichMatchThisCriterion(String type, String value, ArrayList<Flight> flightList) {
   int totalFlights = flightList.size();
   int numbThatMatchThisCriterion = flightsWhichMatchThisCriterion(type, value, flightList).size();
