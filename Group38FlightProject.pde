@@ -470,21 +470,21 @@ ArrayList<Flight> filteredData() {
   ArrayList<Flight> flightsByArrTime = new ArrayList<Flight>();
   flightsByArrTime.addAll(data.inThisTimeRange("arrTimes", String.valueOf(chosenArrTime1), String.valueOf(chosenArrTime2), flightsByDepTime));
    
-  return flightsByArrTime;
-  //ArrayList<Flight> flightsByCancelled = new ArrayList<Flight>();
-  //if (tickbox2.ticked) {
-  //  flightsByCancelled.addAll(data.flightsWhichMatchThisCriterion("cancelled", "", flightsByOriginCarrierDest));
-  //} else {
-  //  flightsByCancelled.addAll(flightsByOriginCarrierDest);
-  //}
+  ArrayList<Flight> flightsByCancelled = new ArrayList<Flight>();
+  if (tickbox2.ticked) {
+    flightsByCancelled.addAll(data.flightsWhichMatchThisCriterion("cancelled", "", flightsByArrTime));
+  } else {
+    flightsByCancelled.addAll(flightsByArrTime);
+  }
+  
+  ArrayList<Flight> flightsByLate = new ArrayList<Flight>();
+  if (tickbox1.ticked) {
+    flightsByLate.addAll(data.flightsWhichMatchThisCriterion("late", "", flightsByCancelled));
+  } else {
+    flightsByLate.addAll(flightsByCancelled);
+  }
+  return flightsByLate;
 
-  //ArrayList<Flight> flightsByLate = new ArrayList<Flight>();
-  //if (tickbox2.ticked) {
-  //  flightsByLate.addAll(data.flightsWhichMatchThisCriterion("late", "", flightsByCancelled));
-  //} else {
-  //  flightsByLate.addAll(flightsByCancelled);
-  //}
-  //return flightsByLate;
   //Flights Filtered By Date
   //ArrayList<Flight> finalFilteredList = new ArrayList<Flight>();
   //int date = calendar.getDate();
