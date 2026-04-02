@@ -305,7 +305,7 @@ void draw() {
   if (results.active) {
     text(filteredData().size() + " flights match your criteria", width/2, 150);
     if (showTable) resultTable.draw();
-    loadChart();
+    t();
   }
 
   welcome.draw();
@@ -415,7 +415,48 @@ ArrayList<Flight> filteredData() {
   }
   
   return flightsByOriginCarrierDest;
-  
+
+//int chosenDepTime1 = startSlider1.getNumber();
+  //println(chosenDepTime1);
+  //int chosenDepTime2 = endSlider1.getNumber();
+  //println(chosenDepTime2);
+
+  //int chosenArrTime1 = startSlider2.getNumber();
+  //int chosenArrTime2 = endSlider2.getNumber();
+
+  //ArrayList<Flight> flightsByDepTime = new ArrayList<Flight>();
+  //flightsByDepTime.addAll(data.inThisTimeRange("depTimes", String.valueOf(chosenDepTime1), String.valueOf(chosenDepTime2), flightsByOriginCarrierDest));
+
+  //ArrayList<Flight> flightsByArrTime = new ArrayList<Flight>();
+  //flightsByArrTime.addAll(data.inThisTimeRange("arrTimes", String.valueOf(chosenArrTime1), String.valueOf(chosenArrTime2), flightsByDepTime));
+   
+  // return flightsByArrTime;
+  //ArrayList<Flight> flightsByCancelled = new ArrayList<Flight>();
+  //if (tickbox2.ticked) {
+  //  flightsByCancelled.addAll(data.flightsWhichMatchThisCriterion("cancelled", "", flightsByOriginCarrierDest));
+  //} else {
+  //  flightsByCancelled.addAll(flightsByOriginCarrierDest);
+  //}
+
+  //ArrayList<Flight> flightsByLate = new ArrayList<Flight>();
+  //if (tickbox2.ticked) {
+  //  flightsByLate.addAll(data.flightsWhichMatchThisCriterion("late", "", flightsByCancelled));
+  //} else {
+  //  flightsByLate.addAll(flightsByCancelled);
+  //}
+  //return flightsByLate;
+  //Flights Filtered By Date
+  //ArrayList<Flight> finalFilteredList = new ArrayList<Flight>();
+  //int date = calendar.getDate();
+  //if (date >= 0 && date <= 31) {
+  //  String dateAsString = String.valueOf(date);
+  //  finalFilteredList.addAll(data.inThisTimeRange("dates", dateAsString, dateAsString, flightsByDiverted));
+  //}
+  //else {
+  //  finalFilteredList.addAll(flightsByDiverted);
+  //}
+
+  //return finalFilteredList;
 }
 
 void loadChart(){
