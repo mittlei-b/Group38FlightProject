@@ -136,7 +136,7 @@ class filter {
   void actualDate() {
     if (type.equals("calendar"))
     {
-       date = dateArray[numX][numY];
+       if (numX < 6 && numY < 6) date = dateArray[numX][numY];
        println(date);
     }
   }
