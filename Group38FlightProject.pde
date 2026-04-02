@@ -37,6 +37,7 @@ Screen barCharts1 = new Screen();
 Screen barCharts2 = new Screen();
 
 int currentEvent; 
+int musicEvent;
 
 /**********
  FlightInfo Variables
@@ -134,29 +135,30 @@ void setup() {
   welcome.addWidgetA(SCREEN_WIDTH/2 - 160, 410, 320, 30, "Brynne Mittleider, Lauren McGaughey", color(2, 176, 207), loadedFont);
   welcome.addWidgetA(SCREEN_WIDTH/2 - 90, 440, 180, 30, "and Ethan Ó Mórdha", color(2, 176, 207), loadedFont);
 
-  search.addWidgetC(20, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
+  search.addWidgetC(80, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
   search.addWidgetA(60, 60, 150, 40, "Enter queries...", color(140, 240, 250), loadedFont);
   search.addWidgetB(780, 560, 150, 50, "Search", color(140, 240, 255), loadedFont, 2);
 
   results.addWidgetA(SCREEN_WIDTH/2-75, 60, 150, 40, "Matching Results", color(150, 150, 250), loadedFont);
-  results.addWidgetC(20, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
-  results.addWidgetC(80, SCREEN_HEIGHT-60, 40, 40, homeIcon, 2);
-  results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, homeIcon, 3);
+  results.addWidgetC(80, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
+  results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, homeIcon, 2);
+  results.addWidgetC(200, SCREEN_HEIGHT-60, 40, 40, homeIcon, 3);
+  results.addWidgetC(260,  SCREEN_HEIGHT-60, 40, 40, mapIcon, 4);
 
   flightInfo.addWidgetB(100, 780, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   mapImg = loadImage("USA.png");
   starsAndStripes = loadImage("Stars_And_Stripes.png");
   starsAndStripes.resize(960, 640);
 
-  pieCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "next", color(200, 200, 200), loadedFont, 1);
-  pieCharts1.addWidgetB(20, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 2);
+  pieCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "Next", color(200, 200, 200), loadedFont, 1);
+  pieCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 2);
 
-  pieCharts2.addWidgetB(20, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 1);
+  pieCharts2.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 1);
 
-  barCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "next", color(200, 200, 200), loadedFont, 1);
-  barCharts1.addWidgetB(20, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 2);
+  barCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "Next", color(200, 200, 200), loadedFont, 1);
+  barCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 2);
 
-  barCharts1.addWidgetB(20, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 1);
+  barCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 1);
 
 
   /********** DATA TABLE
@@ -349,7 +351,11 @@ void draw() {
   search.draw();
   results.draw();
   flightInfo.draw();
-
+  pieCharts1.draw();
+  pieCharts2.draw();
+  barCharts1.draw();
+  barCharts2.draw();
+  
   if (flightInfo.active) {
     image(starsAndStripes, 0, 0);
     image(mapImg, 0, 0);
@@ -540,6 +546,18 @@ void mousePressed() {
   }
   for (Dropdown box : dropdowns) {
     box.checkIfClicked();
+  }
+
+  musicEvent = musicButton.getEvent(mouseX, mouseY);
+  if(musicEvent == 5) {
+    if(musicButton.icon == musicIcon) {
+      music.pause();
+      musicButton.changeIcon(musicMuteIcon);
+    }
+    else {
+      music.loop();
+      musicButton.changeIcon(musicIcon);
+    }
   }
 
   if (welcome.active) {
