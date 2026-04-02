@@ -203,17 +203,17 @@ void setup() {
    ***********/
   inputs = new ArrayList<Input>();
   dropdowns = new ArrayList<Dropdown>();
-  airline = newDropdown("Airline", 8, 140, 120, 25, "Airline", carrierNames);
-  departure = newDropdown("Departure", 136, 140, 120, 25, "Departure", locations);
-  arrival = newDropdown("Arrival", 264, 140, 120, 25, "Arrival", locations);
+  airline = newDropdown("Airline", 50, 140, 130, 25, "Airline", carrierNames);
+  departure = newDropdown("Departure", 200, 140, 130, 25, "Departure", locations);
+  arrival = newDropdown("Arrival", 350, 140, 130, 25, "Arrival", locations);
 
-  calendar = new filter("calendar", 400, 140, calendarImg.width - 20, calendarImg.height - 20, calendarImg);
-  startSlider1 = new filter("slider", "start", 100, 600, 160, 10, 0, 200, 0, 150, 5);
-  endSlider1 = new filter("slider", "end", 100, 750, 160, 10, 0, 200, 24, 150, 5);
-  startSlider2 = new filter("slider", "start", 100, 780, 160, 10, 0, 200, 0, 150, 5);
-  endSlider2 = new filter("slider", "end", 100, 930, 160, 10, 0, 200, 24, 150, 5);
-  tickbox1 = new filter("tickbox", 685, 270, 25, untickedImg, tickedImg);
-  tickbox2 = new filter("tickbox", 810, 270, 25, untickedImg, tickedImg);
+  calendar = new filter("calendar", 50, 330, calendarImg.width - 20, calendarImg.height - 20, calendarImg);
+  depStartSlider = new filter("slider", "start", 520, 150, 10, 0, 200, 0, 175, 5);
+  depEndSlider = new filter("slider", "end", 695, 150, 10, 0, 200, 24, 175, 5);
+  arrStartSlider = new filter("slider", "start", 745, 150, 10, 0, 200, 0, 175, 5);
+  arrEndSlider = new filter("slider", "end", 920, 150, 10, 0, 200, 24, 175, 5);
+  lateTickbox = new filter("tickbox", 340, 330, 25, untickedImg, tickedImg);
+  cancelledTickbox = new filter("tickbox", 490, 330, 25, untickedImg, tickedImg);
 
   /*
   
@@ -280,66 +280,70 @@ void draw() {
     startSlider2.drawRect();
 
     calendar.draw();
-    startSlider1.draw();
-    endSlider1.draw();
-    startSlider2.draw();
-    endSlider2.draw();
-    tickbox1.draw();
-    tickbox2.draw();
+    depStartSlider.draw();
+    depEndSlider.draw();
+    arrStartSlider.draw();
+    arrEndSlider.draw();
+    lateTickbox.draw();
+    cancelledTickbox.draw();
 
-    if (startSlider1.dragged())
+    if (depStartSlider.dragged())
     {
-      startSlider1.move(mouseX, endSlider1.getNumber(), endSlider1.xpos);
-    } else if (endSlider1.dragged())
+      depStartSlider.move(mouseX, depEndSlider.getNumber(), depEndSlider.xpos);
+    } else if (depEndSlider.dragged())
     {
-      endSlider1.move(mouseX, startSlider1.getNumber(), startSlider1.xpos);
-    } else if (startSlider2.dragged())
+      depEndSlider.move(mouseX, depStartSlider.getNumber(), depStartSlider.xpos);
+    } else if (arrStartSlider.dragged())
     {
-      startSlider2.move(mouseX, endSlider2.getNumber(), endSlider2.xpos);
-    } else if (endSlider2.dragged())
+      arrStartSlider.move(mouseX, arrEndSlider.getNumber(), arrEndSlider.xpos);
+    } else if (arrEndSlider.dragged())
     {
-      endSlider2.move(mouseX, startSlider2.getNumber(), startSlider2.xpos);
+      arrEndSlider.move(mouseX, arrStartSlider.getNumber(), arrStartSlider.xpos);
     }
 
     stroke(0);
     textAlign(CENTER, CENTER);
-    text("Airline", 68, 130);
-    text("Departure State", 196, 130);
-    text("Arrival State", 324, 130);
+    text("Airline:", 80, 130);
+    text("Departure State:", 266, 130);
+    text("Arrival State:", 401, 130);
+    
+    textAlign(LEFT);
 
     int chosenDate = calendar.getDate();
     if (chosenDate < 1)
     {
-      text("Date of flight: ", 480, 130);
+      text("Date of flight: ", 52, 317);
     } else
     {
       if (chosenDate == 1)
       {
-        text("Date of flight: " + chosenDate + "st Jan", 480, 130);
+        text("Date of flight: " + chosenDate + "st Jan", 52, 317);
       } else if (chosenDate == 2)
       {
-        text("Date of flight: " + chosenDate + "nd Jan", 480, 130);
+        text("Date of flight: " + chosenDate + "nd Jan", 52, 317);
       } else if (chosenDate == 3)
       {
-        text("Date of flight: " + chosenDate + "rd Jan", 480, 130);
+        text("Date of flight: " + chosenDate + "rd Jan", 52, 317);
       } else
       {
-        text("Date of flight: " + chosenDate + "th Jan", 480, 130);
+        text("Date of flight: " + chosenDate + "th Jan", 52, 317);
       }
     }
 
-    int chosenDepTime1 = startSlider1.getNumber();
-    int chosenDepTime2 = endSlider1.getNumber();
+   textAlign(CENTER, CENTER);
 
-    text("Departure Time: " + chosenDepTime1 + ":00-" + chosenDepTime2 + ":00", 602, 150);
+    int chosenDepTime1 = depStartSlider.getNumber();
+    int chosenDepTime2 = depEndSlider.getNumber();
 
-    int chosenArrTime1 = startSlider2.getNumber();
-    int chosenArrTime2 = endSlider2.getNumber();
+    text("Departure Time: " + chosenDepTime1 + ":00-" + chosenDepTime2 + ":00", 602, 130);
 
-    text("Arrival Time: " + chosenArrTime1 + ":00-" + chosenArrTime2 + ":00", 782, 150);
+    int chosenArrTime1 = arrStartSlider.getNumber();
+    int chosenArrTime2 = arrEndSlider.getNumber();
 
-    text("Late", 686, 265);
-    text("Cancelled", 797, 265);
+    text("Arrival Time: " + chosenArrTime1 + ":00-" + chosenArrTime2 + ":00", 823, 130);
+
+    text("Late", 354, 317);
+    text("Cancelled", 502, 317);
   }
 
   if (results.active) {
@@ -512,31 +516,31 @@ void loadChart(){
 }
 
 void mouseReleased() {
-  startSlider1.release();
-  endSlider1.release();
-  startSlider2.release();
-  endSlider2.release();
+  depStartSlider.release();
+  depEndSlider.release();
+  arrStartSlider.release();
+  arrEndSlider.release();
 }
 
 void mousePressed() {
   calendar.click();
-  tickbox1.click();
-  tickbox2.click();
+  lateTickbox.click();
+  cancelledTickbox.click();
 
-  if (Math.abs(mouseX - startSlider1.xpos) < 20 && Math.abs(mouseY - startSlider1.ypos) < 20)
+  if (Math.abs(mouseX - depStartSlider.xpos) < 20 && Math.abs(mouseY - depStartSlider.ypos) < 20)
   {
-    startSlider1.click();
-  } else if (Math.abs(mouseX - endSlider1.xpos) < 20 && Math.abs(mouseY - endSlider1.ypos) < 20)
+    depStartSlider.click();
+  } else if (Math.abs(mouseX - depEndSlider.xpos) < 20 && Math.abs(mouseY - depEndSlider.ypos) < 20)
   {
-    endSlider1.click();
+    depEndSlider.click();
   }
 
-  if (Math.abs(mouseX - startSlider2.xpos) < 20 && Math.abs(mouseY - startSlider2.ypos) < 20)
+  if (Math.abs(mouseX - arrStartSlider.xpos) < 20 && Math.abs(mouseY - arrStartSlider.ypos) < 20)
   {
-    startSlider2.click();
-  } else if (Math.abs(mouseX - endSlider2.xpos) < 20 && Math.abs(mouseY - endSlider2.ypos) < 20)
+    arrStartSlider.click();
+  } else if (Math.abs(mouseX - arrEndSlider.xpos) < 20 && Math.abs(mouseY - arrEndSlider.ypos) < 20)
   {
-    endSlider2.click();
+    arrEndSlider.click();
   }
 
   // Check if an input was selected and update if so
