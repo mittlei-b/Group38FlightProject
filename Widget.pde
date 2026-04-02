@@ -46,6 +46,13 @@ class Widget {
     }
   }
 
+  int getEvent(int mX, int mY) {
+    if(mX>x && mX < x+width && mY >y && mY <y+height) {
+      return event;
+    }
+    return 0;
+  }
+
    void changeIcon(PImage newIcon) {
     icon = newIcon;
   }
