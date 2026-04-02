@@ -145,7 +145,7 @@ void setup() {
 
   flightInfo.addWidgetB(100, 780, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   mapImg = loadImage("USA.png");
-  starsAndStripes = loadImage("Stars_And_Stripes.png);
+  starsAndStripes = loadImage("Stars_And_Stripes.png");
   starsAndStripes.resize(960, 640);
 
   pieCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "next", color(200, 200, 200), loadedFont, 1);
