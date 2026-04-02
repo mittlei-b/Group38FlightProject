@@ -881,12 +881,11 @@ void getPositions() {
 /**********
  FRAME COUNTER
  ***********/
-
 void frameCounter() {
   fill(255);
-  rect(15, 5, 30, 10);
+  rect(0, 0, 30, 20);
   float fps = frameRate;
   int framesPerSecond = round(fps);
   fill(0);
-  text(" " + framesPerSecond, 5, 10);
+  text(" " + framesPerSecond, 15, 10);
 }
