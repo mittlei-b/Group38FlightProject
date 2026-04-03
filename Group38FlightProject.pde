@@ -18,6 +18,7 @@ PImage musicMuteIcon;
 PImage pieChartIcon;
 PImage barChartIcon;
 PImage mapIcon;
+PImage searchIcon;
 Widget musicButton;
 SoundFile music;
 int SCREEN_HEIGHT = 640;
@@ -109,6 +110,7 @@ void setup() {
   untickedImg = loadImage("unticked.jpg");
   tickedImg = loadImage("ticked.jpg");
   calendarImg = loadImage("januaryCalendar.jpg");
+  searchIcon = loadImage("Search-Icon.png");
   calendarImg.resize(200, 200);
   welcomeBackground.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
   loadedFont = loadFont(font);
@@ -144,6 +146,7 @@ void setup() {
   results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, homeIcon, 2);
   results.addWidgetC(200, SCREEN_HEIGHT-60, 40, 40, homeIcon, 3);
   results.addWidgetC(260,  SCREEN_HEIGHT-60, 40, 40, mapIcon, 4);
+  results.addWidgetC(320, SCREEN_HEIGHT-60, 40, 40, searchIcon, 4);
 
   flightInfo.addWidgetB(100, 780, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   mapImg = loadImage("USA.png");
@@ -599,6 +602,10 @@ if(mouseX > musicButton.x && mouseX < musicButton.x + 40 && mouseY > musicButton
     else if(currentEvent == 3) {
       results.active = false;
       barCharts1.active = true;
+    }
+    else if (currentEvent == 4){
+      results.active = false;
+      search.active = true;
     }
   }
 
