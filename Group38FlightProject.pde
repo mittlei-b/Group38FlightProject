@@ -463,7 +463,7 @@ ArrayList<Flight> filteredData() {
   }
 
   int chosenDepTime1 = depStartSlider.getNumber();
-  int chosenDepTime2 = depSndSlider.getNumber();
+  int chosenDepTime2 = depEndSlider.getNumber();
 
   int chosenArrTime1 = arrStartSlider.getNumber();
   int chosenArrTime2 = arrEndSlider.getNumber();
