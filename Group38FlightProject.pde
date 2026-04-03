@@ -487,20 +487,19 @@ ArrayList<Flight> filteredData() {
   } else {
     flightsByLate.addAll(flightsByCancelled);
   }
-  return flightsByLate;
 
   //Flights Filtered By Date
-  //ArrayList<Flight> finalFilteredList = new ArrayList<Flight>();
-  //int date = calendar.getDate();
-  //if (date >= 0 && date <= 31) {
-  //  String dateAsString = String.valueOf(date);
-  //  finalFilteredList.addAll(data.inThisTimeRange("dates", dateAsString, dateAsString, flightsByDiverted));
-  //}
-  //else {
-  //  finalFilteredList.addAll(flightsByDiverted);
-  //}
+  ArrayList<Flight> finalFilteredList = new ArrayList<Flight>();
+  int date = calendar.getDate();
+  if (date >= 0 && date <= 31) {
+    String dateAsString = String.valueOf(date);
+    finalFilteredList.addAll(data.inThisTimeRange("dates", dateAsString, dateAsString, flightsByLate));
+  }
+  else {
+    finalFilteredList.addAll(flightsByLate);
+  }
 
-  //return finalFilteredList;
+  return finalFilteredList;
 }
 
 void loadChart(){
