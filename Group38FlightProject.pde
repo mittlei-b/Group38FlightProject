@@ -359,73 +359,8 @@ void draw() {
 if (barCharts1.active) {
     ArrayList<Flight> filtered = filteredData();
     if (filtered.size() > 0) {
-      ArrayList<String> stateCodes = data.stateCodes(filtered);
-      //println(stateCodes);
-      ArrayList<String> origValues = new ArrayList<String>();
-      for (String stateCode : stateCodes) {
-        ArrayList<Flight> originFlights = new ArrayList<Flight>();
-        originFlights.addAll(data.flightsWhichMatchThisCriterion("orig", stateCode, filtered));
-        origValues.add(String.valueOf(originFlights.size()));
-      }
-      String[][] stateAmounts = new String[stateCodes.size()][2];
-      for (int i = 0; i<stateCodes.size(); i++) {
-        stateAmounts[i][0] = stateCodes.get(i);
-        println(stateCodes.get(i)); 
-        stateAmounts[i][1] = origValues.get(i);
-      }
-      int[] values= new int[stateCodes.size()];
-      for (int i=0; i<origValues.size(); i++) {
-        values[i] = Integer.parseInt(origValues.get(i));
-      }
-      Arrays.sort(values);
-
-      //reverses list
-      for (int i = 0; i < values.length / 2; i++)
-      {
-        int temp = values[i];
-        values[i] = values[values.length - i - 1];
-        values[values.length - i - 1] = temp;
-      }
-      ArrayList<String> chartStateCodes = new ArrayList<String>();
-      ArrayList<String> chartValues = new ArrayList<String>();
-
-      if (values.length >= 10) {
-
-        for (int i = 0; i < 10; i++) {
-          chartValues.add(String.valueOf(values[i]));
-        }
-
-        for (String value : chartValues) {
-          String correctStateCode = "";
-          for (int i = 0; i< stateAmounts.length; i++) {
-            if (chartStateCodes.indexOf(stateAmounts[i][0]) == -1) {
-              if (value.equals(stateAmounts[i][1])) {
-                correctStateCode = stateAmounts[i][0];
-              }
-            }
-          }
-          chartStateCodes.add(correctStateCode);
-        }
-      } else {
-        for (int i = 0; i < values.length; i++) {
-          chartValues.add(String.valueOf(values[i]));
-        }
-
-        for (String value : chartValues) {
-          String correctStateCode = "";
-          for (int i = 0; i< stateAmounts.length; i++) {
-            if (chartStateCodes.indexOf(stateAmounts[i][0]) == -1) {
-              if (value.equals(stateAmounts[i][1])) {
-                correctStateCode = stateAmounts[i][0];
-              }
-            }
-          }
-          chartStateCodes.add(correctStateCode);
-        }
-      }
-      //println(chartStateCodes);
       Chart origBarChart = new Chart(100, 100, 300, 300, "Most Common Origins for Specified Flights", color(100, 50, 200), loadedFont);
-      origBarChart.load("2", chartStateCodes, chartValues);
+      origBarChart.loadDataWithType("2", "orig", filtered, origBarChart);
       origBarChart.draw();
     }
   }
@@ -705,7 +640,7 @@ if(mouseX > musicButton.x && mouseX < musicButton.x + 40 && mouseY > musicButton
     }
   }
 
-  if(barCharts1.active) {
+  if() {
     currentEvent = barCharts1.getEvent(mouseX, mouseY);
     if(currentEvent == 1) {
       barCharts1.active = false;
