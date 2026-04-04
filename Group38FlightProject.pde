@@ -350,7 +350,9 @@ void draw() {
   }
 
   if (results.active) {
-    text(filteredData().size() + " flights match your criteria", width/2, 150);
+    loadChart();
+    text(filteredData().size() + " flights match your criteria.", width/2, 150);
+    if (filteredData().size() > 23) text("Below is information about 23 of them.", width/2, 170);
     if (showTable) resultTable.draw();
   }
 
