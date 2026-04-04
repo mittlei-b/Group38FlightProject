@@ -354,6 +354,55 @@ void draw() {
     if (showTable) resultTable.draw();
   }
 
+if (barCharts1.active) {
+    ArrayList<Flight> filtered = filteredData();
+    ArrayList<String> stateCodes = data.stateCodes(filtered);
+    ArrayList<String> origValues = new ArrayList<String>();
+    for (String stateCode : stateCodes) {
+      ArrayList<Flight> originFlights = new ArrayList<Flight>();
+      originFlights.addAll(data.flightsWhichMatchThisCriterion("orig", stateCode, filtered));
+      origValues.add(String.valueOf(originFlights.size()));
+    }
+    String[][] stateAmounts = new String[stateCodes.size()][2];
+    for (int i = 0; i<stateCodes.size()-1; i++) {
+      stateAmounts[i][0] = stateCodes.get(i);
+      stateAmounts[i][1] = origValues.get(i);
+    }
+    int[] values= new int[stateCodes.size()];
+    for (int i=0; i<origValues.size(); i++) {
+      values[i] = Integer.parseInt(origValues.get(i));
+    }
+    Arrays.sort(values);
+
+    //reverses list
+    for (int i = 0; i < values.length / 2; i++)
+    {
+      int temp = values[i];
+      values[i] = values[values.length - i - 1];
+      values[values.length - i - 1] = temp;
+    }
+
+    ArrayList<String> tenSortedValues = new ArrayList<String>();
+    for (int i = 0; i < 10; i++) {
+      tenSortedValues.add(String.valueOf(values[i]));
+    }
+
+    ArrayList<String> tenStateCodes = new ArrayList<String>();
+    for (String value : tenSortedValues) {
+      String correctStateCode = "";
+      for (int i = 0; i< stateAmounts.length; i++) {
+        if (value.equals(stateAmounts[i][1])) {
+           correctStateCode = stateAmounts[i][0];
+        }
+      }
+      tenStateCodes.add(correctStateCode);
+    }
+    
+  Chart origBarChart = new Chart(100, 100, 300, 300, "Departed Flights on Specific Airlines", color(100, 50, 200), loadedFont);
+  origBarChart.load("2", tenStateCodes, tenSortedValues);
+  origBarChart.draw();
+}
+
   welcome.draw();
   search.draw();
   results.draw();
