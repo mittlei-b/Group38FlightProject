@@ -398,7 +398,7 @@ if (barCharts1.active) {
       tenStateCodes.add(correctStateCode);
     }
     
-  Chart origBarChart = new Chart(100, 100, 300, 300, "Departed Flights on Specific Airlines", color(100, 50, 200), loadedFont);
+  Chart origBarChart = new Chart(100, 100, 300, 300, "Most Common Origins for Specified Flights", color(100, 50, 200), loadedFont);
   origBarChart.load("2", tenStateCodes, tenSortedValues);
   origBarChart.draw();
 }
