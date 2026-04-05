@@ -19,6 +19,8 @@ PImage pieChartIcon;
 PImage barChartIcon;
 PImage mapIcon;
 PImage searchIcon;
+PImage pieChart2;
+PImage barChart2;
 Widget musicButton;
 SoundFile music;
 int SCREEN_HEIGHT = 640;
@@ -94,7 +96,7 @@ void settings() {
 void setup() {
   tableFont = loadFont(smallFont);
   showTable = false;
-  resultTable = new Sheet(50, 120, SCREEN_WIDTH - 100, 440, "Results", color(100, 100, 255), loadedFont);
+  resultTable = new Sheet(SCREEN_WIDTH/2 - 245, SCREEN_HEIGHT/2-100, 490, 360, "Results", color(100, 100, 255), loadedFont);
   /********** DESIGN
    All variables to do with design go first (font, colors, styling, etc.)
    Anything DRAWN (that needs setup) goes AFTER input boxes and data table.
@@ -111,6 +113,8 @@ void setup() {
   tickedImg = loadImage("ticked.jpg");
   calendarImg = loadImage("januaryCalendar.jpg");
   searchIcon = loadImage("Search-Icon.png");
+  pieChart2 = loadImage("Piechart-Icon.png");
+  barChart2 = loadImage("Barchart-Icon.png");
   calendarImg.resize(200, 200);
   welcomeBackground.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
   loadedFont = loadFont(font);
@@ -143,8 +147,8 @@ void setup() {
 
   results.addWidgetA(SCREEN_WIDTH/2-75, 60, 150, 40, "Matching Results", color(150, 150, 250), loadedFont);
   results.addWidgetC(80, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
-  results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, homeIcon, 2);
-  results.addWidgetC(200, SCREEN_HEIGHT-60, 40, 40, homeIcon, 3);
+  results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, pieChart2, 2);
+  results.addWidgetC(200, SCREEN_HEIGHT-60, 40, 40, barChart2, 3);
   results.addWidgetC(260,  SCREEN_HEIGHT-60, 40, 40, mapIcon, 4);
   results.addWidgetC(320, SCREEN_HEIGHT-60, 40, 40, searchIcon, 4);
 
@@ -268,7 +272,8 @@ void draw() {
   /********** Background Color
    and Input Boxes at the top
    ***********/
-  image(welcomeBackground, 0, 0);
+  if (welcome.active) image(welcomeBackground, 0, 0);
+  else background(255);
 
   if (search.active) {
     textFont(loadedFont);
@@ -349,8 +354,27 @@ void draw() {
   }
 
   if (results.active) {
-    text(filteredData().size() + " flights match your criteria", 700, 80);
+    loadChart();
+    text(filteredData().size() + " flights match your criteria.", width/2, 150);
+    if (filteredData().size() > 23) text("Below is information about 23 of them.", width/2, 170);
     if (showTable) resultTable.draw();
+  }
+
+if (barCharts1.active) {
+    ArrayList<Flight> filtered = filteredData();
+    if (filtered.size() > 0) {
+      Chart origBarChart = new Chart(50, 20, 300, 300, "Most Common Origins for Specified Flights", color(100, 50, 200), loadedFont);
+      origBarChart.loadDataWithType("2", "orig", filtered, origBarChart);
+      origBarChart.draw();
+      
+      Chart destBarChart = new Chart(500, 20, 300, 300, "Most Common Destinations for Specified Flights", color(100, 50, 200), loadedFont);
+      destBarChart.loadDataWithType("2", "dest", filtered, destBarChart);
+      destBarChart.draw();
+      
+      Chart carrBarChart = new Chart(250, 350, 300, 300, "Most Common Carrier/Airline for Specified Flights", color(100, 50, 200), loadedFont);
+      carrBarChart.loadDataWithType("2", "carrier", filtered, carrBarChart);
+      carrBarChart.draw();
+    }
   }
 
   welcome.draw();
@@ -581,7 +605,6 @@ if(mouseX > musicButton.x && mouseX < musicButton.x + 40 && mouseY > musicButton
       welcome.active = true;
     } else if (currentEvent == 2) {
       search.active = false;
-      loadChart();
       results.active = true;
 
 
@@ -656,7 +679,6 @@ void mouseWheel(MouseEvent event) {
   for (Dropdown box : dropdowns) {
     box.checkIfScrolled(direction);
   }
-  resultTable.checkIfScrolled(direction);
 }
 
 

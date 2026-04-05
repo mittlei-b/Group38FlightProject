@@ -129,7 +129,7 @@ public class Dropdown extends Input {
     if (chosenWordsList.size() == 0) entered = false; else addInput();
   }
   
-  public void checkIfClicked() {
+  public void checkIfClicked(int mouseX, int mouseY) {
     if (x <= mouseX && mouseX <= x + theWidth
         && y <= mouseY && y + theHeight >= mouseY) {
       selected = true;

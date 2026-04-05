@@ -244,7 +244,6 @@ public ArrayList<Flight> inThisTimeRange(String type, String min, String max, Ar
     flightSubList = flightsWhichMatchThisCriterion("accArrTimeMaximum", max, flightFilteredByMinArr);
     return flightSubList;
   case "dates":
-  println(min);
     if (min.equals("0")){
       return flightList;
     }
