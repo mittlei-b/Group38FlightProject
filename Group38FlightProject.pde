@@ -19,6 +19,8 @@ PImage pieChartIcon;
 PImage barChartIcon;
 PImage mapIcon;
 PImage searchIcon;
+PImage pieChart2;
+PImage barChart2;
 Widget musicButton;
 SoundFile music;
 int SCREEN_HEIGHT = 640;
@@ -111,6 +113,8 @@ void setup() {
   tickedImg = loadImage("ticked.jpg");
   calendarImg = loadImage("januaryCalendar.jpg");
   searchIcon = loadImage("Search-Icon.png");
+  pieChart2 = loadImage("Piechart-Icon.png");
+  barChart2 = loadImage("Barchart-Icon.png");
   calendarImg.resize(200, 200);
   welcomeBackground.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
   loadedFont = loadFont(font);
@@ -143,8 +147,8 @@ void setup() {
 
   results.addWidgetA(SCREEN_WIDTH/2-75, 60, 150, 40, "Matching Results", color(150, 150, 250), loadedFont);
   results.addWidgetC(80, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
-  results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, homeIcon, 2);
-  results.addWidgetC(200, SCREEN_HEIGHT-60, 40, 40, homeIcon, 3);
+  results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, pieChart2, 2);
+  results.addWidgetC(200, SCREEN_HEIGHT-60, 40, 40, barChart2, 3);
   results.addWidgetC(260,  SCREEN_HEIGHT-60, 40, 40, mapIcon, 4);
   results.addWidgetC(320, SCREEN_HEIGHT-60, 40, 40, searchIcon, 4);
 
@@ -359,9 +363,17 @@ void draw() {
 if (barCharts1.active) {
     ArrayList<Flight> filtered = filteredData();
     if (filtered.size() > 0) {
-      Chart origBarChart = new Chart(100, 100, 300, 300, "Most Common Origins for Specified Flights", color(100, 50, 200), loadedFont);
+      Chart origBarChart = new Chart(50, 20, 300, 300, "Most Common Origins for Specified Flights", color(100, 50, 200), loadedFont);
       origBarChart.loadDataWithType("2", "orig", filtered, origBarChart);
       origBarChart.draw();
+      
+      Chart destBarChart = new Chart(500, 20, 300, 300, "Most Common Destinations for Specified Flights", color(100, 50, 200), loadedFont);
+      destBarChart.loadDataWithType("2", "dest", filtered, destBarChart);
+      destBarChart.draw();
+      
+      Chart carrBarChart = new Chart(250, 350, 300, 300, "Most Common Carrier/Airline for Specified Flights", color(100, 50, 200), loadedFont);
+      carrBarChart.loadDataWithType("2", "carrier", filtered, carrBarChart);
+      carrBarChart.draw();
     }
   }
 
@@ -640,7 +652,7 @@ if(mouseX > musicButton.x && mouseX < musicButton.x + 40 && mouseY > musicButton
     }
   }
 
-  if() {
+  if(barCharts1.active) {
     currentEvent = barCharts1.getEvent(mouseX, mouseY);
     if(currentEvent == 1) {
       barCharts1.active = false;
