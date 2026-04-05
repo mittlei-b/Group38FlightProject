@@ -110,8 +110,8 @@ void loadDataWithType(String number, String type, ArrayList<Flight> listFiltered
         rect(x, movingY, rectWidth, 15);
         String valueLabel = labels.get(count);
         fill(0);
-        text(valueLabel, x - valueLabel.length() - 25, movingY + 15);
-        text(value, x + 5 + rectWidth, movingY + 15);
+        text(valueLabel, x - valueLabel.length() - 25, movingY);
+        text(value, x + 5 + rectWidth, movingY);
         movingY += 30;
       }
     }
