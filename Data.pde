@@ -326,6 +326,14 @@ public ArrayList<String> stateCodes(ArrayList<Flight> flights) {
     }
     if (!recordedAlready) codes.add(stateCode);
   }
+for (Flight f : flights) { //Creates an ArrayList of all state abbreviations that exist
+    String stateCode = f.destStateAbr;
+    boolean recordedAlready = false;
+    for (String s : codes) {
+      if (s.equals(stateCode)) recordedAlready = true;
+    }
+    if (!recordedAlready) codes.add(stateCode);
+  }
   return codes;
 }
 
