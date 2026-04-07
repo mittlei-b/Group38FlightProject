@@ -18,20 +18,30 @@ class Chart extends Widget {
   }
 
 void loadDataWithType(String number, String type, ArrayList<Flight> listFiltered, Chart theChart) {
-    ArrayList<String> stateCodes = data.stateCodes(listFiltered);
-    //println(stateCodes);
-    ArrayList<String> origValues = new ArrayList<String>();
-    for (String stateCode : stateCodes) {
-      ArrayList<Flight> originFlights = new ArrayList<Flight>();
-      originFlights.addAll(data.flightsWhichMatchThisCriterion(type, stateCode, listFiltered));
-      origValues.add(String.valueOf(originFlights.size()));
+    ArrayList<String> stateOrCarrierCodes = new ArrayList<String>();
+    switch (type) {
+    case "orig":
+    case "dest":
+      ArrayList<String> stateCodes= data.stateCodes(listFiltered);
+      stateOrCarrierCodes = (ArrayList)stateCodes.clone();
+      break;
+    case "carrier":
+      ArrayList<String> carrierCodes = data.carrierCodes(listFiltered);
+      stateOrCarrierCodes = (ArrayList)carrierCodes.clone();
+      break;
     }
-    String[][] stateAmounts = new String[stateCodes.size()][2];
-    for (int i = 0; i<stateCodes.size(); i++) {
-      stateAmounts[i][0] = stateCodes.get(i);
+    ArrayList<String> origValues = new ArrayList<String>();
+    for (String stateOrCarrierCode : stateOrCarrierCodes) {
+      ArrayList<Flight> flightsLikeThis = new ArrayList<Flight>();
+      flightsLikeThis.addAll(data.flightsWhichMatchThisCriterion(type, stateOrCarrierCode, listFiltered));
+      origValues.add(String.valueOf(flightsLikeThis.size()));
+    }
+    String[][] stateAmounts = new String[stateOrCarrierCodes.size()][2];
+    for (int i = 0; i<stateOrCarrierCodes.size(); i++) {
+      stateAmounts[i][0] = stateOrCarrierCodes.get(i);
       stateAmounts[i][1] = origValues.get(i);
     }
-    int[] values= new int[stateCodes.size()];
+    int[] values= new int[stateOrCarrierCodes.size()];
     for (int i=0; i<origValues.size(); i++) {
       values[i] = Integer.parseInt(origValues.get(i));
     }
@@ -100,8 +110,8 @@ void loadDataWithType(String number, String type, ArrayList<Flight> listFiltered
         rect(x, movingY, rectWidth, 15);
         String valueLabel = labels.get(count);
         fill(0);
-        text(valueLabel, x - valueLabel.length() - 25, movingY + 15);
-        text(value, x + 5 + rectWidth, movingY + 15);
+        text(valueLabel, x - valueLabel.length() - 25, movingY);
+        text(value, x + 5 + rectWidth, movingY);
         movingY += 30;
       }
     }
