@@ -2,6 +2,10 @@ import java.util.Scanner;
 import java.util.Arrays;
 import java.io.*;
 import processing.sound.*;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Comparator;
 
 /**********
  DESIGN VARIABLES
@@ -25,6 +29,7 @@ Widget musicButton;
 SoundFile music;
 int SCREEN_HEIGHT = 640;
 int SCREEN_WIDTH = 960;
+color blue = color(120,190,240);
 
 /**********
  SCREEN VARIABLES
@@ -71,13 +76,12 @@ ArrayList<Dropdown> dropdowns;
 Dropdown departure;
 Dropdown arrival;
 Dropdown airline;
-filter depStartSlider, depEndSlider;
-filter arrStartSlider, arrEndSlider;
-filter calendar;
-filter lateTickbox, cancelledTickbox;
+Filter depStartSlider, depEndSlider;
+Filter arrStartSlider, arrEndSlider;
+Filter calendar;
+Filter lateTickbox, cancelledTickbox;
 PImage tickedImg, untickedImg, calendarImg;
 boolean dragStart = false, dragEnd = false;
-boolean showTable;
 Sheet resultTable;
 
 /**********
@@ -86,6 +90,7 @@ Sheet resultTable;
 Data data;
 
 ArrayList<Flight> flights;
+ArrayList<Flight> selectedFlights;
 int totalNumbOfFlights; // Total number of flights, used for comparison
 int numbOfSelectedFlights; // Number of flights, now that data has been narrowed down based on a specific parameter
 
@@ -95,8 +100,7 @@ void settings() {
 
 void setup() {
   tableFont = loadFont(smallFont);
-  showTable = false;
-  resultTable = new Sheet(SCREEN_WIDTH/2 - 245, SCREEN_HEIGHT/2-100, 490, 360, "Results", color(100, 100, 255), loadedFont);
+  resultTable = new Sheet(40, 130, SCREEN_WIDTH - 80, 420, "Results", blue, loadedFont);
   /********** DESIGN
    All variables to do with design go first (font, colors, styling, etc.)
    Anything DRAWN (that needs setup) goes AFTER input boxes and data table.
@@ -127,7 +131,7 @@ void setup() {
   // Music track: gingersweet by massobeats
   //Source: https://freetouse.com/music
   //Free Vlog Music Without Copyright
-  music.loop();
+  //music.loop();
 
   /********** WIDGETS
    making all widgets on each screen here + setting welcome to active so
@@ -145,7 +149,6 @@ void setup() {
   search.addWidgetA(60, 60, 150, 40, "Enter queries...", color(140, 240, 250), loadedFont);
   search.addWidgetB(780, 560, 150, 50, "Search", color(140, 240, 255), loadedFont, 2);
 
-  results.addWidgetA(SCREEN_WIDTH/2-75, 60, 150, 40, "Matching Results", color(150, 150, 250), loadedFont);
   results.addWidgetC(80, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
   results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, pieChart2, 2);
   results.addWidgetC(200, SCREEN_HEIGHT-60, 40, 40, barChart2, 3);
@@ -188,6 +191,9 @@ void setup() {
       row.getInt("CANCELLED"))); // Creating another object of type flight and putting in the attributes taken directly from the csv file
     totalNumbOfFlights++; // Tallying up total number of flights for later comparison
   }
+  
+  // Future list of flights within input criteria
+  selectedFlights = new ArrayList<Flight>();
 
   // ArrayList of all carrier names
   ArrayList<String> carrierNames = new ArrayList<String>();
@@ -196,14 +202,14 @@ void setup() {
     carrierNames.add(name);
   }
 
-  // ArrayList of all departure locations
+  // ArrayList of all locations
   ArrayList<String> locations = new ArrayList<String>();
   for (String locale : data.stateCodes(flights)) {
     locations.add(locale);
   }
 
 
-  /********** INPUT BOXES AND DROPDOWNS
+  /********** USER INPUT
    To add new input boxes or dropdowns, copy the format in the comment below
    newInput(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY)
    newDropdown(LABEL, X, Y, WIDTH, HEIGHT, DEFAULT TEXT WHEN EMPTY, OPTION LIST)
@@ -214,14 +220,14 @@ void setup() {
   departure = newDropdown("Departure", 200, 140, 130, 25, "Departure", locations);
   arrival = newDropdown("Arrival", 350, 140, 130, 25, "Arrival", locations);
 
-  calendar = new filter("calendar", 50, 330, calendarImg.width - 20, calendarImg.height - 20, calendarImg);
-  depStartSlider = new filter("slider", "start", 520, 150, 10, 0, 200, 0, 175, 5);
-  depEndSlider = new filter("slider", "end", 695, 150, 10, 0, 200, 24, 175, 5);
-  arrStartSlider = new filter("slider", "start", 745, 150, 10, 0, 200, 0, 175, 5);
-  arrEndSlider = new filter("slider", "end", 920, 150, 10, 0, 200, 24, 175, 5);
-  lateTickbox = new filter("tickbox", 340, 330, 25, untickedImg, tickedImg);
-  cancelledTickbox = new filter("tickbox", 490, 330, 25, untickedImg, tickedImg);
-
+  calendar = new Filter("calendar", 50, 330, calendarImg.width - 20, calendarImg.height - 20, calendarImg);
+  depStartSlider = new Filter("slider", "start", 520, 150, 10, 0, 200, 0, 175, 5);
+  depEndSlider = new Filter("slider", "end", 695, 150, 10, 0, 200, 24, 175, 5);
+  arrStartSlider = new Filter("slider", "start", 745, 150, 10, 0, 200, 0, 175, 5);
+  arrEndSlider = new Filter("slider", "end", 920, 150, 10, 0, 200, 24, 175, 5);
+  lateTickbox = new Filter("tickbox", 340, 330, 25, untickedImg, tickedImg);
+  cancelledTickbox = new Filter("tickbox", 490, 330, 25, untickedImg, tickedImg);
+  
   /*
   
    // Sample application of this framework
@@ -269,18 +275,13 @@ void setup() {
 void draw() {
 
 
-  /********** Background Color
-   and Input Boxes at the top
+  /********** 
+            Background 
    ***********/
-  if (welcome.active) image(welcomeBackground, 0, 0);
-  else background(255);
+  image(welcomeBackground, 0, 0);
 
   if (search.active) {
     textFont(loadedFont);
-    drawInputsAndDropdowns();
-  }
-
-  if (search.active) {
     drawInputsAndDropdowns();
 
     depStartSlider.drawRect();
@@ -354,25 +355,32 @@ void draw() {
   }
 
   if (results.active) {
-    loadChart();
-    text(filteredData().size() + " flights match your criteria.", width/2, 150);
-    if (filteredData().size() > 23) text("Below is information about 23 of them.", width/2, 170);
-    if (showTable) resultTable.draw();
+    textAlign(LEFT,TOP);
+    noStroke();
+    fill(140, 240, 250);
+    float totalWidth = textWidth("Select a flight to learn more individual details.");
+    float titleWidth = textWidth(filteredData().size() + " Matching Flights");
+    float boxWidth = titleWidth + 30;
+    rect(40+(totalWidth - boxWidth)/2, 50, boxWidth, 40);
+    fill(0);
+    text(filteredData().size() + " Matching Flights", 40+(totalWidth - titleWidth)/2, 64);
+    text("Select a flight to learn more individual details.", 40, 100);
+    resultTable.draw();
+    textAlign(CENTER, CENTER);
   }
 
 if (barCharts1.active) {
-    ArrayList<Flight> filtered = filteredData();
-    if (filtered.size() > 0) {
+    if (selectedFlights.size() > 0) {
       Chart origBarChart = new Chart(50, 20, 300, 300, "Most Common Origins for Specified Flights", color(100, 50, 200), loadedFont);
-      origBarChart.loadDataWithType("2", "orig", filtered, origBarChart);
+      origBarChart.loadDataWithType("2", "orig", selectedFlights, origBarChart);
       origBarChart.draw();
       
       Chart destBarChart = new Chart(500, 20, 300, 300, "Most Common Destinations for Specified Flights", color(100, 50, 200), loadedFont);
-      destBarChart.loadDataWithType("2", "dest", filtered, destBarChart);
+      destBarChart.loadDataWithType("2", "dest", selectedFlights, destBarChart);
       destBarChart.draw();
       
       Chart carrBarChart = new Chart(250, 350, 300, 300, "Most Common Carrier/Airline for Specified Flights", color(100, 50, 200), loadedFont);
-      carrBarChart.loadDataWithType("2", "carrier", filtered, carrBarChart);
+      carrBarChart.loadDataWithType("2", "carrier", selectedFlights, carrBarChart);
       carrBarChart.draw();
     }
   }
@@ -425,6 +433,7 @@ if (barCharts1.active) {
    ***********/
   stroke(0);
   frameCounter();
+  
 }
 
 /********** INPUT / DROPDOWN FUNCTIONS
@@ -432,13 +441,13 @@ if (barCharts1.active) {
  ***********/
 
 Input newInput(String label, int x_position, int y_position, int width, int height, String standIn) {
-  Input box = new Input(label, x_position, y_position, width, height, standIn);
+  Input box = new Input(label, x_position, y_position, width, height, standIn, false);
   inputs.add(box);
   return box;
 }
 
 Dropdown newDropdown(String label, int x_position, int y_position, int width, int height, String standIn, ArrayList<String> list) {
-  Dropdown box = new Dropdown(label, x_position, y_position, width, height, standIn, list);
+  Dropdown box = new Dropdown(label, x_position, y_position, width, height, standIn, list, true);
   dropdowns.add(box);
   return box;
 }
@@ -453,91 +462,50 @@ void drawInputsAndDropdowns() {
 }
 
 ArrayList<Flight> filteredData() {
-  //Chart graph = new Chart(100,100, 300,300,"Departed Flights on Specific Airlines",color(0,0,200),loadedFont);
-  ArrayList<String> departureChoice = departure.getSelection();
-  //println("Departing from: " + departureChoice.toString());
-  ArrayList<String> arrivalChoice = arrival.getSelection();
-  //println("Arriving from: " + arrivalChoice.toString());
-  ArrayList<String> airlineChoice = airline.getSelection();
-  //println("On: " + airlineChoice.toString());
-  ArrayList<Flight> flightsByOrigin = new ArrayList<Flight>();
-  if (departureChoice.size() != 0) {
-    for (String choice : departureChoice) {
-      flightsByOrigin.addAll(data.flightsWhichMatchThisCriterion("orig", choice, flights));
+  
+  // matchingFlights is an ArrayList<Flight> of all filtered flights, starting out holding ALL flights
+  ArrayList<Flight> matchingFlights = new ArrayList<Flight>();
+  matchingFlights.addAll(flights);
+  
+  // Select from matchingFlights only the ones matching dropdowns (or leave untouched if none selected)
+  Dropdown[] dropdownOrder = {airline, departure, arrival};
+  String[] dropdownCodes = {"carrier","orig","dest"};
+  for (int index = 0; index < 3; index++) {
+    ArrayList<String> choices = dropdownOrder[index].getSelection();
+    if (choices.size() != 0) {
+      for (String choice : choices) {
+        String code = dropdownCodes[index];
+        if (code.equals("carrier"))
+            choice = data.carrierNameToCode(choice);
+        matchingFlights = data.flightsWhichMatchThisCriterion(dropdownCodes[index], choice, matchingFlights);
+      }
     }
-  } else {
-    flightsByOrigin.addAll(flights);
-  }
-
-  ArrayList<Flight> flightsByOriginCarrier = new ArrayList<Flight>();
-  if (airlineChoice.size() != 0) {
-    for (String choice : airlineChoice) {
-      choice = data.carrierNameToCode(choice);
-      flightsByOriginCarrier.addAll(data.flightsWhichMatchThisCriterion("carrier", choice, flightsByOrigin));
-    }
-  } else {
-    flightsByOriginCarrier.addAll(flightsByOrigin);
-  }
-
-  ArrayList<Flight> flightsByOriginCarrierDest = new ArrayList<Flight>();
-  if (arrivalChoice.size() != 0) {
-    for (String choice : arrivalChoice) {
-      flightsByOriginCarrierDest.addAll(data.flightsWhichMatchThisCriterion("dest", choice, flightsByOriginCarrier));
-    }
-  } else {
-    flightsByOriginCarrierDest.addAll(flightsByOriginCarrier);
-  }
-
-  int chosenDepTime1 = depStartSlider.getNumber();
-  int chosenDepTime2 = depEndSlider.getNumber();
-
-  int chosenArrTime1 = arrStartSlider.getNumber();
-  int chosenArrTime2 = arrEndSlider.getNumber();
-
-  ArrayList<Flight> flightsByDepTime = new ArrayList<Flight>();
-  flightsByDepTime.addAll(data.inThisTimeRange("depTimes", String.valueOf(chosenDepTime1), String.valueOf(chosenDepTime2), flightsByOriginCarrierDest));
-
-  ArrayList<Flight> flightsByArrTime = new ArrayList<Flight>();
-  flightsByArrTime.addAll(data.inThisTimeRange("arrTimes", String.valueOf(chosenArrTime1), String.valueOf(chosenArrTime2), flightsByDepTime));
-   
-  ArrayList<Flight> flightsByCancelled = new ArrayList<Flight>();
-  if (cancelledTickbox.ticked) {
-    flightsByCancelled.addAll(data.flightsWhichMatchThisCriterion("cancelled", "", flightsByArrTime));
-  } else {
-    flightsByCancelled.addAll(flightsByArrTime);
   }
   
-  ArrayList<Flight> flightsByLate = new ArrayList<Flight>();
-  if (lateTickbox.ticked) {
-    flightsByLate.addAll(data.flightsWhichMatchThisCriterion("late", "", flightsByCancelled));
-  } else {
-    flightsByLate.addAll(flightsByCancelled);
+  // Select from matchingFlights only the ones matching time inputs
+  String[] depTimes = {String.valueOf(depStartSlider.getNumber()), String.valueOf(depEndSlider.getNumber())};
+  String[] arrTimes = {String.valueOf(arrStartSlider.getNumber()), String.valueOf(arrEndSlider.getNumber())};
+  matchingFlights = data.inThisTimeRange("depTimes", depTimes[0], depTimes[1], matchingFlights);
+  matchingFlights = data.inThisTimeRange("arrTimes", arrTimes[0], arrTimes[1], matchingFlights);
+  
+  // Select from matchingFlights only the ones cancelled
+  if (cancelledTickbox.isTicked()) {
+    matchingFlights = data.flightsWhichMatchThisCriterion("cancelled", "", matchingFlights);
+  }
+  
+  // Select from matchingFlights only the ones late
+  if (lateTickbox.isTicked()) {
+    matchingFlights = data.flightsWhichMatchThisCriterion("late", "", matchingFlights);
   }
 
-  //Flights Filtered By Date
-  ArrayList<Flight> finalFilteredList = new ArrayList<Flight>();
+  // Select from matchingFlights only the ones in the date range;
   int date = calendar.getDate();
   if (date >= 0 && date <= 31) {
     String dateAsString = String.valueOf(date);
-    finalFilteredList.addAll(data.inThisTimeRange("dates", dateAsString, dateAsString, flightsByLate));
-  }
-  else {
-    finalFilteredList.addAll(flightsByLate);
+    matchingFlights = data.inThisTimeRange("dates", dateAsString, dateAsString, matchingFlights);
   }
 
-  return finalFilteredList;
-}
-
-void loadChart(){
-  ArrayList<Flight> filteredFlights = filteredData();
-  resultTable.load(filteredFlights);
-  showTable = true;
-  
-  // Now have an ArrayList of flights of CARRIER, DEST, ORIGIN
-  
-  //  Flights departed from
-  //graph.load(numberChoice, departureChoice, airlineChoice);
-  //chart.load(stateCodes, numbFlightsTXtoX);
+  return matchingFlights;
 }
 
 void mouseReleased() {
@@ -545,6 +513,7 @@ void mouseReleased() {
   depEndSlider.release();
   arrStartSlider.release();
   arrEndSlider.release();
+  if (results.active) resultTable.scrollBarRelease();
 }
 
 void mousePressed() {
@@ -567,26 +536,19 @@ void mousePressed() {
   {
     arrEndSlider.click();
   }
+  
 
-  // Check if an input was selected and update if so
-  for (Input box : inputs) {
-    box.checkIfClicked();
-    box.updateState();
-  }
-  for (Dropdown box : dropdowns) {
-    box.checkIfClicked();
-  }
-
-if(mouseX > musicButton.x && mouseX < musicButton.x + 40 && mouseY > musicButton.y && mouseY < musicButton.y + height);
-  musicEvent = musicButton.getEvent(mouseX, mouseY);
-  if(musicEvent == 5) {
-    if(musicButton.icon == musicIcon) {
-      music.pause();
-      musicButton.changeIcon(musicMuteIcon);
-    }
-    else {
-      music.loop();
-      musicButton.changeIcon(musicIcon);
+  if (mouseX > musicButton.x && mouseX < musicButton.x + 40 && mouseY > musicButton.y && mouseY < musicButton.y + height) {
+    musicEvent = musicButton.getEvent(mouseX, mouseY);
+    if (musicEvent == 5) {
+      if(musicButton.icon == musicIcon) {
+        music.pause();
+        musicButton.changeIcon(musicMuteIcon);
+      }
+      else {
+        music.loop();
+        musicButton.changeIcon(musicIcon);
+      }
     }
   }
 
@@ -605,14 +567,21 @@ if(mouseX > musicButton.x && mouseX < musicButton.x + 40 && mouseY > musicButton
       welcome.active = true;
     } else if (currentEvent == 2) {
       search.active = false;
+      resultTable.load(filteredData());
       results.active = true;
-
-
-      // code to update what data appears goes here?
+    }
+    // Check if an input was selected and update if so
+    for (Input box : inputs) {
+      box.checkIfClicked(mouseX, mouseY);
+      box.updateState();
+    }
+    for (Dropdown box : dropdowns) {
+      box.checkIfClicked(mouseX, mouseY);
     }
   }
 
   if(results.active) {
+    resultTable.clicked();
     currentEvent = results.getEvent(mouseX, mouseY);
     if(currentEvent == 1) {
       results.active = false;
@@ -679,6 +648,7 @@ void mouseWheel(MouseEvent event) {
   for (Dropdown box : dropdowns) {
     box.checkIfScrolled(direction);
   }
+  if (results.active) resultTable.checkIfScrolled(direction);
 }
 
 

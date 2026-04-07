@@ -6,9 +6,10 @@ public class Dropdown extends Input {
   boolean showDropdown;
   int listHeight = 120;
   int offsetY = 0;
+  boolean takesInput;
   
-  public Dropdown(String label, int x_position, int y_position, int theWidth, int theHeight, String standIn, ArrayList<String> list) {
-    super(label, x_position, y_position, theWidth, theHeight, standIn);
+  public Dropdown(String label, int x_position, int y_position, int theWidth, int theHeight, String standIn, ArrayList<String> list, boolean takesInput) {
+    super(label, x_position, y_position, theWidth, theHeight, standIn, false);
     itemList = new ArrayList<DropdownItem>();
     wordList = list;
     chosenWordsList = new ArrayList<String>();
@@ -20,6 +21,7 @@ public class Dropdown extends Input {
       movingY += theHeight;
     }
     showDropdown = false;
+    this.takesInput = takesInput;
   }
   
   public void draw() {
@@ -73,15 +75,17 @@ public class Dropdown extends Input {
   }
   
   public void checkEnterPressed(char letter) {
-    if (letter == ENTER || letter == RETURN) {
-      if (content == "") entered = false;
-      deselect();
-    } else if (letter == ',') {
-      userInput = userInput.substring(0,userInput.length() - 1);
-      confirmInput();
-      addInput();
-    } else {
-      addInput();
+    if (takesInput) {
+      if (letter == ENTER || letter == RETURN) {
+        if (content == "") entered = false;
+        deselect();
+      } else if (letter == ',') {
+        userInput = userInput.substring(0,userInput.length() - 1);
+        confirmInput();
+        addInput();
+      } else {
+        addInput();
+      }
     }
   }
   

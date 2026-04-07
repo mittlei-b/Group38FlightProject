@@ -45,17 +45,3 @@ class Flight {
     } else cancelled = false;
   }
 }
-
-
-// Here I just use the framework to find the number of flights come from
-// Texas relative to the flights overall, as well as the percentage of
-// flights which were diverted or cancelled for a given subset of flights.
-// However I think that it could also be useful for filtering data for
-// other purposes, like finding the mean departure time
-// of a subset of flights, or any number of other things.
-
-// I think that this could be adapted / put into the main code by adding
-// multiple variables to the if statement at the end by default. So like if
-// I wanted flights from Michigan that were cancelled, I would have to
-// specify multiple variables at once. idk if I'm explaining myself very well
-// I'll try to explain one of the days in person lol

@@ -1,4 +1,4 @@
-class filter {
+class Filter {
   String type, status;
   int xpos, ypos;
   int xMargin;
@@ -18,7 +18,7 @@ class filter {
                        {23, 24, 25, 26, 27, 28, 29},
                        {30, 31, 0, 0, 0, 0, 0}};
   
-  filter(String type, String status, int xpos, int ypos, int size, color circleColour, color rectColour, int number, int rectWidth, int rectHeight) {
+  Filter(String type, String status, int xpos, int ypos, int size, color circleColour, color rectColour, int number, int rectWidth, int rectHeight) {
     this.type = type;
     this.status = status;
     this.xMargin = xpos;
@@ -33,7 +33,7 @@ class filter {
     this.rectHeight = rectHeight;
   }
   
-  filter(String type, int xpos, int ypos, int calendarWidth, int calendarHeight, PImage calendarImg) {
+  Filter(String type, int xpos, int ypos, int calendarWidth, int calendarHeight, PImage calendarImg) {
     this.type = type;
     this.xpos = xpos;
     this.ypos = ypos;
@@ -42,7 +42,7 @@ class filter {
     this.calendarImg = calendarImg;
   }
   
-  filter(String type, int xpos, int ypos, int size, PImage untickedImg, PImage tickedImg) {
+  Filter(String type, int xpos, int ypos, int size, PImage untickedImg, PImage tickedImg) {
     this.type = type;
     this.xpos = xpos;
     this.ypos = ypos;

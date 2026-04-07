@@ -5,22 +5,31 @@ public class Input {
   String label, defaultText, userInput, content;
   boolean selected, entered;
   color border, fontColor;
+  boolean startsWithInput;
   
-  
-  public Input(String label, int x_position, int y_position, int theWidth, int theHeight, String standIn) {
+  public Input(String label, int x_position, int y_position, int theWidth, int theHeight, String standIn, boolean fillerIsInput) {
     box = createGraphics(theWidth, theHeight);
     this.theWidth = theWidth;
     this.theHeight = theHeight;
     this.label = label;
-    defaultText = standIn;
-    userInput = "";
-    content = defaultText;
+    startsWithInput = fillerIsInput;
+    if (startsWithInput) {
+      defaultText = standIn;
+      userInput = standIn;
+      content = userInput;
+      entered = true;
+      fontColor = color(0);
+    } else {
+      defaultText = standIn;
+      userInput = "";
+      content = defaultText;
+      entered = false;
+      fontColor = color(200);
+    }
     x = x_position;
     offsetX = 0;
     y = y_position;
     selected = false;
-    entered = false;
-    fontColor = color(200);
   }
   
   public void draw() {
@@ -81,7 +90,12 @@ public class Input {
   
   public void checkEnterPressed(char letter) {
     if (letter == ENTER || letter == RETURN) {
-      if (userInput == "") entered = false;
+      if (userInput == "") {
+        if (startsWithInput) {
+          userInput = defaultText;
+          content = userInput;
+        } else entered = false;
+      }
       deselect();
     } else {
       content = userInput;
