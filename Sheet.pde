@@ -17,6 +17,7 @@ class Sheet extends Widget {
                          {60,130,195},{60,195,240},{60,240,295} };
   int sortSelection;
   int boxDrawn;
+  Flight selectedFlight;
   // Slider numResults?
   
   Sheet(int x,int y, int theWidth, int theHeight, String label, color widgetColor, PFont widgetFont) {
@@ -40,6 +41,7 @@ class Sheet extends Widget {
     if (barHeight < 10) barHeight = 10;
     if (barHeight > resultHeight) barHeight = resultHeight;
     bar = new Scrollbar(x + theWidth - 10, y + headerHeight, 10, barHeight, headerColor, resultHeight);
+    selectedFlight = cells.get(0);
   }
   
   void drawBox(int the_x, int the_y) {
@@ -238,6 +240,7 @@ class Sheet extends Widget {
         box.stroke(0);
         box.ellipse(15,movingY + itemHeight / 2, 10,10);
         box.noStroke();
+        selectedFlight = cells.get(index);
       }
       box.fill(0);
       movingY += itemHeight - 3;
@@ -296,15 +299,11 @@ class Sheet extends Widget {
      else return false;
   }
   
-  public Flight flightClicked(int clicked_x, int clicked_y) {
-    return null;
-  }
-  
   public void clicked() {
     if (bar.checkIfClicked()) bar.mouseOn();
-    else if (checkIfFlightClicked(mouseX, mouseY))
-      activateFlightInfo(flightClicked(mouseX, mouseY));
-    else {
+    else if (checkIfFlightClicked(mouseX, mouseY)) {
+      activateFlightInfo(selectedFlight);
+    } else {
       for (int index = 0; index < sortLimits.length; index++) {
         int startX = x + 535 + sortLimits[index][1];
         int endX = x + 535 + sortLimits[index][2];

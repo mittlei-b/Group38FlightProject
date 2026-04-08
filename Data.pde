@@ -375,11 +375,19 @@ public String carrierNameToCode(String name) {
 }
 
 String[][] codes = {
-                    {"AL","Alabama"},{"AK","Alaska"},{"AZ","JetB"},{"AR","Delta"},
-                    {"CA","JetBlue"},{"CO","Delta"},{"CT","JetBlue"},{"DE","Delta"},
-                    {"FL","Frontier"},{"GA","Allegiant"},{"HI","JetBlue"},{"ID","Delta"},
+                    {"AL","Alabama"},{"AK","Alaska"},{"AZ","Arizona"},{"AR","Arkansas"},
+                    {"CA","California"},{"CO","Colorado"},{"CT","Connecticut"},{"DE","Delaware"},
+                    {"FL","Florida"},{"GA","Georgia"},{"HI","Hawa'ii"},{"ID","Delta"},
                     {"IL","Spirit"},{"IN","Hawaiian"},{"IA","JetBlue"},{"KS","Delta"},
-                    {"KY","United"},{"LA","Southwest"},{"ME","JetBlue"},{"DL","Delta"}
+                    {"KY","United"},{"LA","Southwest"},{"ME","JetBlue"},{"MD","Delta"},
+                    {"MA","Frontier"},{"MI","Allegiant"},{"MN","JetBlue"},{"MS","Delta"},
+                    {"MO","Spirit"},{"MT","Hawaiian"},{"NE","JetBlue"},{"NV","Delta"},
+                    {"NH","United"},{"NJ","Southwest"},{"NM","JetBlue"},{"NY","Delta"},
+                    {"NC","Frontier"},{"ND","Allegiant"},{"OH","JetBlue"},{"OK","Delta"},
+                    {"OR","Spirit"},{"PA","Hawaiian"},{"RI","JetBlue"},{"SC","Delta"},
+                    {"SD","United"},{"TN","Southwest"},{"TX","JetBlue"},{"UT","Delta"},
+                    {"VT","Spirit"},{"VA","Hawaiian"},{"WA","JetBlue"},{"WV","Delta"},
+                    {"WI","United"},{"WY","Southwest"}
                    };
               
 public String stateCodeConversion(String code) {
