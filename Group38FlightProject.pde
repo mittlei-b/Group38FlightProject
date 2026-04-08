@@ -571,6 +571,7 @@ void mousePressed() {
     } else if (currentEvent == 2) {
       search.active = false;
       resultTable.load(filteredData());
+      selectedFlights = filteredData();
       results.active = true;
     }
     // Check if an input was selected and update if so
