@@ -52,9 +52,6 @@ class Sheet extends Widget {
   void sortSheet() {
     // With much help from
     // https://www.w3schools.com/java/java_advanced_sorting.asp
-    // (1) Date (2) Airline (3) Distance (4) Cancelled (5) Diverted
-    // (6) Dep. Airport (7) Dep. City (8) Dep. Time (9) Arr. Airport
-    // (10) Arr. City (11) Arr. Time
     
     List flightList = new ArrayList<Flight>();
     flightList.addAll(cells);

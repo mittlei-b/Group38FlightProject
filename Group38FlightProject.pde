@@ -132,6 +132,7 @@ void setup() {
   //Source: https://freetouse.com/music
   //Free Vlog Music Without Copyright
   //music.loop();
+  musicButton = new Widget(60, SCREEN_HEIGHT-60, 40, 40, musicIcon, 5);
 
   /********** WIDGETS
    making all widgets on each screen here + setting welcome to active so
@@ -473,12 +474,14 @@ ArrayList<Flight> filteredData() {
   for (int index = 0; index < 3; index++) {
     ArrayList<String> choices = dropdownOrder[index].getSelection();
     if (choices.size() != 0) {
+      ArrayList<Flight> flightsOfAllChoices = new ArrayList<Flight>();
       for (String choice : choices) {
         String code = dropdownCodes[index];
         if (code.equals("carrier"))
             choice = data.carrierNameToCode(choice);
-        matchingFlights = data.flightsWhichMatchThisCriterion(dropdownCodes[index], choice, matchingFlights);
+        flightsOfAllChoices.addAll(data.flightsWhichMatchThisCriterion(dropdownCodes[index], choice, matchingFlights));
       }
+      matchingFlights = flightsOfAllChoices;
     }
   }
   
