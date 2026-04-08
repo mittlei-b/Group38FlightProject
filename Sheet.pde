@@ -49,10 +49,10 @@ class Sheet extends Widget {
     boxDrawn++;
   }
   
+  // Sorts the results table based on the user-selected category
+  // Used the resource below to learn how to create and sort Lists
+  // https://www.w3schools.com/java/java_advanced_sorting.asp
   void sortSheet() {
-    // With much help from
-    // https://www.w3schools.com/java/java_advanced_sorting.asp
-    
     List flightList = new ArrayList<Flight>();
     flightList.addAll(cells);
     Collections.sort(flightList, new Comparator<Flight>() {
@@ -62,7 +62,21 @@ class Sheet extends Widget {
         switch (sortSelection) {
           // Sort by date
           case 0:
-            option1 = flight1.date; option2 = flight2.date;
+            // Splits dates into strings like "1/1/2022" or "1/31/2022"
+            option1 = flight1.date.split(" 12:00:00 AM")[0];
+            option2 = flight2.date.split(" 12:00:00 AM")[0];
+            // Takes only the day of the month like "1" or "31"
+            if (option1.length() == 8) option1 = option1.substring(2,3);
+            else option1 = option1.substring(2,4);
+            if (option2.length() == 8) option2 = option2.substring(2,3);
+            else option2 = option2.substring(2,4);
+            // Converts the day to an integer to compare the two
+            int num1 = Integer.valueOf(option1), num2 = Integer.valueOf(option2);
+            if (num1 > num2)
+              { option1 = "a"; option2 = "b"; }
+            else if (num1 < num2)
+              { option1 = "b"; option2 = "a"; }
+            else { option1 = "a"; option2 = "a"; }
             break;
           // Sort by airline
           case 1:
@@ -207,15 +221,24 @@ class Sheet extends Widget {
       movingX += columnWidths[index];
     }
     box.beginDraw();
-    box.noStroke();
     movingY = 0;
     int itemLimit = 25;
     for (int index = presentPage; index < (presentPage + itemLimit + 1); index++) {
       boolean isEmpty = (cells.size() <= index);
+      boolean inFocus = (!isEmpty && x < mouseX && mouseX < x + theWidth
+                         && y + headerHeight + movingY < mouseY
+                         && mouseY < y + headerHeight + movingY + itemHeight);
       movingX = 35;
       if (isEmpty || index % 2 == 0) box.fill(255);
       else box.fill(color(210,230,245));
+      box.noStroke();
       box.rect(0,movingY,theWidth,itemHeight);
+      box.fill(headerColor);
+      if (inFocus) {
+        box.stroke(0);
+        box.ellipse(15,movingY + itemHeight / 2, 10,10);
+        box.noStroke();
+      }
       box.fill(0);
       movingY += itemHeight - 3;
       if (!isEmpty) {
@@ -267,10 +290,21 @@ class Sheet extends Widget {
     }
   }
   
+  public boolean checkIfFlightClicked(int clicked_x, int clicked_y) {
+     if (x <= clicked_x && clicked_x <= x + theWidth
+        && y <= clicked_y && clicked_y <= y + theHeight) return true;
+     else return false;
+  }
+  
+  public Flight flightClicked(int clicked_x, int clicked_y) {
+    return null;
+  }
+  
   public void clicked() {
     if (bar.checkIfClicked()) bar.mouseOn();
+    else if (checkIfFlightClicked(mouseX, mouseY))
+      activateFlightInfo(flightClicked(mouseX, mouseY));
     else {
-      println("click");
       for (int index = 0; index < sortLimits.length; index++) {
         int startX = x + 535 + sortLimits[index][1];
         int endX = x + 535 + sortLimits[index][2];

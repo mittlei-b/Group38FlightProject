@@ -274,7 +274,14 @@ void setup() {
 }
 
 void draw() {
-
+  /*println("Welcome: " + welcome.active);
+  println("Search: " + search.active);
+  println("Results: " + results.active);
+  println("Flight Info: " + flightInfo.active);
+  println("Pie Charts 1: " + pieCharts1.active);
+  println("Pie Charts 2: " + pieCharts2.active);
+  println("Bar Charts 1: " + barCharts1.active);
+  println("BAR Charts 2: " + barCharts2.active);**/
 
   /********** 
             Background 
@@ -360,11 +367,11 @@ void draw() {
     noStroke();
     fill(140, 240, 250);
     float totalWidth = textWidth("Select a flight to learn more individual details.");
-    float titleWidth = textWidth(filteredData().size() + " Matching Flights");
+    float titleWidth = textWidth(numbOfSelectedFlights + " Matching Flights");
     float boxWidth = titleWidth + 30;
     rect(40+(totalWidth - boxWidth)/2, 50, boxWidth, 40);
     fill(0);
-    text(filteredData().size() + " Matching Flights", 40+(totalWidth - titleWidth)/2, 64);
+    text(numbOfSelectedFlights + " Matching Flights", 40+(totalWidth - titleWidth)/2, 64);
     text("Select a flight to learn more individual details.", 40, 100);
     resultTable.draw();
     textAlign(CENTER, CENTER);
@@ -434,7 +441,12 @@ if (barCharts1.active) {
    ***********/
   stroke(0);
   frameCounter();
-  
+}
+
+// Function to display information about an individual flight
+void activateFlightInfo(Flight chosenFlight) {
+  results.active = false;
+  flightInfo.active = true;
 }
 
 /********** INPUT / DROPDOWN FUNCTIONS
@@ -462,8 +474,9 @@ void drawInputsAndDropdowns() {
   }
 }
 
+// Returns an ArrayList of all flights that match the user-selected filters
 ArrayList<Flight> filteredData() {
-  
+  println("filter data");
   // matchingFlights is an ArrayList<Flight> of all filtered flights, starting out holding ALL flights
   ArrayList<Flight> matchingFlights = new ArrayList<Flight>();
   matchingFlights.addAll(flights);
@@ -507,7 +520,8 @@ ArrayList<Flight> filteredData() {
     String dateAsString = String.valueOf(date);
     matchingFlights = data.inThisTimeRange("dates", dateAsString, dateAsString, matchingFlights);
   }
-
+  
+  numbOfSelectedFlights = matchingFlights.size();
   return matchingFlights;
 }
 
