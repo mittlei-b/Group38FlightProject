@@ -927,6 +927,7 @@ void getPositions() {
     stateYPos = 320;
   } 
 else {
+//Incase we get a weird code, be it a typo or an unexpected departure/destination. Having it set to the top left guarantees that the error is noticed
     stateXPos = 0;
     stateYPos = 0;
   }
@@ -935,6 +936,7 @@ else {
 /**********
  FRAME COUNTER
  ***********/
+//Gives us an idea of where slowdown occurs and lets us see if changes improve/worsen any issues
 void frameCounter() {
   fill(255);
   rect(0, 0, 30, 20);
