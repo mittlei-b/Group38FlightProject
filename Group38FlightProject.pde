@@ -68,7 +68,6 @@ int getDestination = 0;
 int getDeparture = 0;
 
 PImage mapImg;
-PImage starsAndStripes;
 
 /**********
  INPUT VARIABLES
@@ -160,8 +159,6 @@ void setup() {
 
   flightInfo.addWidgetB(100, 580, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   mapImg = loadImage("USA.png");
-  starsAndStripes = loadImage("Stars_And_Stripes.png");
-  //starsAndStripes.resize(960, 640);
 
   pieCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "Next", color(200, 200, 200), loadedFont, 1);
   pieCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 2);
@@ -423,7 +420,6 @@ if (pieCharts1.active){
   musicButton.draw();
   
   if (flightInfo.active) {
-    image(starsAndStripes, 0, 0);
     image(mapImg, 0, 0);
 
     // if (getDeparture < 1) {
