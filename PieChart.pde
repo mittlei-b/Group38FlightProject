@@ -95,11 +95,14 @@ void loadDataWithType(String type, ArrayList<Flight> listFiltered, PieChart theC
 
     // Sorts 2d array in order of most common values, taking only highest ten (in case where total number of airlines is greater than 10)
     if (values.length >= 10) {   
-
-      for (int i = 0; i < 10; i++) {
+       int runningTotal = 0;
+      for (int i = 0; i < 9; i++) {
         chartValues.add(String.valueOf(values[i]));
+        runningTotal += values[i];
       }
-
+      int totalOther = listFiltered.size()-runningTotal;
+      println(totalOther);
+                                                                
       for (String value : chartValues) {
         String correctStateCode = "";
         for (int i = 0; i< stateAmounts.length; i++) {
@@ -111,6 +114,8 @@ void loadDataWithType(String type, ArrayList<Flight> listFiltered, PieChart theC
         }
         chartStateCodes.add(correctStateCode);
       }
+      chartValues.add(String.valueOf(totalOther));
+      chartStateCodes.add("Other");
     } else {
       for (int i = 0; i < values.length; i++) {
         chartValues.add(String.valueOf(values[i]));
