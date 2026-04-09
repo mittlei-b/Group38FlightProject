@@ -19,7 +19,7 @@ class Plane {
     
     if(x <= -leftPlane.width) {
       direction = 1;
-      y = 400;
+      y = 440;
     }
     else if(x >= SCREEN_WIDTH) {
       direction = -1;

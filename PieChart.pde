@@ -26,14 +26,11 @@ class PieChart extends Widget {
       float angle = map(values.get(i), 0, total, 0, TWO_PI);
       arc(x, y, theWidth, theWidth, startPoint, startPoint + angle);
       startPoint += angle;
-      //println(angle);
-      //float percentage = data.roundToTwoDecimals(angle/TWO_PI * 100);
-      //println(labels.get(i) + " " + percentage);
-      
+      float percentage = data.roundToTwoDecimals(angle/TWO_PI * 100);
       rect(x, y + theWidth + 15*i + 10, 8, 8);
       fill(0);
       textSize(15);
-      text((labels.get(i) + " - " + values.get(i) + " flights"), x + 20, y + theWidth + 15*i + 10);
+      text((labels.get(i) + " - " + values.get(i) + " flights, " + percentage + "% of total"), x + 20, y + theWidth + 15*i + 10);
     }
   }
   
@@ -95,11 +92,14 @@ void loadDataWithType(String type, ArrayList<Flight> listFiltered, PieChart theC
 
     // Sorts 2d array in order of most common values, taking only highest ten (in case where total number of airlines is greater than 10)
     if (values.length >= 10) {   
-
-      for (int i = 0; i < 10; i++) {
+       int runningTotal = 0;
+      for (int i = 0; i < 9; i++) {
         chartValues.add(String.valueOf(values[i]));
+        runningTotal += values[i];
       }
-
+      int totalOther = listFiltered.size()-runningTotal;
+      println(totalOther);
+                                                                
       for (String value : chartValues) {
         String correctStateCode = "";
         for (int i = 0; i< stateAmounts.length; i++) {
@@ -111,6 +111,8 @@ void loadDataWithType(String type, ArrayList<Flight> listFiltered, PieChart theC
         }
         chartStateCodes.add(correctStateCode);
       }
+      chartValues.add(String.valueOf(totalOther));
+      chartStateCodes.add("Other");
     } else {
       for (int i = 0; i < values.length; i++) {
         chartValues.add(String.valueOf(values[i]));
