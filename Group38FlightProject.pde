@@ -153,8 +153,7 @@ void setup() {
   results.addWidgetC(80, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
   results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, pieChart2, 2);
   results.addWidgetC(200, SCREEN_HEIGHT-60, 40, 40, barChart2, 3);
-  results.addWidgetC(260,  SCREEN_HEIGHT-60, 40, 40, mapIcon, 4);
-  results.addWidgetC(320, SCREEN_HEIGHT-60, 40, 40, searchIcon, 5);
+  results.addWidgetC(260, SCREEN_HEIGHT-60, 40, 40, searchIcon, 5);
 
   flightInfo.addWidgetB(100, 580, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   mapImg = loadImage("USA.png");
@@ -170,8 +169,6 @@ void setup() {
   barCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 2);
 
   barCharts2.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 1);
-
-  map.addWidgetB(80, SCREEN_HEIGHT-60,80, 40, "Back", color(100, 180, 155), loadedFont, 1);
 
   /********** DATA TABLE
    Here is our data class. We're using the Processing class called Table:
@@ -633,10 +630,6 @@ void mousePressed() {
       results.active = false;
       barCharts1.active = true;
     }
-    else if (currentEvent == 4){
-      results.active = false;
-      map.active = true;
-    }
     else if (currentEvent == 5) {
       results.active = false;
       search.active = true;
@@ -680,14 +673,6 @@ void mousePressed() {
     if(currentEvent == 1) {
       barCharts2.active = false;
       barCharts1.active = true;
-    }
-  }
-  
-  if(map.active) {
-    currentEvent = map.getEvent(mouseX, mouseY);
-    if(currentEvent == 1) {
-      map.active = false;
-      results.active = true;
     }
   }
   
