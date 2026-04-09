@@ -394,6 +394,22 @@ if (barCharts1.active) {
     }
   }
 
+if (pieCharts1.active){
+  if (selectedFlights.size() > 0){
+    PieChart origPieChart = new PieChart(50, 50, 200, 200, "Most Common Origins for Specified Flights", color(100, 50, 200), loadedFont);
+    origPieChart.loadDataWithType("orig", selectedFlights, origPieChart);
+    origPieChart.draw();
+    
+    PieChart destPieChart = new PieChart(330, 100, 200, 200, "Most Common Destinations for Specified Flights", color(100, 50, 200), loadedFont);
+    destPieChart.loadDataWithType("dest", selectedFlights, destPieChart);
+    destPieChart.draw();
+    
+    PieChart carrierPieChart = new PieChart(650, 50, 200, 200, "Most Common Carriers for Specified Flights", color(100, 50, 200), loadedFont);
+    carrierPieChart.loadDataWithType("carrier", selectedFlights, carrierPieChart);
+    carrierPieChart.draw();
+  }
+  
+}
   welcome.draw();
   search.draw();
   results.draw();
