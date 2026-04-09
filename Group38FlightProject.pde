@@ -42,9 +42,7 @@ Screen search = new Screen();
 Screen results = new Screen();
 Screen flightInfo = new Screen();
 Screen pieCharts1 = new Screen();
-Screen pieCharts2 = new Screen();
 Screen barCharts1 = new Screen();
-Screen barCharts2 = new Screen();
 Screen map = new Screen();
 
 int currentEvent; 
@@ -145,7 +143,7 @@ void setup() {
   welcome.active = true;
 
   // each pressable widget has a unique (per screen) event number to determine which was pressed
- welcome.addWidgetA((SCREEN_WIDTH/2 - 100), 200, 200, 50, "Welcome", color(140, 240, 255), welcomeFont);
+  welcome.addWidgetA((SCREEN_WIDTH/2 - 100), 200, 200, 50, "Welcome", color(140, 240, 255), welcomeFont);
   welcome.addWidgetB(SCREEN_WIDTH/2 - 80, 300, 160, 30, "Start searching", color(140, 240, 255), loadedFont, 1);
   welcome.addWidgetA(SCREEN_WIDTH/2 - 185, 380, 370, 30, "By Emily Eulitz, Shane Jones, Autumn Kaiser,", color(140, 240, 255), loadedFont);
   welcome.addWidgetA(SCREEN_WIDTH/2 - 160, 410, 320, 30, "Brynne Mittleider, Lauren McGaughey", color(140, 240, 255), loadedFont);
@@ -163,15 +161,9 @@ void setup() {
   flightInfo.addWidgetB(100, 580, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   mapImg = loadImage("USA.png");
 
-  pieCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "Next", color(140, 240, 255), loadedFont, 1);
-  pieCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(140, 240, 255), loadedFont, 2);
+  pieCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 100, 40, "Back", color(140, 240, 255), loadedFont, 1);
 
-  pieCharts2.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(140, 240, 255), loadedFont, 1);
-
-  barCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "Next", color(140, 240, 255), loadedFont, 1);
-  barCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(140, 240, 255), loadedFont, 2);
-
-  barCharts2.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(140, 240, 255), loadedFont, 1);
+  barCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 100, 40, "Back", color(140, 240, 255), loadedFont, 1);
 
   /********** DATA TABLE
    Here is our data class. We're using the Processing class called Table:
@@ -422,9 +414,7 @@ if (pieCharts1.active){
   results.draw();
   flightInfo.draw();
   pieCharts1.draw();
-  pieCharts2.draw();
   barCharts1.draw();
-  barCharts2.draw();
   musicButton.draw();
   
   if (flightInfo.active) {
@@ -647,8 +637,6 @@ void mousePressed() {
   if(pieCharts1.active) {
     currentEvent = pieCharts1.getEvent(mouseX, mouseY);
     if(currentEvent == 1) {
-      pieCharts1.active = false;
-      pieCharts2.active = true;
     }
     else if(currentEvent == 2) {
       pieCharts1.active = false;
@@ -656,19 +644,10 @@ void mousePressed() {
     }
   }
 
-  if(pieCharts2.active) {
-    currentEvent = pieCharts2.getEvent(mouseX, mouseY);
-    if(currentEvent == 1) {
-      pieCharts2.active = false;
-      pieCharts1.active = true;
-    }
-  }
 
   if(barCharts1.active) {
     currentEvent = barCharts1.getEvent(mouseX, mouseY);
     if(currentEvent == 1) {
-      barCharts1.active = false;
-      barCharts2.active = true;
     }
     else if(currentEvent == 2) {
       barCharts1.active = false;
@@ -676,13 +655,7 @@ void mousePressed() {
     }
   }
 
-  if(barCharts2.active) {
-    currentEvent = barCharts2.getEvent(mouseX, mouseY);
-    if(currentEvent == 1) {
-      barCharts2.active = false;
-      barCharts1.active = true;
-    }
-  }
+  
   
   if(flightInfo.active) {
     currentEvent = flightInfo.getEvent(mouseX, mouseY);
