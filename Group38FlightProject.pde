@@ -133,7 +133,7 @@ void setup() {
   // Music track: gingersweet by massobeats
   //Source: https://freetouse.com/music
   //Free Vlog Music Without Copyright
-  //music.loop();
+  music.loop();
   musicButton = new Widget(20, SCREEN_HEIGHT-60, 40, 40, musicIcon, 5);
 
   /********** WIDGETS
