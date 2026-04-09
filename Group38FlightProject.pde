@@ -205,7 +205,9 @@ void setup() {
 
   // ArrayList of all locations
   ArrayList<String> locations = new ArrayList<String>();
-  for (String locale : data.stateCodes(flights)) {
+  for (String code : data.stateCodes(flights)) {
+    String locale = data.stateCodeToName(code);
+    if (locale.equals("Unknown")) println(code);
     locations.add(locale);
   }
 
@@ -476,7 +478,6 @@ void drawInputsAndDropdowns() {
 
 // Returns an ArrayList of all flights that match the user-selected filters
 ArrayList<Flight> filteredData() {
-  println("filter data");
   // matchingFlights is an ArrayList<Flight> of all filtered flights, starting out holding ALL flights
   ArrayList<Flight> matchingFlights = new ArrayList<Flight>();
   matchingFlights.addAll(flights);
@@ -492,6 +493,7 @@ ArrayList<Flight> filteredData() {
         String code = dropdownCodes[index];
         if (code.equals("carrier"))
             choice = data.carrierNameToCode(choice);
+        else choice = data.stateNameToCode(choice);
         flightsOfAllChoices.addAll(data.flightsWhichMatchThisCriterion(dropdownCodes[index], choice, matchingFlights));
       }
       matchingFlights = flightsOfAllChoices;

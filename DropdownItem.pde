@@ -1,3 +1,8 @@
+/*  Class to create a DropdownItem to support the Dropdown class.
+    A DropdownItem serves as one of the options in the Dropdown
+    that the user can select, or that is automatically selected if the
+    user types the item in.
+**/
 public class DropdownItem {
   PGraphics box;
   PFont boxFont;
@@ -19,10 +24,14 @@ public class DropdownItem {
     border = color(200);
   }
   
+  // Accessors that help Dropdown know which option that user has selected
   public int getX() {return x;}
   public int getY() {return y;}
+  
+  // A function that returns the String version of the option
   public String getOption() {return content;}
   
+  // A function that returns the PGraphics visual for the class
   public PGraphics drawnBox() {
     box.beginDraw();
     box.textAlign(LEFT, TOP);
@@ -38,6 +47,7 @@ public class DropdownItem {
     return box;
   }
   
+  // A functions that updates the item if it is selected or unselected
   public boolean updateState() {
     if (selected) {
       fontColor = color(0);

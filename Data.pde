@@ -1,3 +1,6 @@
+/*  Class to handle the Table created in main that holds all Flights.
+    Data also has a number of functions that make the data easier to filter.
+**/
 public class Data {
   Table data;
   
@@ -5,6 +8,7 @@ public class Data {
     data = loadTable(fileName, "header");
   }
   
+  // A function to print all rows of the Table
   public void printAllRows() {
     fill(0);
     int theHeight = 15;
@@ -49,352 +53,397 @@ public class Data {
       }
     }
   }
-
-public int numbFlightsFromHereToThere(String dest, ArrayList<Flight> sublist){
-  int flightsWithThisDest = 0;
-  for (Flight f : sublist){
-    if (f.destStateAbr.equals(dest)) flightsWithThisDest++;
+  
+  // A function that calculates the number of flights to a certain given destination
+  // out of a given ArrayList<Flight>
+  public int numbFlightsFromHereToThere(String dest, ArrayList<Flight> sublist){
+    int flightsWithThisDest = 0;
+    for (Flight f : sublist){
+      if (f.destStateAbr.equals(dest)) flightsWithThisDest++;
+    }
+    return flightsWithThisDest;
   }
-  return flightsWithThisDest;
-}
-
-public double getMean(String column, ArrayList<Flight> subset) {
-  switch (column) {
-  case "DISTANCE":
-    double totalFlightKms = 0;
-    double totalFlightsThisType = 0;
-    for (Flight f : subset) {
+  
+  // Function to get the mean distance of a given ArrayList<Flight>
+  public double getMean(String column, ArrayList<Flight> subset) {
+    switch (column) {
+    case "DISTANCE":
+      double totalFlightKms = 0;
+      double totalFlightsThisType = 0;
+      for (Flight f : subset) {
+        totalFlightsThisType++;
+        totalFlightKms += f.distance;
+      }
+      double meanDistance = totalFlightKms/totalFlightsThisType;
+      return meanDistance;
+    default :
+      println("Something's gone wrong brother");
+      return 0;
+    }
+  }
+  
+  // Function to get the percentage of flights cancelled and diverted out
+  // of a given ArrayList<Flight>
+  public float getPercentage(String column, ArrayList<Flight> subset) {
+    int totalFlightsThisType = 0;
+  
+    switch (column) {
+    case "CANCELLED":
+      int cancelledFlights = 0;
+      float totalFlights;
+      for (Flight f : subset) {
+        totalFlightsThisType++;
+        if (f.cancelled) cancelledFlights++;
+      }
+      float cancelled = (float)cancelledFlights;
+      totalFlights = (float)totalFlightsThisType;
+  
+      float percentCancelled = cancelled/totalFlights * 100;
+      return percentCancelled;
+  
+    case "DIVERTED":
+      int divertedFlights = 0;
+      for (Flight f : subset) {
+        totalFlightsThisType++;
+        if (f.diverted) divertedFlights++;
+      }
+      float diverted = (float)divertedFlights;
+      totalFlights = (float)totalFlightsThisType;
+  
+      float percentDiverted = diverted/totalFlights * 100;
+      return percentDiverted;
+  
+    default:
+      println("something's gone wrong brother");
+      return 0;
+    }
+  }
+  
+  // Function to get the average distance of a given ArrayList<Flight>
+  public float getAvgDistance(ArrayList<Flight> flightList) {
+    float totalFlightKms = 0;
+    float totalFlightsThisType = 0;
+    for (Flight f : flightList) {
       totalFlightsThisType++;
       totalFlightKms += f.distance;
     }
-    double meanDistance = totalFlightKms/totalFlightsThisType;
+    float meanDistance = totalFlightKms/totalFlightsThisType;
     return meanDistance;
-  default :
-    println("Something's gone wrong brother");
-    return 0;
   }
-}
-
-public float getPercentage(String column, ArrayList<Flight> subset) {
-  int totalFlightsThisType = 0;
-
-  switch (column) {
-  case "CANCELLED":
-    int cancelledFlights = 0;
-    float totalFlights;
-    for (Flight f : subset) {
-      totalFlightsThisType++;
-      if (f.cancelled) cancelledFlights++;
-    }
-    float cancelled = (float)cancelledFlights;
-    totalFlights = (float)totalFlightsThisType;
-
-    float percentCancelled = cancelled/totalFlights * 100;
-    return percentCancelled;
-
-  case "DIVERTED":
-    int divertedFlights = 0;
-    for (Flight f : subset) {
-      totalFlightsThisType++;
-      if (f.diverted) divertedFlights++;
-    }
-    float diverted = (float)divertedFlights;
-    totalFlights = (float)totalFlightsThisType;
-
-    float percentDiverted = diverted/totalFlights * 100;
-    return percentDiverted;
-
-  default:
-    println("something's gone wrong brother");
-    return 0;
-  }
-}
-
-public float getAvgDistance(ArrayList<Flight> flightList) {
-  float totalFlightKms = 0;
-  float totalFlightsThisType = 0;
-  for (Flight f : flightList) {
-    totalFlightsThisType++;
-    totalFlightKms += f.distance;
-  }
-  float meanDistance = totalFlightKms/totalFlightsThisType;
-  return meanDistance;
-}
-
-public ArrayList<Flight> flightsWhichMatchThisCriterion(String type, String value, ArrayList<Flight> flightList) {
-  ArrayList<Flight> flightSubList = new ArrayList<Flight>();
-  switch (type) {
-    case ("late"):
-    for (Flight f : flightList) {
-      if (f.actualArr > f.plannedArr) {
-        flightSubList.add(f);
-      }
-    }
-    return flightSubList;
-    case ("diverted"):
-    for (Flight f : flightList) {
-      if (f.diverted) {
-        flightSubList.add(f);
-      }
-    }
-    return flightSubList;
-    case ("cancelled"):
-    for (Flight f : flightList) {
-      if (f.cancelled) {
-        flightSubList.add(f);
-      }
-    }
-    return flightSubList;
-    case ("carrier"):
-    for (Flight f : flightList) {
-      if ((f.carrier).equals(value)) {
-        flightSubList.add(f);
-      }
-    }
-    return flightSubList;
-    case ("orig"):
-    for (Flight f : flightList) {
-      if ((f.origStateAbr).equals(value)) {
-        flightSubList.add(f);
-      }
-    }
-    return flightSubList;
-    case ("dest"):
-    for (Flight f : flightList) {
-      if ((f.destStateAbr).equals(value)) {
-        flightSubList.add(f);
-      }
-    }
-    return flightSubList;
-    case ("accDepTimeMinimum"):
-    for (Flight f : flightList) {
-      if ((f.actualDep) >= Integer.parseInt(value)) {
-        flightSubList.add(f);
-      }
-    }
-    return flightSubList;
-
-    case ("accDepTimeMaximum"):
-    for (Flight f : flightList) {
-      if ((f.actualDep) <= Integer.parseInt(value)) {
-        flightSubList.add(f);
-      }
-    }
-    return flightSubList;
-
-    case ("accArrTimeMinimum"):
-    for (Flight f : flightList) {
-      if ((f.actualArr) >= Integer.parseInt(value)) {
-        flightSubList.add(f);
-      }
-    }
-    return flightSubList;
-
-    case ("accArrTimeMaximum"):
-    for (Flight f : flightList) {
-      if ((f.actualArr) <= Integer.parseInt(value)) {
-        flightSubList.add(f);
-      }
-    }
-    return flightSubList;
-
-    case ("dateMinimum"):
-    for (Flight f : flightList) {
-      Scanner date = new Scanner(f.date);
-      date.useDelimiter("/");
-      String month = date.next();
-      String dateDay = date.next();
-      date.close();
-      int dateDayInt = Integer.parseInt(dateDay);
-      if ((dateDayInt) >= Integer.parseInt(value)) {
-        flightSubList.add(f);
-      }
-    }
-    return flightSubList;
-    
-    case ("dateMaximum"):
-    for (Flight f : flightList) {
-      Scanner date = new Scanner(f.date);
-      date.useDelimiter("/");
-      String month = date.next();
-      String dateDay = date.next();
-      date.close();
-      int dateDayInt = Integer.parseInt(dateDay);
-      if ((dateDayInt) <= Integer.parseInt(value)) {
-        flightSubList.add(f);
-      }
-    }
-    return flightSubList;
-
-  default:
-    return flightSubList;
-  }
-}
-
-public ArrayList<Flight> inThisTimeRange(String type, String min, String max, ArrayList<Flight> flightList) {
-  ArrayList<Flight> flightSubList = new ArrayList<Flight>();
-
-  switch (type) {
-  case "depTimes":
-    ArrayList<Flight> flightFilteredByMinDept = flightsWhichMatchThisCriterion("accDepTimeMinimum", min, flightList);
-    flightSubList = flightsWhichMatchThisCriterion("accDepTimeMaximum", max, flightFilteredByMinDept);
-    return flightSubList;
-  case "arrTimes":
-    ArrayList<Flight> flightFilteredByMinArr = flightsWhichMatchThisCriterion("accArrTimeMinimum", min, flightList);
-    flightSubList = flightsWhichMatchThisCriterion("accArrTimeMaximum", max, flightFilteredByMinArr);
-    return flightSubList;
-  case "dates":
-    if (min.equals("0")){
-      return flightList;
-    }
-    ArrayList<Flight> flightFilteredByMinDate = flightsWhichMatchThisCriterion("dateMinimum", min, flightList);
-    flightSubList = flightsWhichMatchThisCriterion("dateMaximum", max, flightFilteredByMinDate);
-    return flightSubList;
-  default:
-    return flightSubList;
-  }
-}
-public float percentWhichMatchThisCriterion(String type, String value, ArrayList<Flight> flightList) {
-  int totalFlights = flightList.size();
-  int numbThatMatchThisCriterion = flightsWhichMatchThisCriterion(type, value, flightList).size();
-  float percent = ((float(numbThatMatchThisCriterion)) / (float(totalFlights) ) ) *100;
-  float percentRounded = roundToTwoDecimals(percent);
-  return percentRounded;
-}
-
-public float percentInThisTimeRange(String type, String min, String max, ArrayList<Flight> flightList){
-  int totalFlights = flightList.size();
-  int numbInThisTimeRange = inThisTimeRange(type, min, max, flightList).size();
-  float percent = ((float(numbInThisTimeRange)) / (float(totalFlights) ) ) *100;
-  float percentRounded = roundToTwoDecimals(percent);
-  return percentRounded;
-}
-
-
-public float roundToTwoDecimals(float numb) {
-  return (float(round(numb*100)))/100;
-}
-
-public String mostPopValue(String type, ArrayList<Flight> flightList) {
-  String mostPop = "";
-  int amtOfMostPop = 0;
-  switch (type) {
-  case "dest":
-    for (String s : stateCodes(flightList)) {
-      int flightsToHere = flightsWhichMatchThisCriterion("dest", s, flightList).size();
-      if (flightsToHere > amtOfMostPop) {
-        amtOfMostPop = flightsToHere;
-        mostPop = s;
-      }
-    }
-    return mostPop;
-
-  case "orig":
-    for (String s : stateCodes(flightList)) {
-      int flightsFromHere = flightsWhichMatchThisCriterion("orig", s, flightList).size();
-      if (flightsFromHere > amtOfMostPop) {
-        amtOfMostPop = flightsFromHere;
-        mostPop = s;
-      }
-    }
-    return mostPop;
-
-  case "carrier":
-    for (String s : carrierCodes(flightList)) {
-      int flightsToHere = flightsWhichMatchThisCriterion("dest", s, flightList).size();
-      if (flightsToHere > amtOfMostPop) {
-        amtOfMostPop = flightsToHere;
-        mostPop = s;
-      }
-    }
-    return mostPop;
-
-  default:
-    return "";
-  }
-}
-
-public ArrayList<String> stateCodes(ArrayList<Flight> flights) {
-  ArrayList<String> codes = new ArrayList<String>();
-
-  for (Flight f : flights) { //Creates an ArrayList of all state abbreviations that exist
-    String stateCode = f.origStateAbr;
-    boolean recordedAlready = false;
-    for (String s : codes) {
-      if (s.equals(stateCode)) recordedAlready = true;
-    }
-    if (!recordedAlready) codes.add(stateCode);
-  }
-for (Flight f : flights) { //Creates an ArrayList of all state abbreviations that exist
-    String stateCode = f.destStateAbr;
-    boolean recordedAlready = false;
-    for (String s : codes) {
-      if (s.equals(stateCode)) recordedAlready = true;
-    }
-    if (!recordedAlready) codes.add(stateCode);
-  }
-  return codes;
-}
-
-public ArrayList<String> carrierCodes(ArrayList<Flight> flights) {
-  ArrayList<String> codes = new ArrayList<String>();
-
-  for (Flight f : flights) { //Creates an ArrayList of all carrier abbreviations that exist
-    String carrierCode = f.carrier;
-    boolean recordedAlready = false;
-    for (String s : codes) {
-      if (s.equals(carrierCode)) recordedAlready = true;
-    }
-    if (!recordedAlready) codes.add(carrierCode);
-  }
-  return codes;
-}
-
-public String carrierCodeToName(String code) {
-  String[][] codes = {{"AA","American"},{"AS","Alaska"},
-                      {"B6","JetBlue"},{"DL","Delta"},
-                      {"F9","Frontier"},{"G4","Allegiant"},
-                      {"NK","Spirit"},{"HA","Hawaiian"},
-                      {"UA","United"},{"WN","Southwest"}};
-  for (String[] pair : codes) {
-    if (pair[0].equals(code)) return pair[1];
-  }
-  return "Unknown";
-}
-
-public String carrierNameToCode(String name) {
-  String[][] codes = {{"AA","American"},{"AS","Alaska"},
-                      {"B6","JetBlue"},{"DL","Delta"},
-                      {"F9","Frontier"},{"G4","Allegiant"},
-                      {"NK","Spirit"},{"HA","Hawaiian"},
-                      {"UA","United"},{"WN","Southwest"}};
-  for (String[] pair : codes) {
-    if (pair[1].equals(name)) return pair[0];
-  }
-  return "Unknown";
-}
-
-String[][] codes = {
-                    {"AL","Alabama"},{"AK","Alaska"},{"AZ","Arizona"},{"AR","Arkansas"},
-                    {"CA","California"},{"CO","Colorado"},{"CT","Connecticut"},{"DE","Delaware"},
-                    {"FL","Florida"},{"GA","Georgia"},{"HI","Hawa'ii"},{"ID","Delta"},
-                    {"IL","Spirit"},{"IN","Hawaiian"},{"IA","JetBlue"},{"KS","Delta"},
-                    {"KY","United"},{"LA","Southwest"},{"ME","JetBlue"},{"MD","Delta"},
-                    {"MA","Frontier"},{"MI","Allegiant"},{"MN","JetBlue"},{"MS","Delta"},
-                    {"MO","Spirit"},{"MT","Hawaiian"},{"NE","JetBlue"},{"NV","Delta"},
-                    {"NH","United"},{"NJ","Southwest"},{"NM","JetBlue"},{"NY","Delta"},
-                    {"NC","Frontier"},{"ND","Allegiant"},{"OH","JetBlue"},{"OK","Delta"},
-                    {"OR","Spirit"},{"PA","Hawaiian"},{"RI","JetBlue"},{"SC","Delta"},
-                    {"SD","United"},{"TN","Southwest"},{"TX","JetBlue"},{"UT","Delta"},
-                    {"VT","Spirit"},{"VA","Hawaiian"},{"WA","JetBlue"},{"WV","Delta"},
-                    {"WI","United"},{"WY","Southwest"}
-                   };
-              
-public String stateCodeConversion(String code) {
   
-  for (String[] pair : codes) {
-    if (pair[0].equals(code)) return pair[1];
+  // Function that takes a given ArrayList<Flight>, a String category, and a String value,
+  // and finds all flights in the list with a matching value in the given category
+  public ArrayList<Flight> flightsWhichMatchThisCriterion(String type, String value, ArrayList<Flight> flightList) {
+    ArrayList<Flight> flightSubList = new ArrayList<Flight>();
+    switch (type) {
+      case ("late"):
+      for (Flight f : flightList) {
+        if (f.actualArr > f.plannedArr) {
+          flightSubList.add(f);
+        }
+      }
+      return flightSubList;
+      case ("diverted"):
+      for (Flight f : flightList) {
+        if (f.diverted) {
+          flightSubList.add(f);
+        }
+      }
+      return flightSubList;
+      case ("cancelled"):
+      for (Flight f : flightList) {
+        if (f.cancelled) {
+          flightSubList.add(f);
+        }
+      }
+      return flightSubList;
+      case ("carrier"):
+      for (Flight f : flightList) {
+        if ((f.carrier).equals(value)) {
+          flightSubList.add(f);
+        }
+      }
+      return flightSubList;
+      case ("orig"):
+      for (Flight f : flightList) {
+        if ((f.origStateAbr).equals(value)) {
+          flightSubList.add(f);
+        }
+      }
+      return flightSubList;
+      case ("dest"):
+      for (Flight f : flightList) {
+        if ((f.destStateAbr).equals(value)) {
+          flightSubList.add(f);
+        }
+      }
+      return flightSubList;
+      case ("accDepTimeMinimum"):
+      for (Flight f : flightList) {
+        if ((f.actualDep) >= Integer.parseInt(value)) {
+          flightSubList.add(f);
+        }
+      }
+      return flightSubList;
+  
+      case ("accDepTimeMaximum"):
+      for (Flight f : flightList) {
+        if ((f.actualDep) <= Integer.parseInt(value)) {
+          flightSubList.add(f);
+        }
+      }
+      return flightSubList;
+  
+      case ("accArrTimeMinimum"):
+      for (Flight f : flightList) {
+        if ((f.actualArr) >= Integer.parseInt(value)) {
+          flightSubList.add(f);
+        }
+      }
+      return flightSubList;
+  
+      case ("accArrTimeMaximum"):
+      for (Flight f : flightList) {
+        if ((f.actualArr) <= Integer.parseInt(value)) {
+          flightSubList.add(f);
+        }
+      }
+      return flightSubList;
+  
+      case ("dateMinimum"):
+      for (Flight f : flightList) {
+        Scanner date = new Scanner(f.date);
+        date.useDelimiter("/");
+        String month = date.next();
+        String dateDay = date.next();
+        date.close();
+        int dateDayInt = Integer.parseInt(dateDay);
+        if ((dateDayInt) >= Integer.parseInt(value)) {
+          flightSubList.add(f);
+        }
+      }
+      return flightSubList;
+      
+      case ("dateMaximum"):
+      for (Flight f : flightList) {
+        Scanner date = new Scanner(f.date);
+        date.useDelimiter("/");
+        String month = date.next();
+        String dateDay = date.next();
+        date.close();
+        int dateDayInt = Integer.parseInt(dateDay);
+        if ((dateDayInt) <= Integer.parseInt(value)) {
+          flightSubList.add(f);
+        }
+      }
+      return flightSubList;
+  
+    default:
+      return flightSubList;
+    }
   }
-  return "Unknown";
-}
+  
+  // A function which takes a given ArrayList<Flight>, a category, and a minimum and maximum time range,
+  // and returns a list of all flights that fit in that range in that category.
+  public ArrayList<Flight> inThisTimeRange(String type, String min, String max, ArrayList<Flight> flightList) {
+    ArrayList<Flight> flightSubList = new ArrayList<Flight>();
+  
+    switch (type) {
+    case "depTimes":
+      ArrayList<Flight> flightFilteredByMinDept = flightsWhichMatchThisCriterion("accDepTimeMinimum", min, flightList);
+      flightSubList = flightsWhichMatchThisCriterion("accDepTimeMaximum", max, flightFilteredByMinDept);
+      return flightSubList;
+    case "arrTimes":
+      ArrayList<Flight> flightFilteredByMinArr = flightsWhichMatchThisCriterion("accArrTimeMinimum", min, flightList);
+      flightSubList = flightsWhichMatchThisCriterion("accArrTimeMaximum", max, flightFilteredByMinArr);
+      return flightSubList;
+    case "dates":
+      if (min.equals("0")){
+        return flightList;
+      }
+      ArrayList<Flight> flightFilteredByMinDate = flightsWhichMatchThisCriterion("dateMinimum", min, flightList);
+      flightSubList = flightsWhichMatchThisCriterion("dateMaximum", max, flightFilteredByMinDate);
+      return flightSubList;
+    default:
+      return flightSubList;
+    }
+  }
+  
+  // Function that takes a given ArrayList<Flight>, a String category, and a String value,
+  // and finds the percentage of all flights in the list with a matching value in the given category
+  public float percentWhichMatchThisCriterion(String type, String value, ArrayList<Flight> flightList) {
+    int totalFlights = flightList.size();
+    int numbThatMatchThisCriterion = flightsWhichMatchThisCriterion(type, value, flightList).size();
+    float percent = ((float(numbThatMatchThisCriterion)) / (float(totalFlights) ) ) *100;
+    float percentRounded = roundToTwoDecimals(percent);
+    return percentRounded;
+  }
+  
+  // A function which takes a given ArrayList<Flight>, a category, and a minimum and maximum time range,
+  // and returns the percentage of all flights that fit in that range in that category.
+  public float percentInThisTimeRange(String type, String min, String max, ArrayList<Flight> flightList){
+    int totalFlights = flightList.size();
+    int numbInThisTimeRange = inThisTimeRange(type, min, max, flightList).size();
+    float percent = ((float(numbInThisTimeRange)) / (float(totalFlights) ) ) *100;
+    float percentRounded = roundToTwoDecimals(percent);
+    return percentRounded;
+  }
+  
+  public float roundToTwoDecimals(float numb) {
+    return (float(round(numb*100)))/100;
+  }
+  
+  // A function that finds the most popular departure or arrival location
+  // in a given ArrayList<Flight>
+  public String mostPopValue(String type, ArrayList<Flight> flightList) {
+    String mostPop = "";
+    int amtOfMostPop = 0;
+    switch (type) {
+    case "dest":
+      for (String s : stateCodes(flightList)) {
+        int flightsToHere = flightsWhichMatchThisCriterion("dest", s, flightList).size();
+        if (flightsToHere > amtOfMostPop) {
+          amtOfMostPop = flightsToHere;
+          mostPop = s;
+        }
+      }
+      return mostPop;
+  
+    case "orig":
+      for (String s : stateCodes(flightList)) {
+        int flightsFromHere = flightsWhichMatchThisCriterion("orig", s, flightList).size();
+        if (flightsFromHere > amtOfMostPop) {
+          amtOfMostPop = flightsFromHere;
+          mostPop = s;
+        }
+      }
+      return mostPop;
+  
+    case "carrier":
+      for (String s : carrierCodes(flightList)) {
+        int flightsToHere = flightsWhichMatchThisCriterion("dest", s, flightList).size();
+        if (flightsToHere > amtOfMostPop) {
+          amtOfMostPop = flightsToHere;
+          mostPop = s;
+        }
+      }
+      return mostPop;
+  
+    default:
+      return "";
+    }
+  }
+  
+  // A function that creates an ArrayList<String> of all state codes that exist
+  // in the given ArrayList<Flight> including both arrival and destination locations
+  public ArrayList<String> stateCodes(ArrayList<Flight> flights) {
+    ArrayList<String> codes = new ArrayList<String>();
+  
+    for (Flight f : flights) { //Creates an ArrayList of all state abbreviations that exist
+      String stateCode = f.origStateAbr;
+      boolean recordedAlready = false;
+      for (String s : codes) {
+        if (s.equals(stateCode)) recordedAlready = true;
+      }
+      if (!recordedAlready) codes.add(stateCode);
+    }
+  for (Flight f : flights) { //Creates an ArrayList of all state abbreviations that exist
+      String stateCode = f.destStateAbr;
+      boolean recordedAlready = false;
+      for (String s : codes) {
+        if (s.equals(stateCode)) recordedAlready = true;
+      }
+      if (!recordedAlready) codes.add(stateCode);
+    }
+    return codes;
+  }
+  
+  // A function that creates an ArrayList<String> of all flight codes that exist
+  // in the given ArrayList<Flight>
+  public ArrayList<String> carrierCodes(ArrayList<Flight> flights) {
+    ArrayList<String> codes = new ArrayList<String>();
+  
+    for (Flight f : flights) { //Creates an ArrayList of all carrier abbreviations that exist
+      String carrierCode = f.carrier;
+      boolean recordedAlready = false;
+      for (String s : codes) {
+        if (s.equals(carrierCode)) recordedAlready = true;
+      }
+      if (!recordedAlready) codes.add(carrierCode);
+    }
+    return codes;
+  }
+  
+  // A function that converts a given carrier code to its cooresponding carrier name
+  public String carrierCodeToName(String code) {
+    String[][] codes = {{"AA","American"},{"AS","Alaska"},
+                        {"B6","JetBlue"},{"DL","Delta"},
+                        {"F9","Frontier"},{"G4","Allegiant"},
+                        {"NK","Spirit"},{"HA","Hawaiian"},
+                        {"UA","United"},{"WN","Southwest"}};
+    for (String[] pair : codes) {
+      if (pair[0].equals(code)) return pair[1];
+    }
+    return "Unknown";
+  }
+  
+  // A function that converts a given carrier name to its cooresponding carrier code
+  public String carrierNameToCode(String name) {
+    String[][] codes = {{"AA","American"},{"AS","Alaska"},
+                        {"B6","JetBlue"},{"DL","Delta"},
+                        {"F9","Frontier"},{"G4","Allegiant"},
+                        {"NK","Spirit"},{"HA","Hawaiian"},
+                        {"UA","United"},{"WN","Southwest"}};
+    for (String[] pair : codes) {
+      if (pair[1].equals(name)) return pair[0];
+    }
+    return "Unknown";
+  }
+  
+  // A function that converts a given state code to its cooresponding state name
+  public String stateCodeToName(String code) {
+    String[][] codes = {
+                      {"AL","Alabama"},{"AK","Alaska"},{"AZ","Arizona"},{"AR","Arkansas"},
+                      {"CA","California"},{"CO","Colorado"},{"CT","Connecticut"},{"DE","Delaware"},
+                      {"FL","Florida"},{"GA","Georgia"},{"HI","Hawa'ii"},{"ID","Idaho"},
+                      {"IL","Illinois"},{"IN","Indiana"},{"IA","Iowa"},{"KS","Kansas"},
+                      {"KY","Kentucky"},{"LA","Louisiana"},{"ME","Maine"},{"MD","Maryland"},
+                      {"MA","Massachusetts"},{"MI","Michigan"},{"MN","Minnesota"},{"MS","Mississippi"},
+                      {"MO","Missouri"},{"MT","Montana"},{"NE","Nebraska"},{"NV","Nevada"},
+                      {"NH","New Hampshire"},{"NJ","New Jersey"},{"NM","New Mexico"},{"NY","New York"},
+                      {"NC","North Carolina"},{"ND","North Dakota"},{"OH","Ohio"},{"OK","Oklahoma"},
+                      {"OR","Oregon"},{"PA","Pennsylvania"},{"RI","Rhode Island"},{"SC","South Carolina"},
+                      {"SD","South Dakota"},{"TN","Tennessee"},{"TX","Texas"},{"UT","Utah"},
+                      {"VT","Vermont"},{"VA","Virginia"},{"WA","Washington"},{"WV","West Virginia"},
+                      {"WI","Wisconsin"},{"WY","Wyoming"},{"VI","Virgin Islands"},{"PR","Puerto Rico"},
+                      {"TT","Trust Territories"}
+                     };
+    for (String[] pair : codes) {
+      if (pair[0].equals(code)) return pair[1];
+    }
+    return "Unknown";
+  }
+  
+  // A function that converts a given state name to its cooresponding state code
+  public String stateNameToCode(String name) {
+    String[][] codes = {
+                      {"AL","Alabama"},{"AK","Alaska"},{"AZ","Arizona"},{"AR","Arkansas"},
+                      {"CA","California"},{"CO","Colorado"},{"CT","Connecticut"},{"DE","Delaware"},
+                      {"FL","Florida"},{"GA","Georgia"},{"HI","Hawa'ii"},{"ID","Idaho"},
+                      {"IL","Illinois"},{"IN","Indiana"},{"IA","Iowa"},{"KS","Kansas"},
+                      {"KY","Kentucky"},{"LA","Louisiana"},{"ME","Maine"},{"MD","Maryland"},
+                      {"MA","Massachusetts"},{"MI","Michigan"},{"MN","Minnesota"},{"MS","Mississippi"},
+                      {"MO","Missouri"},{"MT","Montana"},{"NE","Nebraska"},{"NV","Nevada"},
+                      {"NH","New Hampshire"},{"NJ","New Jersey"},{"NM","New Mexico"},{"NY","New York"},
+                      {"NC","North Carolina"},{"ND","North Dakota"},{"OH","Ohio"},{"OK","Oklahoma"},
+                      {"OR","Oregon"},{"PA","Pennsylvania"},{"RI","Rhode Island"},{"SC","South Carolina"},
+                      {"SD","South Dakota"},{"TN","Tennessee"},{"TX","Texas"},{"UT","Utah"},
+                      {"VT","Vermont"},{"VA","Virginia"},{"WA","Washington"},{"WV","West Virginia"},
+                      {"WI","Wisconsin"},{"WY","Wyoming"}
+                     };
+    for (String[] pair : codes) {
+      if (pair[1].equals(name)) return pair[0];
+    }
+    return "Unknown";
+  }
 }

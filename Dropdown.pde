@@ -1,3 +1,8 @@
+/*  Class to create a Dropdown version of the Input class,
+    where the user can selected from a list of DropdownItems
+    or type in an input selection that is equal to an item 
+    in the DropdownItem list.
+**/
 public class Dropdown extends Input {
   ArrayList<DropdownItem> itemList;
   ArrayList<String> wordList;
@@ -52,6 +57,11 @@ public class Dropdown extends Input {
     }
   }
   
+  // A function that typically runs when the user presses enter
+  // while the dropdown is in focus (aka selected). The function
+  // determines whether the input matches an option in the dropdown
+  // or if it is faulty input. The input is confirmed in the former
+  // and erased in the latter.
   public void confirmInput() {
     boolean goodInput = false;
     for (String word : wordList) {
@@ -74,6 +84,9 @@ public class Dropdown extends Input {
     userInput = "";
   }
   
+  // A function that lets the dropdown widget know when the
+  // ENTER key or the COMMA key are pressed (both serve the
+  // same function of entering input)
   public void checkEnterPressed(char letter) {
     if (takesInput) {
       if (letter == ENTER || letter == RETURN) {
@@ -89,6 +102,7 @@ public class Dropdown extends Input {
     }
   }
   
+  // A function to take the widget out of focus (unselected)
   public void deselect() {
     confirmInput();
     selected = false;
@@ -103,6 +117,7 @@ public class Dropdown extends Input {
     }
   }
   
+  // A function to get the String value of a dropdown option
   public String getOptionString() {
     if (chosenWordsList.size() > 0) {
       String optionString = chosenWordsList.toString();
@@ -110,6 +125,7 @@ public class Dropdown extends Input {
     } else return "";
   }
   
+  // A function to add the new input to the printed selection
   public void addInput() {
     String chosenOptions = getOptionString();
     if (chosenOptions.equals("")) content = userInput;
@@ -117,6 +133,9 @@ public class Dropdown extends Input {
     offset();
   }
   
+  // A function to delete the last selected choice if the
+  // user is pressing delete and no new input is available
+  // to erase
   public void deleteOnEmpty() {
     int listSize = chosenWordsList.size();
     if (listSize > 0) {
@@ -133,6 +152,7 @@ public class Dropdown extends Input {
     if (chosenWordsList.size() == 0) entered = false; else addInput();
   }
   
+  // A function to let the program know if it is clicked and where (and why)
   public void checkIfClicked(int mouseX, int mouseY) {
     if (x <= mouseX && mouseX <= x + theWidth
         && y <= mouseY && y + theHeight >= mouseY) {
@@ -161,15 +181,17 @@ public class Dropdown extends Input {
     }
   }
   
+  // A function to check if the dropdown options where scrolled
   public void checkIfScrolled(int direction) {
     if (x <= mouseX && mouseX <= x + theWidth
         && y + theHeight <= mouseY && y + theHeight + listHeight >= mouseY) {
       int maxOffset = itemList.size() * theHeight - listHeight;
       if ((direction > 0 && offsetY < maxOffset) || (direction < 0 && offsetY > 0))
-        offsetY += 10 * direction;
+        offsetY += 5 * direction;
     }
   }
   
+  // A function that returns an ArrayList<String> of the chosen option selection
   public ArrayList<String> getSelection() {
     return chosenWordsList;
   }
