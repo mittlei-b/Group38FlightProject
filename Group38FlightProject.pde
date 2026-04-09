@@ -681,6 +681,8 @@ void mousePressed() {
     if(currentEvent == 2) {
       flightInfo.active = false;
       results.active = true;
+      getDestination = 0;
+      getDeparture = 0;
     }
   }
 }
