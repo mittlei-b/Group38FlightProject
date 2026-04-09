@@ -41,7 +41,7 @@ class Sheet extends Widget {
     if (barHeight < 10) barHeight = 10;
     if (barHeight > resultHeight) barHeight = resultHeight;
     bar = new Scrollbar(x + theWidth - 10, y + headerHeight, 10, barHeight, headerColor, resultHeight);
-    selectedFlight = cells.get(0);
+    if(cells.size() > 0) selectedFlight = cells.get(0);
   }
   
   void drawBox(int the_x, int the_y) {
