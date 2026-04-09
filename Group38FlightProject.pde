@@ -425,6 +425,7 @@ if (pieCharts1.active){
     if (getDeparture < 1) {
      State = departureState;
      getPositions();
+     println(stateXPos);
      departureXPos = stateXPos;
      departureYPos = stateYPos;
      getDeparture = 1;
@@ -461,8 +462,11 @@ if (pieCharts1.active){
 
 // Function to display information about an individual flight
 void activateFlightInfo(Flight chosenFlight) {
+  getDestination = 0;
   results.active = false;
   flightInfo.active = true;
+  destinationState = chosenFlight.destStateAbr;
+  departureState = chosenFlight.origStateAbr;
 }
 
 /********** INPUT / DROPDOWN FUNCTIONS
@@ -706,262 +710,262 @@ void keyPressed() {
 
 void getPositions() {
   //Alabama
-  if (State == "AL") {
+  if (State.equals("AL")) {
     stateXPos = 665;
     stateYPos = 415;
   }
   //Alaska
-  else if (State == "AK") {
+  else if (State.equals("AK")) {
     stateXPos = 115;
     stateYPos = 500;
   }
   //Arizona
-  else if (State == "AZ") {
+  else if (State.equals("AZ")) {
     stateXPos = 205;
     stateYPos = 370;
   }
   //Arkansas
-  else if (State == "AR") {
+  else if (State.equals("AR")) {
     stateXPos = 555;
     stateYPos = 375;
   }
   //California
-  else if (State == "CA") {
+  else if (State.equals("CA")) {
     stateXPos = 70;
     stateYPos = 285;
   }
   //Colorado
-  else if (State == "CO") {
+  else if (State.equals("CO")) {
     stateXPos = 320;
     stateYPos = 275;
   }
   //Connecticut
-  else if (State == "CT") {
+  else if (State.equals("CT")) {
     stateXPos = 875;
     stateYPos = 175;
   }
   //Delaware
-  else if (State == "DE") {
+  else if (State.equals("DE")) {
     stateXPos = 850;
     stateYPos = 250;
   }
   //Florida
-  else if (State == "FL") {
+  else if (State.equals("FL")) {
     stateXPos = 780;
     stateYPos = 510;
   }
   //Georgia
-  else if (State == "GA") {
+  else if (State.equals("GA")) {
     stateXPos = 730;
     stateYPos = 410;
   }
   //Hawaii
-  else if (State == "HI") {
+  else if (State.equals("HI")) {
     stateXPos = 335;
     stateYPos = 575;
   }
   //Idaho
-  else if (State == "ID") {
+  else if (State.equals("ID")) {
     stateXPos = 190;
     stateYPos = 155;
   }
   //Illinois
-  else if (State == "IL") {
+  else if (State.equals("IL")) {
     stateXPos = 610;
     stateYPos = 255;
   }
   //Indiana
-  else if (State == "IN") {
+  else if (State.equals("IN")) {
     stateXPos = 655;
     stateYPos = 255;
   }
   //Iowa
-  else if (State == "IA") {
+  else if (State.equals("IA")) {
     stateXPos = 530;
     stateYPos = 220;
   }
   //Kansas
-  else if (State == "KS") {
+  else if (State.equals("KS")) {
     stateXPos = 450;
     stateYPos = 295;
   }
   //Kentucky
-  else if (State == "KY") {
+  else if (State.equals("KY")) {
     stateXPos = 685;
     stateYPos = 305;
   }
   //Louisiana
-  else if (State == "LA") {
+  else if (State.equals("LA")) {
     stateXPos = 565;
     stateYPos = 465;
   }
   //Maine
-  else if (State == "ME") {
+  else if (State.equals("ME")) {
     stateXPos = 905;
     stateYPos = 75;
   }
   //Maryland
-  else if (State == "MD") {
+  else if (State.equals("MD")) {
     stateXPos = 825;
     stateYPos = 245;
   }
   //Massachusetts
-  else if (State == "MA") {
+  else if (State.equals("MA")) {
     stateXPos = 885;
     stateYPos = 155;
   }
   //Michigan
-  else if (State == "MI") {
+  else if (State.equals("MI")) {
     stateXPos = 670;
     stateYPos = 175;
   }
   //Minnesota
-  else if (State == "MN") {
+  else if (State.equals("MN")) {
     stateXPos = 510;
     stateYPos = 120;
   }
   //Mississippi
-  else if (State == "MS") {
+  else if (State.equals("MS")) {
     stateXPos = 610;
     stateYPos = 420;
   }
   //Missouri
-  else if (State == "MO") {
+  else if (State.equals("MO")) {
     stateXPos = 555;
     stateYPos = 300;
   }
   //Montana
-  else if (State == "MT") {
+  else if (State.equals("MT")) {
     stateXPos = 275;
     stateYPos = 90;
   }
   //Nebraska
-  else if (State == "NE") {
+  else if (State.equals("NE")) {
     stateXPos = 425;
     stateYPos = 230;
   }
   //Nevada
-  else if (State == "NV") {
+  else if (State.equals("NV")) {
     stateXPos = 135;
     stateYPos = 235;
   }
   //New Hampshire
-  else if (State == "NH") {
+  else if (State.equals("NH")) {
     stateXPos = 880;
     stateYPos = 130;
   }
   //New Jersey
-  else if (State == "NJ") {
+  else if (State.equals("NJ")) {
     stateXPos = 855;
     stateYPos = 215;
   }
   //New Mexico
-  else if (State == "NM") {
+  else if (State.equals("NM")) {
     stateXPos = 310;
     stateYPos = 375;
   }
   //New York
-  else if (State == "NY") {
+  else if (State.equals("NY")) {
     stateXPos = 835;
     stateYPos = 155;
   }
   //North Carolina
-  else if (State == "NC") {
+  else if (State.equals("NC")) {
     stateXPos = 800;
     stateYPos = 335;
   }
   //North Dakota
-  else if (State == "ND") {
+  else if (State.equals("ND")) {
     stateXPos = 420;
     stateYPos = 90;
   }
   //Ohio
-  else if (State == "OH") {
+  else if (State.equals("OH")) {
     stateXPos = 715;
     stateYPos = 240;
   }
   //Oklahoma
-  else if (State == "OK") {
+  else if (State.equals("OK")) {
     stateXPos = 470;
     stateYPos = 365;
   }
   //Oregon
-  else if (State == "OR") {
+  else if (State.equals("OR")) {
     stateXPos = 90;
     stateYPos = 125;
   }
   //Pennsylvania
-  else if (State == "PA") {
+  else if (State.equals("PA")) {
     stateXPos = 800;
     stateYPos = 210;
   }
   //Rhode Island
-  else if (State == "RI") {
+  else if (State.equals("RI")) {
     stateXPos = 895;
     stateYPos = 170;
   }
   //South Carolina
-  else if (State == "SC") {
+  else if (State.equals("SC")) {
     stateXPos = 775;
     stateYPos = 375;
   }
   //South Dakota
-  else if (State == "SD") {
+  else if (State.equals("SD")) {
     stateXPos = 420;
     stateYPos = 160;
   }
   //Tennessee
-  else if (State == "TN") {
+  else if (State.equals("TN")) {
     stateXPos = 665;
     stateYPos = 350;
   }
   //Texas
-  else if (State == "TX") {
+  else if (State.equals("TX")) {
     stateXPos = 435;
     stateYPos = 465;
   }
   //Utah
-  else if (State == "UT") {
+  else if (State.equals("UT")) {
     stateXPos = 220;
     stateYPos = 260;
   }
   //Vermont
-  else if (State == "VT") {
+  else if (State.equals("VT")) {
     stateXPos = 860;
     stateYPos = 120;
   }
   //Virginia
-  else if (State == "VA") {
+  else if (State.equals("VA")) {
     stateXPos = 800;
     stateYPos = 285;
   }
   //Washington
-  else if (State == "WA") {
+  else if (State.equals("WA")) {
     stateXPos = 115;
     stateYPos = 55;
   }
   //West Virginia
-  else if (State == "WV") {
+  else if (State.equals("WV")) {
     stateXPos = 755;
     stateYPos = 275;
   }
   //Wisconsin
-  else if (State == "WI") {
+  else if (State.equals("WI")) {
     stateXPos = 590;
     stateYPos = 155;
   }
   //Wyoming
-  else if (State == "WY") {
+  else if (State.equals("WY")) {
     stateXPos = 300;
     stateYPos = 185;
   } 
   //Puerto Rico
-  else if (State == "PR") {
+  else if (State.equals("PR")) {
     stateXPos = 950;
     stateYPos = 630;
   } 
   //US Virgin Islands
-  else if (State == "VI") {
+  else if (State.equals("VI")) {
     stateXPos = 0;
     stateYPos = 320;
   } 

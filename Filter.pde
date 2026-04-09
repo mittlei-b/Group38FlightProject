@@ -1,4 +1,4 @@
-class filter {
+class Filter {
   // initialising all of the variables the filters will need
   String type, status;
   int xpos, ypos;
@@ -22,7 +22,7 @@ class filter {
                        {30, 31, 0, 0, 0, 0, 0}};
   
   // constructor for sliders
-  filter(String type, String status, int xpos, int ypos, int size, color circleColour, color rectColour, int number, int rectWidth, int rectHeight) {
+  Filter(String type, String status, int xpos, int ypos, int size, color circleColour, color rectColour, int number, int rectWidth, int rectHeight) {
     this.type = type;
     this.status = status;
     this.xMargin = xpos;
@@ -38,7 +38,7 @@ class filter {
   }
   
   // constructor for the calendar
-  filter(String type, int xpos, int ypos, int calendarWidth, int calendarHeight, PImage calendarImg) {
+  Filter(String type, int xpos, int ypos, int calendarWidth, int calendarHeight, PImage calendarImg) {
     this.type = type;
     this.xpos = xpos;
     this.ypos = ypos;
@@ -48,7 +48,7 @@ class filter {
   }
   
   // constructor for the late and cancelled tickboxes
-  filter(String type, int xpos, int ypos, int size, PImage untickedImg, PImage tickedImg) {
+  Filter(String type, int xpos, int ypos, int size, PImage untickedImg, PImage tickedImg) {
     this.type = type;
     this.xpos = xpos;
     this.ypos = ypos;
