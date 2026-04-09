@@ -35,7 +35,6 @@ color blue = color(120,190,240);
  SCREEN VARIABLES
  ***********/
 Screen welcome = new Screen();
-// initialising screens here because i get a null pointer exception later otherwise??
 Screen search = new Screen();
 Screen results = new Screen();
 Screen flightInfo = new Screen();
@@ -43,6 +42,7 @@ Screen pieCharts1 = new Screen();
 Screen pieCharts2 = new Screen();
 Screen barCharts1 = new Screen();
 Screen barCharts2 = new Screen();
+Screen map = new Screen();
 
 int currentEvent; 
 int musicEvent;
