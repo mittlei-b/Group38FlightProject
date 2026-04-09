@@ -134,7 +134,7 @@ void setup() {
   //Source: https://freetouse.com/music
   //Free Vlog Music Without Copyright
   //music.loop();
-  musicButton = new Widget(60, SCREEN_HEIGHT-60, 40, 40, musicIcon, 5);
+  musicButton = new Widget(20, SCREEN_HEIGHT-60, 40, 40, musicIcon, 5);
 
   /********** WIDGETS
    making all widgets on each screen here + setting welcome to active so
@@ -420,6 +420,7 @@ if (pieCharts1.active){
   pieCharts2.draw();
   barCharts1.draw();
   barCharts2.draw();
+  musicButton.draw();
   
   if (flightInfo.active) {
     image(starsAndStripes, 0, 0);
