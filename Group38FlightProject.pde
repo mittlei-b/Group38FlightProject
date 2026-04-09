@@ -57,8 +57,8 @@ int destinationYPos = 0;
 int departureXPos = 0;
 int departureYPos = 0;
 
-String destinationState;
-String departureState;
+String destinationState = "CA";
+String departureState = "TX";
 
 String State;
 int stateXPos;
@@ -422,21 +422,21 @@ if (pieCharts1.active){
   if (flightInfo.active) {
     image(mapImg, 0, 0);
 
-    // if (getDeparture < 1) {
-    // State = departureState;
-    // getPositions();
-    // departureXPos = stateXPos;
-    // departureYPos = stateYPos;
-    // getDeparture = 1;
-    // }
+    if (getDeparture < 1) {
+     State = departureState;
+     getPositions();
+     departureXPos = stateXPos;
+     departureYPos = stateYPos;
+     getDeparture = 1;
+     }
 
-    // if (getDestination < 1) {
-    //  State = destinationState;
-    //  getPositions();
-    //  destinationXPos = stateXPos;
-    //  destinationYPos = stateYPos;
-    //  getDestination = 1;
-    // }
+     if (getDestination < 1) {
+      State = destinationState;
+      getPositions();
+      destinationXPos = stateXPos;
+      destinationYPos = stateYPos;
+      getDestination = 1;
+     }
 
     //detDestination and getDeparture need to be reset to 0 when user exits the flightInfo screen
 
