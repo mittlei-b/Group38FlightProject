@@ -154,9 +154,9 @@ void setup() {
   results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, pieChart2, 2);
   results.addWidgetC(200, SCREEN_HEIGHT-60, 40, 40, barChart2, 3);
   results.addWidgetC(260,  SCREEN_HEIGHT-60, 40, 40, mapIcon, 4);
-  results.addWidgetC(320, SCREEN_HEIGHT-60, 40, 40, searchIcon, 4);
+  results.addWidgetC(320, SCREEN_HEIGHT-60, 40, 40, searchIcon, 5);
 
-  flightInfo.addWidgetB(100, 780, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
+  flightInfo.addWidgetB(100, 580, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   mapImg = loadImage("USA.png");
   starsAndStripes = loadImage("Stars_And_Stripes.png");
   //starsAndStripes.resize(960, 640);
@@ -169,8 +169,9 @@ void setup() {
   barCharts1.addWidgetB(SCREEN_WIDTH-120, SCREEN_HEIGHT-60, 100, 40, "Next", color(200, 200, 200), loadedFont, 1);
   barCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 2);
 
-  barCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 1);
+  barCharts2.addWidgetB(80, SCREEN_HEIGHT-60, 80, 40, "Back", color(100, 180, 155), loadedFont, 1);
 
+  map.addWidgetB(80, SCREEN_HEIGHT-60,80, 40, "Back", color(100, 180, 155), loadedFont, 1);
 
   /********** DATA TABLE
    Here is our data class. We're using the Processing class called Table:
@@ -395,6 +396,22 @@ if (barCharts1.active) {
     }
   }
 
+if (pieCharts1.active){
+  if (selectedFlights.size() > 0){
+    PieChart origPieChart = new PieChart(50, 50, 200, 200, "Most Common Origins for Specified Flights", color(100, 50, 200), loadedFont);
+    origPieChart.loadDataWithType("orig", selectedFlights, origPieChart);
+    origPieChart.draw();
+    
+    PieChart destPieChart = new PieChart(330, 100, 200, 200, "Most Common Destinations for Specified Flights", color(100, 50, 200), loadedFont);
+    destPieChart.loadDataWithType("dest", selectedFlights, destPieChart);
+    destPieChart.draw();
+    
+    PieChart carrierPieChart = new PieChart(650, 50, 200, 200, "Most Common Carriers for Specified Flights", color(100, 50, 200), loadedFont);
+    carrierPieChart.loadDataWithType("carrier", selectedFlights, carrierPieChart);
+    carrierPieChart.draw();
+  }
+  
+}
   welcome.draw();
   search.draw();
   results.draw();
@@ -571,8 +588,9 @@ void mousePressed() {
     }
   }
 
+                                                // checking if a button was pressed based on the current screen
   if (welcome.active) {
-    currentEvent = welcome.getEvent(mouseX, mouseY);
+    currentEvent = welcome.getEvent(mouseX, mouseY); // seeing which button is pressed based on mouse position
     if (currentEvent == 1) {
       welcome.active = false;
       search.active = true;
@@ -617,6 +635,10 @@ void mousePressed() {
     }
     else if (currentEvent == 4){
       results.active = false;
+      map.active = true;
+    }
+    else if (currentEvent == 5) {
+      results.active = false;
       search.active = true;
     }
   }
@@ -660,7 +682,22 @@ void mousePressed() {
       barCharts1.active = true;
     }
   }
-
+  
+  if(map.active) {
+    currentEvent = map.getEvent(mouseX, mouseY);
+    if(currentEvent == 1) {
+      map.active = false;
+      results.active = true;
+    }
+  }
+  
+  if(flightInfo.active) {
+    currentEvent = flightInfo.getEvent(mouseX, mouseY);
+    if(currentEvent == 2) {
+      flightInfo.active = false;
+      results.active = true;
+    }
+  }
 }
 
 void mouseWheel(MouseEvent event) {
