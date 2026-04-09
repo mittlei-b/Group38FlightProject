@@ -141,7 +141,7 @@ void setup() {
    **********/
   welcome.active = true;
 
-  // each widget has a unique (per screen) event number to determine which was pressed
+  // each pressable widget has a unique (per screen) event number to determine which was pressed
   welcome.addWidgetA((SCREEN_WIDTH/2 - 100), 200, 200, 50, "Welcome", color(180, 200, 255), welcomeFont);
   welcome.addWidgetB(SCREEN_WIDTH/2 - 80, 300, 160, 30, "Start searching", color(180, 200, 255), loadedFont, 1);
   welcome.addWidgetA(SCREEN_WIDTH/2 - 185, 380, 370, 30, "By Emily Eulitz, Shane Jones, Autumn Kaiser,", color(2, 176, 207), loadedFont);
