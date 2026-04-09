@@ -26,14 +26,11 @@ class PieChart extends Widget {
       float angle = map(values.get(i), 0, total, 0, TWO_PI);
       arc(x, y, theWidth, theWidth, startPoint, startPoint + angle);
       startPoint += angle;
-      //println(angle);
-      //float percentage = data.roundToTwoDecimals(angle/TWO_PI * 100);
-      //println(labels.get(i) + " " + percentage);
-      
+      float percentage = data.roundToTwoDecimals(angle/TWO_PI * 100);
       rect(x, y + theWidth + 15*i + 10, 8, 8);
       fill(0);
       textSize(15);
-      text((labels.get(i) + " - " + values.get(i) + " flights"), x + 20, y + theWidth + 15*i + 10);
+      text((labels.get(i) + " - " + values.get(i) + " flights, " + percentage + "% of total"), x + 20, y + theWidth + 15*i + 10);
     }
   }
   
