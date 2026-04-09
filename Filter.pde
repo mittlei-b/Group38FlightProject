@@ -1,4 +1,5 @@
-class Filter {
+class filter {
+  // initialising all of the variables the filters will need
   String type, status;
   int xpos, ypos;
   int xMargin;
@@ -11,6 +12,8 @@ class Filter {
   boolean ticked = false;
   boolean dragged = false;
   color circleColour, rectColour;
+  
+  // array of dates that correspond to the calendar squares
   int[][] dateArray = {{0, 0, 0, 0, 0, 0, 1},
                        {2, 3, 4, 5, 6, 7, 8},
                        {9, 10, 11, 12, 13, 14, 15},
@@ -18,7 +21,8 @@ class Filter {
                        {23, 24, 25, 26, 27, 28, 29},
                        {30, 31, 0, 0, 0, 0, 0}};
   
-  Filter(String type, String status, int xpos, int ypos, int size, color circleColour, color rectColour, int number, int rectWidth, int rectHeight) {
+  // constructor for sliders
+  filter(String type, String status, int xpos, int ypos, int size, color circleColour, color rectColour, int number, int rectWidth, int rectHeight) {
     this.type = type;
     this.status = status;
     this.xMargin = xpos;
@@ -33,7 +37,8 @@ class Filter {
     this.rectHeight = rectHeight;
   }
   
-  Filter(String type, int xpos, int ypos, int calendarWidth, int calendarHeight, PImage calendarImg) {
+  // constructor for the calendar
+  filter(String type, int xpos, int ypos, int calendarWidth, int calendarHeight, PImage calendarImg) {
     this.type = type;
     this.xpos = xpos;
     this.ypos = ypos;
@@ -42,7 +47,8 @@ class Filter {
     this.calendarImg = calendarImg;
   }
   
-  Filter(String type, int xpos, int ypos, int size, PImage untickedImg, PImage tickedImg) {
+  // constructor for the late and cancelled tickboxes
+  filter(String type, int xpos, int ypos, int size, PImage untickedImg, PImage tickedImg) {
     this.type = type;
     this.xpos = xpos;
     this.ypos = ypos;
@@ -50,30 +56,37 @@ class Filter {
     this.untickedImg = untickedImg;
     this.tickedImg = tickedImg;
   }
-  
+ 
+ // returns the type of filter (slider, calendar, tickbox)
   String type() {
     return type;
   }
-  
+ 
+  // returns whether or not the checkbox is ticked for data filtration
   boolean isTicked() {
     return ticked;
   }
 
+  // called when the user clicks the mouse
   void click() {
+    
+    // if the mouse clicks a slider, dragged is set to true
     if (type.equals("slider"))
     {
       dragged = true;
     }
+    
+    // if the mouse clicks inside the calendar image calendar, the actualDate function changes the date variable to the one the user clicked on
     else if (type.equals("calendar"))
     {
       if (mouseX > xpos && mouseX < xpos + calendarWidth &&
           mouseY > ypos + (calendarHeight / 3.5) && mouseY < ypos + calendarHeight)
       {
-        dateX();
-        dateY();
         actualDate();
       }
     }
+    
+    // if the mouse clicks on a tickbox, the boolean ticked is inverted
     else if (type.equals("tickbox"))
     {
       if (mouseX > xpos && mouseX < xpos + size &&
@@ -84,6 +97,7 @@ class Filter {
     }
   }
   
+  // when the user releases the mouse, dragged is set to false
   void release() {
     if (type.equals("slider"))
     {
@@ -91,29 +105,31 @@ class Filter {
     }
   }
   
+  // returns whether or not the user is dragging the mouse on the slider
   boolean dragged() {
     return dragged;
   }
   
+  // divides the slider into sections and returns the section (time) the slider circle is currently on from 0 to 24
   int getNumber() {
     int num = -1;
     if (type.equals("slider"))
     {
-      if (status.equals("start"))
+      if (status.equals("start"))  // if the dragged circle is the start time of the time range
       {
         int distance = xpos - rectX;
-        int step = round(rectWidth / 24);
-        num = round(distance / step);
+        float step = rectWidth / 24.0;
+        num = (int)(distance / step);
         
         if (num > 24) {
           num = 24;
         }
       }
-      else
+      else  // if the dragged circle is the end time of the time range
       {
         int distance = xpos - (rectX - rectWidth);
-        int step = round(rectWidth / 24);
-        num = round(distance / step);
+        float step = rectWidth / 24.0;
+        num = (int)(distance / step);
         
         if (num > 24) {
           num = 24;
@@ -125,6 +141,8 @@ class Filter {
     return -1;
   }
   
+  
+  // returns the most recent date the user clicked on
   int getDate() {
     if (type.equals("calendar"))
     {
@@ -133,13 +151,17 @@ class Filter {
     return 0;
   }
   
+  // uses the dateArray to calculate the date the user clicked on
   void actualDate() {
     if (type.equals("calendar"))
     {
+       dateX();
+       dateY();
        if (numX <= 6 && numY <= 6) date = dateArray[numX][numY];
     }
   }
   
+  // calculates which row of the calendar the user clicked on
   void dateX() {
     int mousePos = mouseY;
     int distance = mousePos - (ypos + (int)(calendarHeight / 3.25));
@@ -147,6 +169,7 @@ class Filter {
     numX = round(distance / step);
   }
     
+  // calculates which column of the calendar the user clicked on
   void dateY() {
     int mousePos = mouseX;
     int distance = mousePos - xpos;
@@ -154,8 +177,9 @@ class Filter {
     numY = round(distance / step);
   }
 
+
   void move(int mouseXpos, int otherNumber, int otherXpos) {
-    if (type.equals("slider"))
+    if (type.equals("slider"))  // the slider circles get moved from position to position on the slider
     {
       int distance = rectWidth / 24;
       int number = (mouseXpos - xMargin) / distance;
@@ -207,6 +231,7 @@ class Filter {
     }
   }
   
+  // draws the rectangle for the slider circles to slide along
   void drawRect() {
     int rectYpos = ypos - (size / 4);
     fill(rectColour);
@@ -214,16 +239,16 @@ class Filter {
   }
   
   void draw() {
-    if (type.equals("slider"))
+    if (type.equals("slider"))  // the slider circles are drawn
     {
       fill(circleColour);
       circle(xpos, ypos, size);
     }
-    else if (type.equals("calendar"))
+    else if (type.equals("calendar"))  // the calendar is drawn
     {
       image(calendarImg, xpos, ypos, calendarWidth, calendarHeight);
     }
-    else if (type.equals("tickbox"))
+    else if (type.equals("tickbox"))  // the tickbox is drawn using the picture corresponds to the value of the boolean ticked
     {
       if (ticked)
       {
