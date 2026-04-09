@@ -161,9 +161,9 @@ void setup() {
   flightInfo.addWidgetB(100, 580, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   mapImg = loadImage("USA.png");
 
-  pieCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 100, 40, "Back", color(140, 240, 255), loadedFont, 1);
+  pieCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 100, 40, "Back", color(140, 240, 255), loadedFont, 2);
 
-  barCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 100, 40, "Back", color(140, 240, 255), loadedFont, 1);
+  barCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 100, 40, "Back", color(140, 240, 255), loadedFont, 2);
 
   /********** DATA TABLE
    Here is our data class. We're using the Processing class called Table:
