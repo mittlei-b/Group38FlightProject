@@ -30,6 +30,7 @@ SoundFile music;
 int SCREEN_HEIGHT = 640;
 int SCREEN_WIDTH = 960;
 color blue = color(120,190,240);
+Plane plane;
 
 /**********
  SCREEN VARIABLES
@@ -127,6 +128,8 @@ void setup() {
   welcomeFont = createFont("Arial", 40);
   background(255);
   fill(0);
+
+  plane = new Plane(800, 100);
 
   music = new SoundFile(this, "data/lofiSong.mp3");
   // Music track: gingersweet by massobeats
@@ -287,6 +290,11 @@ void draw() {
             Background 
    ***********/
   image(welcomeBackground, 0, 0);
+
+  if(welcome.active) {
+    plane.move();
+    plane.drawPlane();
+  }
 
   if (search.active) {
     textFont(loadedFont);
