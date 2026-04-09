@@ -129,7 +129,7 @@ void setup() {
   background(255);
   fill(0);
 
-  plane = new Plane(800, 100);
+  plane = new Plane(800, 80);
 
   music = new SoundFile(this, "data/lofiSong.mp3");
   // Music track: gingersweet by massobeats
