@@ -19,8 +19,6 @@ PImage welcomeBackground;
 PImage homeIcon;
 PImage musicIcon;
 PImage musicMuteIcon;
-PImage pieChartIcon;
-PImage barChartIcon;
 PImage mapIcon;
 PImage searchIcon;
 PImage pieChart2;
@@ -42,7 +40,9 @@ Screen search = new Screen();
 Screen results = new Screen();
 Screen flightInfo = new Screen();
 Screen pieCharts1 = new Screen();
+Screen pieCharts2 = new Screen();
 Screen barCharts1 = new Screen();
+Screen barCharts2 = new Screen();
 Screen map = new Screen();
 
 int currentEvent; 
@@ -56,8 +56,8 @@ int destinationYPos = 0;
 int departureXPos = 0;
 int departureYPos = 0;
 
-String destinationState = "CA";
-String departureState = "TX";
+String destinationState;
+String departureState;
 
 String State;
 int stateXPos;
@@ -110,8 +110,6 @@ void setup() {
   homeIcon = loadImage("Home_Icon.PNG");
   musicIcon = loadImage("MusicIcon.PNG");
   musicMuteIcon = loadImage("MusicMutedIcon.PNG");
-  pieChartIcon = loadImage("PieChartIcon.PNG");
-  barChartIcon = loadImage("BarChartIcon.PNG");
   mapIcon = loadImage("MapIcon.PNG");
   untickedImg = loadImage("unticked.jpg");
   tickedImg = loadImage("ticked.jpg");
@@ -126,8 +124,8 @@ void setup() {
   welcomeFont = createFont("Arial", 40);
   background(255);
   fill(0);
-
-  plane = new Plane(800, 60);
+  
+  plane = new Plane(800,60);
 
   music = new SoundFile(this, "data/lofiSong.mp3");
   // Music track: gingersweet by massobeats
@@ -141,6 +139,7 @@ void setup() {
    it shows when program starts
    **********/
   welcome.active = true;
+  
 
   // each pressable widget has a unique (per screen) event number to determine which was pressed
   welcome.addWidgetA((SCREEN_WIDTH/2 - 100), 200, 200, 50, "Welcome", color(140, 240, 255), welcomeFont);
@@ -161,9 +160,10 @@ void setup() {
   flightInfo.addWidgetB(100, 580, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   mapImg = loadImage("USA.png");
 
-  pieCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 100, 40, "Back", color(140, 240, 255), loadedFont, 2);
+  pieCharts1.addWidgetB(SCREEN_WIDTH/2-40, SCREEN_HEIGHT-60, 80, 40, "Back", color(140, 240, 255), loadedFont, 2);
 
-  barCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 100, 40, "Back", color(140, 240, 255), loadedFont, 2);
+  barCharts1.addWidgetB(SCREEN_WIDTH/2-40, SCREEN_HEIGHT-60, 80, 40, "Back", color(140, 240, 255), loadedFont, 2);
+
 
   /********** DATA TABLE
    Here is our data class. We're using the Processing class called Table:
@@ -282,7 +282,7 @@ void draw() {
             Background 
    ***********/
   image(welcomeBackground, 0, 0);
-
+  
   if(welcome.active) {
     plane.move();
     plane.drawPlane();
@@ -420,7 +420,7 @@ if (pieCharts1.active){
   if (flightInfo.active) {
     image(mapImg, 0, 0);
 
-    if (getDeparture < 1) {
+     if (getDeparture < 1) {
      State = departureState;
      getPositions();
      departureXPos = stateXPos;
@@ -636,26 +636,19 @@ void mousePressed() {
 
   if(pieCharts1.active) {
     currentEvent = pieCharts1.getEvent(mouseX, mouseY);
-    if(currentEvent == 1) {
-    }
-    else if(currentEvent == 2) {
+    if(currentEvent == 2) {
       pieCharts1.active = false;
       results.active = true;
     }
   }
 
-
   if(barCharts1.active) {
     currentEvent = barCharts1.getEvent(mouseX, mouseY);
-    if(currentEvent == 1) {
-    }
-    else if(currentEvent == 2) {
+    if(currentEvent == 2) {
       barCharts1.active = false;
       results.active = true;
     }
   }
-
-  
   
   if(flightInfo.active) {
     currentEvent = flightInfo.getEvent(mouseX, mouseY);
