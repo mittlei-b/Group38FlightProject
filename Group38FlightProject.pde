@@ -1,3 +1,8 @@
+/**********
+ IMPORTANT NOTE: It is necessary that the Sound Library by the Processing Foundation
+ be downloaded on YOUR LOCAL computer.
+ ***********/
+
 import java.util.Scanner;
 import java.util.Arrays;
 import java.io.*;
