@@ -94,13 +94,13 @@ void settings() {
 }
 
 void setup() {
-  tableFont = loadFont(smallFont);
-  resultTable = new Sheet(40, 130, SCREEN_WIDTH - 80, 420, "Results", blue, loadedFont);
   /********** DESIGN
    All variables to do with design go first (font, colors, styling, etc.)
    Anything DRAWN (that needs setup) goes AFTER input boxes and data table.
    ***********/
 
+  tableFont = loadFont(smallFont);
+  resultTable = new Sheet(40, 130, SCREEN_WIDTH - 80, 420, "Results", blue, loadedFont);
   welcomeBackground = loadImage("backgroundImage.jpg");
   homeIcon = loadImage("Home_Icon.PNG");
   musicIcon = loadImage("MusicIcon.PNG");
@@ -134,7 +134,6 @@ void setup() {
    it shows when program starts
    **********/
   welcome.active = true;
-
 
   // each pressable widget has a unique (per screen) event number to determine which was pressed
   welcome.addWidgetA((SCREEN_WIDTH/2 - 100), 200, 200, 50, "Welcome", color(140, 240, 255), welcomeFont);
@@ -368,22 +367,12 @@ void draw() {
     image(mapImg, 0, 0);
 
     if (getDeparture < 1) {
-<<<<<<< HEAD
      State = departureState;
      getPositions();
-     println(stateXPos);
      departureXPos = stateXPos;
      departureYPos = stateYPos;
      getDeparture = 1;
      }
-=======
-      State = departureState;
-      getPositions();
-      departureXPos = stateXPos;
-      departureYPos = stateYPos;
-      getDeparture = 1;
-    }
->>>>>>> 706c4a9488e25ca06e568b5352d57daccdbf47a0
 
     if (getDestination < 1) {
       State = destinationState;
@@ -402,7 +391,6 @@ void draw() {
     circle(destinationXPos, destinationYPos, 10);
     circle(departureXPos, departureYPos, 10);
   }
-
 
   fill(0);
   textFont(loadedFont);
@@ -558,8 +546,8 @@ void mousePressed() {
       welcome.active = true;
     } else if (currentEvent == 2) {
       search.active = false;
-      resultTable.load(filteredData());
       selectedFlights = filteredData();
+      resultTable.load(selectedFlights);
       results.active = true;
     }
     // Check if an input was selected and update if so
