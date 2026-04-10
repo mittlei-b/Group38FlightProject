@@ -12,24 +12,14 @@ import java.util.Comparator;
  ***********/
 String font = "ArialMT-18.vlw";
 String smallFont = "ArialMT-12.vlw";
-PFont tableFont;
-PFont loadedFont;
-PFont welcomeFont;
-PImage welcomeBackground;
-PImage homeIcon;
-PImage musicIcon;
-PImage musicMuteIcon;
-PImage pieChartIcon;
-PImage barChartIcon;
-PImage mapIcon;
-PImage searchIcon;
-PImage pieChart2;
-PImage barChart2;
+PFont tableFont, loadedFont, welcomeFont;
+PImage welcomeBackground, homeIcon, musicIcon, musicMuteIcon, mapIcon, searchIcon;
+PImage pieChartIcon, barChartIcon;
 Widget musicButton;
 SoundFile music;
 int SCREEN_HEIGHT = 640;
 int SCREEN_WIDTH = 960;
-color blue = color(120,190,240);
+color blue = color(120, 190, 240);
 Plane plane;
 
 /**********
@@ -45,7 +35,7 @@ Screen pieCharts1 = new Screen();
 Screen barCharts1 = new Screen();
 Screen map = new Screen();
 
-int currentEvent; 
+int currentEvent;
 int musicEvent;
 
 /**********
@@ -56,8 +46,8 @@ int destinationYPos = 0;
 int departureXPos = 0;
 int departureYPos = 0;
 
-String destinationState = "CA";
-String departureState = "TX";
+String destinationState;
+String departureState;
 
 String State;
 int stateXPos;
@@ -94,6 +84,11 @@ ArrayList<Flight> selectedFlights;
 int totalNumbOfFlights; // Total number of flights, used for comparison
 int numbOfSelectedFlights; // Number of flights, now that data has been narrowed down based on a specific parameter
 
+
+// CHARTS
+Chart origBarChart, destBarChart, carrBarChart;
+PieChart origPieChart, destPieChart, carrierPieChart;
+
 void settings() {
   size(SCREEN_WIDTH, SCREEN_HEIGHT);
 }
@@ -110,15 +105,13 @@ void setup() {
   homeIcon = loadImage("Home_Icon.PNG");
   musicIcon = loadImage("MusicIcon.PNG");
   musicMuteIcon = loadImage("MusicMutedIcon.PNG");
-  pieChartIcon = loadImage("PieChartIcon.PNG");
-  barChartIcon = loadImage("BarChartIcon.PNG");
   mapIcon = loadImage("MapIcon.PNG");
   untickedImg = loadImage("unticked.jpg");
   tickedImg = loadImage("ticked.jpg");
   calendarImg = loadImage("januaryCalendar.jpg");
   searchIcon = loadImage("Search-Icon.png");
-  pieChart2 = loadImage("Piechart-Icon.png");
-  barChart2 = loadImage("Barchart-Icon.png");
+  pieChartIcon = loadImage("Piechart-Icon.png");
+  barChartIcon = loadImage("Barchart-Icon.png");
   calendarImg.resize(200, 200);
   welcomeBackground.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
   loadedFont = loadFont(font);
@@ -133,7 +126,7 @@ void setup() {
   // Music track: gingersweet by massobeats
   //Source: https://freetouse.com/music
   //Free Vlog Music Without Copyright
-  //music.loop();
+  music.loop();
   musicButton = new Widget(20, SCREEN_HEIGHT-60, 40, 40, musicIcon, 5);
 
   /********** WIDGETS
@@ -141,6 +134,7 @@ void setup() {
    it shows when program starts
    **********/
   welcome.active = true;
+
 
   // each pressable widget has a unique (per screen) event number to determine which was pressed
   welcome.addWidgetA((SCREEN_WIDTH/2 - 100), 200, 200, 50, "Welcome", color(140, 240, 255), welcomeFont);
@@ -154,16 +148,17 @@ void setup() {
   search.addWidgetB(780, 560, 150, 50, "Search", color(140, 240, 255), loadedFont, 2);
 
   results.addWidgetC(80, SCREEN_HEIGHT-60, 40, 40, homeIcon, 1);
-  results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, pieChart2, 2);
-  results.addWidgetC(200, SCREEN_HEIGHT-60, 40, 40, barChart2, 3);
+  results.addWidgetC(140, SCREEN_HEIGHT-60, 40, 40, pieChartIcon, 2);
+  results.addWidgetC(200, SCREEN_HEIGHT-60, 40, 40, barChartIcon, 3);
   results.addWidgetC(260, SCREEN_HEIGHT-60, 40, 40, searchIcon, 5);
 
   flightInfo.addWidgetB(100, 580, 100, 40, "Back", color(100, 180, 255), loadedFont, 2);
   mapImg = loadImage("USA.png");
 
-  pieCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 100, 40, "Back", color(140, 240, 255), loadedFont, 2);
+  pieCharts1.addWidgetB(SCREEN_WIDTH/2-40, SCREEN_HEIGHT-60, 80, 40, "Back", color(140, 240, 255), loadedFont, 2);
 
-  barCharts1.addWidgetB(80, SCREEN_HEIGHT-60, 100, 40, "Back", color(140, 240, 255), loadedFont, 2);
+  barCharts1.addWidgetB(SCREEN_WIDTH/2-40, SCREEN_HEIGHT-60, 80, 40, "Back", color(140, 240, 255), loadedFont, 2);
+
 
   /********** DATA TABLE
    Here is our data class. We're using the Processing class called Table:
@@ -185,7 +180,7 @@ void setup() {
       row.getInt("CANCELLED"))); // Creating another object of type flight and putting in the attributes taken directly from the csv file
     totalNumbOfFlights++; // Tallying up total number of flights for later comparison
   }
-  
+
   // Future list of flights within input criteria
   selectedFlights = new ArrayList<Flight>();
 
@@ -223,67 +218,25 @@ void setup() {
   arrEndSlider = new Filter("slider", "end", 920, 150, 10, 0, 200, 24, 175, 5);
   lateTickbox = new Filter("tickbox", 340, 330, 25, untickedImg, tickedImg);
   cancelledTickbox = new Filter("tickbox", 490, 330, 25, untickedImg, tickedImg);
-  
-  /*
-  
-   // Sample application of this framework
-   // Let's say this user wants only flights from Arizona
-   String depState = "AZ"; // This is just hardcoded into the program here but it would be decided based on a scanner or sum
-   
-   
-   ArrayList<String> stateCodes = new ArrayList<String>();
-   ArrayList<Integer> numbFlightsTXtoX = new ArrayList<Integer>(); // BRYNNE TEMPORARY ADDITION
-   
-   
-   ArrayList<Flight> flightSubList = new ArrayList<Flight>();
-   for (Flight f : flights) {
-   if ((f.origStateAbr).equals(depState)) {
-   flightSubList.add(f);
-   numbOfSelectedFlights++; // Tallying up the number of flights from Texas
-   }
-   }
-   
-   println("Total number of flights: " + totalNumbOfFlights);
-   println("Number of selected flights: "+numbOfSelectedFlights);
-   
-   int flightsToTexas = numbFlightsFromHereToThere("TX", flightSubList);
-   
-   for (String s : stateCodes){
-   int flightsToHere = numbFlightsFromHereToThere(s, flightSubList);
-   numbFlightsTXtoX.add(flightsToHere);
-   println(flightsToHere + " flights were made from Texas to " + s + ".");
-   }
-   
-   println("Total flights from Arizona to Texas: " + flightsToTexas);
-   
-   float percentDiverted = getPercentage("DIVERTED", flightSubList);
-   float pDivertedRounded = (float(round(percentDiverted*100)))/100;
-   
-   double meanDistance = getMean("DISTANCE", flightSubList);
-   float meanDistRounded = float(round((float)(meanDistance*100)))/100;
-   
-   println("Mean distance of selected flights in km: " + meanDistRounded);
-   println("Percentage of selected flights that were diverted: " + pDivertedRounded + "%");
-   
-   **/
+
+
+  // Charts - Initialising here to reduce CPU load later on
+  // (eliminates need to initialise them over and over again in draw())
+
+  origBarChart = new Chart(50, 20, 300, 300, "Most Common Origins for Specified Flights", color(100, 50, 200), loadedFont);
+  destBarChart = new Chart(500, 20, 300, 300, "Most Common Destinations for Specified Flights", color(100, 50, 200), loadedFont);
+  carrBarChart = new Chart(250, 350, 300, 300, "Most Common Carrier/Airline for Specified Flights", color(100, 50, 200), loadedFont);
+
+  origPieChart = new PieChart(50, 50, 200, 200, "Most Common Origins for Specified Flights", color(100, 50, 200), loadedFont);
+  destPieChart = new PieChart(330, 100, 200, 200, "Most Common Destinations for Specified Flights", color(100, 50, 200), loadedFont);
+  carrierPieChart = new PieChart(650, 50, 200, 200, "Most Common Carriers for Specified Flights", color(100, 50, 200), loadedFont);
 }
 
 void draw() {
-  /*println("Welcome: " + welcome.active);
-  println("Search: " + search.active);
-  println("Results: " + results.active);
-  println("Flight Info: " + flightInfo.active);
-  println("Pie Charts 1: " + pieCharts1.active);
-  println("Pie Charts 2: " + pieCharts2.active);
-  println("Bar Charts 1: " + barCharts1.active);
-  println("BAR Charts 2: " + barCharts2.active);**/
 
-  /********** 
-            Background 
-   ***********/
   image(welcomeBackground, 0, 0);
 
-  if(welcome.active) {
+  if (welcome.active) {
     plane.move();
     plane.drawPlane();
   }
@@ -322,7 +275,7 @@ void draw() {
     text("Airline:", 80, 130);
     text("Departure State:", 266, 130);
     text("Arrival State:", 401, 130);
-    
+
     textAlign(LEFT);
 
     int chosenDate = calendar.getDate();
@@ -346,7 +299,7 @@ void draw() {
       }
     }
 
-   textAlign(CENTER, CENTER);
+    textAlign(CENTER, CENTER);
 
     int chosenDepTime1 = depStartSlider.getNumber();
     int chosenDepTime2 = depEndSlider.getNumber();
@@ -363,7 +316,7 @@ void draw() {
   }
 
   if (results.active) {
-    textAlign(LEFT,TOP);
+    textAlign(LEFT, TOP);
     noStroke();
     fill(140, 240, 250);
     float totalWidth = textWidth("Select a flight to learn more individual details.");
@@ -377,38 +330,32 @@ void draw() {
     textAlign(CENTER, CENTER);
   }
 
-if (barCharts1.active) {
+  if (barCharts1.active) {
     if (selectedFlights.size() > 0) {
-      Chart origBarChart = new Chart(50, 20, 300, 300, "Most Common Origins for Specified Flights", color(100, 50, 200), loadedFont);
       origBarChart.loadDataWithType("2", "orig", selectedFlights, origBarChart);
       origBarChart.draw();
-      
-      Chart destBarChart = new Chart(500, 20, 300, 300, "Most Common Destinations for Specified Flights", color(100, 50, 200), loadedFont);
+
       destBarChart.loadDataWithType("2", "dest", selectedFlights, destBarChart);
       destBarChart.draw();
-      
-      Chart carrBarChart = new Chart(250, 350, 300, 300, "Most Common Carrier/Airline for Specified Flights", color(100, 50, 200), loadedFont);
+
       carrBarChart.loadDataWithType("2", "carrier", selectedFlights, carrBarChart);
       carrBarChart.draw();
     }
   }
 
-if (pieCharts1.active){
-  if (selectedFlights.size() > 0){
-    PieChart origPieChart = new PieChart(50, 50, 200, 200, "Most Common Origins for Specified Flights", color(100, 50, 200), loadedFont);
-    origPieChart.loadDataWithType("orig", selectedFlights, origPieChart);
-    origPieChart.draw();
-    
-    PieChart destPieChart = new PieChart(330, 100, 200, 200, "Most Common Destinations for Specified Flights", color(100, 50, 200), loadedFont);
-    destPieChart.loadDataWithType("dest", selectedFlights, destPieChart);
-    destPieChart.draw();
-    
-    PieChart carrierPieChart = new PieChart(650, 50, 200, 200, "Most Common Carriers for Specified Flights", color(100, 50, 200), loadedFont);
-    carrierPieChart.loadDataWithType("carrier", selectedFlights, carrierPieChart);
-    carrierPieChart.draw();
+  if (pieCharts1.active) {
+    if (selectedFlights.size() > 0) {
+      origPieChart.loadDataWithType("orig", selectedFlights, origPieChart);
+      origPieChart.draw();
+
+      destPieChart.loadDataWithType("dest", selectedFlights, destPieChart);
+      destPieChart.draw();
+
+      carrierPieChart.loadDataWithType("carrier", selectedFlights, carrierPieChart);
+      carrierPieChart.draw();
+    }
   }
   
-}
   welcome.draw();
   search.draw();
   results.draw();
@@ -416,11 +363,12 @@ if (pieCharts1.active){
   pieCharts1.draw();
   barCharts1.draw();
   musicButton.draw();
-  
+
   if (flightInfo.active) {
     image(mapImg, 0, 0);
 
     if (getDeparture < 1) {
+<<<<<<< HEAD
      State = departureState;
      getPositions();
      println(stateXPos);
@@ -428,16 +376,24 @@ if (pieCharts1.active){
      departureYPos = stateYPos;
      getDeparture = 1;
      }
+=======
+      State = departureState;
+      getPositions();
+      departureXPos = stateXPos;
+      departureYPos = stateYPos;
+      getDeparture = 1;
+    }
+>>>>>>> 706c4a9488e25ca06e568b5352d57daccdbf47a0
 
-     if (getDestination < 1) {
+    if (getDestination < 1) {
       State = destinationState;
       getPositions();
       destinationXPos = stateXPos;
       destinationYPos = stateYPos;
       getDestination = 1;
-     }
+    }
 
-    //detDestination and getDeparture need to be reset to 0 when user exits the flightInfo screen
+    //getDestination and getDeparture need to be reset to 0 when user exits the flightInfo screen
 
     fill(0, 255, 0);
     strokeWeight(4);
@@ -497,10 +453,10 @@ ArrayList<Flight> filteredData() {
   // matchingFlights is an ArrayList<Flight> of all filtered flights, starting out holding ALL flights
   ArrayList<Flight> matchingFlights = new ArrayList<Flight>();
   matchingFlights.addAll(flights);
-  
+
   // Select from matchingFlights only the ones matching dropdowns (or leave untouched if none selected)
   Dropdown[] dropdownOrder = {airline, departure, arrival};
-  String[] dropdownCodes = {"carrier","orig","dest"};
+  String[] dropdownCodes = {"carrier", "orig", "dest"};
   for (int index = 0; index < 3; index++) {
     ArrayList<String> choices = dropdownOrder[index].getSelection();
     if (choices.size() != 0) {
@@ -508,25 +464,25 @@ ArrayList<Flight> filteredData() {
       for (String choice : choices) {
         String code = dropdownCodes[index];
         if (code.equals("carrier"))
-            choice = data.carrierNameToCode(choice);
+          choice = data.carrierNameToCode(choice);
         else choice = data.stateNameToCode(choice);
         flightsOfAllChoices.addAll(data.flightsWhichMatchThisCriterion(dropdownCodes[index], choice, matchingFlights));
       }
       matchingFlights = flightsOfAllChoices;
     }
   }
-  
+
   // Select from matchingFlights only the ones matching time inputs
   String[] depTimes = {String.valueOf(depStartSlider.getNumber()), String.valueOf(depEndSlider.getNumber())};
   String[] arrTimes = {String.valueOf(arrStartSlider.getNumber()), String.valueOf(arrEndSlider.getNumber())};
   matchingFlights = data.inThisTimeRange("depTimes", depTimes[0], depTimes[1], matchingFlights);
   matchingFlights = data.inThisTimeRange("arrTimes", arrTimes[0], arrTimes[1], matchingFlights);
-  
+
   // Select from matchingFlights only the ones cancelled
   if (cancelledTickbox.isTicked()) {
     matchingFlights = data.flightsWhichMatchThisCriterion("cancelled", "", matchingFlights);
   }
-  
+
   // Select from matchingFlights only the ones late
   if (lateTickbox.isTicked()) {
     matchingFlights = data.flightsWhichMatchThisCriterion("late", "", matchingFlights);
@@ -538,7 +494,7 @@ ArrayList<Flight> filteredData() {
     String dateAsString = String.valueOf(date);
     matchingFlights = data.inThisTimeRange("dates", dateAsString, dateAsString, matchingFlights);
   }
-  
+
   numbOfSelectedFlights = matchingFlights.size();
   return matchingFlights;
 }
@@ -571,23 +527,22 @@ void mousePressed() {
   {
     arrEndSlider.click();
   }
-  
+
 
   if (mouseX > musicButton.x && mouseX < musicButton.x + 40 && mouseY > musicButton.y && mouseY < musicButton.y + height) {
     musicEvent = musicButton.getEvent(mouseX, mouseY);
     if (musicEvent == 5) {
-      if(musicButton.icon == musicIcon) {
+      if (musicButton.icon == musicIcon) {
         music.pause();
         musicButton.changeIcon(musicMuteIcon);
-      }
-      else {
+      } else {
         music.loop();
         musicButton.changeIcon(musicIcon);
       }
     }
   }
 
-                                                // checking if a button was pressed based on the current screen
+  // checking if a button was pressed based on the current screen
   if (welcome.active) {
     currentEvent = welcome.getEvent(mouseX, mouseY); // seeing which button is pressed based on mouse position
     if (currentEvent == 1) {
@@ -617,53 +572,43 @@ void mousePressed() {
     }
   }
 
-  if(results.active) {
+  if (results.active) {
     resultTable.clicked();
     currentEvent = results.getEvent(mouseX, mouseY);
-    if(currentEvent == 1) {
+    if (currentEvent == 1) {
       results.active = false;
       welcome.active = true;
-    }
-    else if(currentEvent == 2) {
+    } else if (currentEvent == 2) {
       results.active = false;
       pieCharts1.active = true;
-    }
-    else if(currentEvent == 3) {
+    } else if (currentEvent == 3) {
       results.active = false;
       barCharts1.active = true;
-    }
-    else if (currentEvent == 5) {
+    } else if (currentEvent == 5) {
       results.active = false;
       search.active = true;
     }
   }
 
-  if(pieCharts1.active) {
+  if (pieCharts1.active) {
     currentEvent = pieCharts1.getEvent(mouseX, mouseY);
-    if(currentEvent == 1) {
-    }
-    else if(currentEvent == 2) {
+    if (currentEvent == 2) {
       pieCharts1.active = false;
       results.active = true;
     }
   }
 
-
-  if(barCharts1.active) {
+  if (barCharts1.active) {
     currentEvent = barCharts1.getEvent(mouseX, mouseY);
-    if(currentEvent == 1) {
-    }
-    else if(currentEvent == 2) {
+    if (currentEvent == 2) {
       barCharts1.active = false;
       results.active = true;
     }
   }
 
-  
-  
-  if(flightInfo.active) {
+  if (flightInfo.active) {
     currentEvent = flightInfo.getEvent(mouseX, mouseY);
-    if(currentEvent == 2) {
+    if (currentEvent == 2) {
       flightInfo.active = false;
       results.active = true;
       getDestination = 0;
@@ -941,19 +886,18 @@ void getPositions() {
   else if (State.equals("WY")) {
     stateXPos = 300;
     stateYPos = 185;
-  } 
+  }
   //Puerto Rico
   else if (State.equals("PR")) {
     stateXPos = 950;
     stateYPos = 630;
-  } 
+  }
   //US Virgin Islands
   else if (State.equals("VI")) {
     stateXPos = 0;
     stateYPos = 320;
-  } 
-else {
-//Incase we get a weird code, be it a typo or an unexpected departure/destination. Having it set to the top left guarantees that the error is noticed
+  } else {
+    //Incase we get a weird code, be it a typo or an unexpected departure/destination. Having it set to the top left guarantees that the error is noticed
     stateXPos = 0;
     stateYPos = 0;
   }
